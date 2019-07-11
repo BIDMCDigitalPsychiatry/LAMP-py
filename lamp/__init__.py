@@ -2,6 +2,7 @@ import openapi_client
 import cohort_analysis
 from subject import Subject
 from cohort import Cohort
+from survey_question_dict import SurveyQuestionDict
 
 HOST = "https://api.lamp.digital"
 KEY = "root:lampadmin" # your login credentials go here
