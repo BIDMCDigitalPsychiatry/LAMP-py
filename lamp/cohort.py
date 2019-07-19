@@ -8,17 +8,67 @@ from functools import reduce
 class Cohort():
 	"""
 	"""
-	def __init__(self, subjects, ages=None, races=None, sex=None):
+	def __init__(self, subjects, beiwe_filepath=None, ages=None, races=None, sexes=None, beiwe_ids=None):
+		self.beiwe_filepath = beiwe_filepath
+		self.ages = ages
+		self.races = races
+		self.sexes = sexes
+		self.beiwe_ids = beiwe_ids
 		self.init_subjects(subjects)
-		if ages is not None:
-			self.set_ages(ages)
-		if races is not None:
-			self.set_races(races)
-		if sex is not None:
-			self.set_sex(sex)
-			
-			
 		
+	def __iter__(self):
+		for subj in self.subjects:
+			yield subj
+			
+	def __len__(self):
+		return len(self.subjects)
+	
+	@property
+	def subjects(self):
+		return self._subjects
+	@property
+	def beiwe_filepath(self):
+		return self._beiwe_filepath
+	
+	@property
+	def ages(self):
+		return self._ages
+	
+	@property
+	def races(self):
+		return self._races
+
+	@property
+	def sexes(self):
+		return self._sexes
+	
+	@property
+	def beiwe_ids(self):
+		return self._beiwe_ids
+	
+	@subjects.setter
+	def subjects(self, value):
+		self._subjects = value
+		
+	@beiwe_filepath.setter
+	def beiwe_filepath(self, value):
+		self._beiwe_filepath = value
+	
+	@ages.setter
+	def ages(self, value):
+		self._ages = value
+		
+	@races.setter	
+	def races(self, value):
+		self._races = value
+		
+	@sexes.setter	
+	def sexes(self, value):
+		self._sexes = value
+		
+	@beiwe_ids.setter
+	def beiwe_ids(self, value):
+		self._beiwe_ids = value
 		
 	def init_subjects(self, subjects):
 		"""
@@ -42,38 +92,36 @@ class Cohort():
 		If it doesn't exist, will return None
 		"""
 		for subj in self.subjects:
-			if subj.get_id() == subj_id:
+			if subj.id == subj_id:
 				return subj
 		
 		print('Subject not found!')
 		return None
 	
 	def add_subject(self, subject):
-		self.subjects.append(lamp.Subject(id = subject))
-		
-	def get_subjects(self):
-		"""
-		Return all subjects in cohort
-		"""
-		return self.subjects
+		subject_age = self.ages[subject] if subject in self.ages else None
+		subject_race = self.races[subject] if subject in self.races else None
+		subject_sex = self.sexes[subject] if subject in self.sexes else None
+		subject_beiwe_id = self.beiwe_ids[subject] if subject in self.beiwe_ids else None
+		self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
 	
 	
-	def get_mean_age(self):
+	def mean_age(self):
 		"""
 		Return mean, std age of subjects in cohort
 		"""
-		subject_ages = [subj.get_age() for subj in self.subjects if subj.get_age() is not None]
+		subject_ages = [subj.age for subj in self.subjects if subj.age is not None]
 		if len(subject_ages) == 0:
 			return None
 		
 		return np.mean(subject_ages)
 
 	
-	def get_std_age(self):
+	def std_age(self):
 		"""
 		Return std age of subjects in cohort
 		"""
-		subject_ages = [subj.get_age() for subj in self.subjects if subj.get_age() is not None]
+		subject_ages = [subj.age for subj in self.subjects if subj.age is not None]
 		if len(subject_ages) == 0:
 			return None
 		
@@ -89,8 +137,8 @@ class Cohort():
 		"""
 		
 		for subj in self.subjects:
-			if subj.get_id() in subject_ages:
-				subj.set_age(age=subject_ages[subj.get_id()])
+			if subj.id in subject_ages:
+				subj.age = subject_ages[subj.id]
 				
 				
 	def set_races(self, subject_races):
@@ -103,8 +151,8 @@ class Cohort():
 		"""
 		
 		for subj in self.subjects:
-			if subj.get_id() in subject_races:
-				subj.set_race(race=subject_races[subj.get_id()])
+			if subj.id in subject_races:
+				subj.race = subject_races[subj.id]
 				
 	
 	def set_sex(self, subject_sex):
@@ -113,21 +161,34 @@ class Cohort():
 		
 		If subject in dictionary cannot be found, id will be ignored
 		
-		:param subject_ages (dict): maps subject id to sex
+		:param subject_sex (dict): maps subject id to sex
 		"""
 		
 		for subj in self.subjects:
-			if subj.get_id() in subject_sex:
-				subj.set_sex(sex=subject_sex[subj.get_id()])
+			if subj.id in subject_sex:
+				subj.sex = subject_sex[subj.id]
 				
-	def get_column_mean(self, column):
+	def set_beiwe_ids(self, subject_beiwe_ids):
+		"""
+		Set beiwe_ids for existing subjects in cohort.
+		
+		If subject in dictionary cannot be found, id will be ignored
+		
+		:param subject_beiwe_ids (dict): maps subject id to beiwe_id
+		"""
+		
+		for subj in self.subjects:
+			if subj.id in subject_beiwe_ids:
+				subj.beiwe_id = subject_beiwe_ids[subj.id]
+				
+	def column_mean(self, column):
 		"""
 		Find the mean value for particular domain in cohort
 		"""
 		col_values = np.concatenate([subj.df[column].values for subj in self.subjects if column in subj.df.columns])
 		return np.nanmean(col_values)
 				
-	def get_column_stdev(self, column):
+	def column_stdev(self, column):
 		"""
 		Find the std value for particular domain in cohort
 		"""
@@ -144,11 +205,19 @@ class Cohort():
 			for subj in self.subjects:
 				subj.normalize(columns)
 		else:
-			col_means, col_vars = {col: self.get_column_mean(col) for col in columns}, {col: self.get_column_stdev(col) for col in columns}
+			col_means, col_vars = {col: self.column_mean(col) for col in columns}, {col: self.column_stdev(col) for col in columns}
 			
 			for subj in self.subjects:
 				subj.normalize(columns=columns, col_means=col_means, col_vars=col_vars)
 				
+# 	def transition_probabilities(self, joint_size=1):
+# 		"""
+# 		Get cohort_wide transistion probabilities.
+		
+# 		:param joint_size (int): the number of variables used when calculating the joint probabilities for transistion event. Defaults to 1. 
+# 		"""
+# 		samples_tp = [pro.get_transitions() for pro in self]
+		
 	
 		
 		
