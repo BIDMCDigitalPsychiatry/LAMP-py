@@ -153,7 +153,6 @@ class Subject(object):
 	def create_subject_df(self, ndays=120):
 	
 		subject_surveys = self.survey_results()
-		#print(subject_surveys)
 
 		#Find the first, last date
 		try:
@@ -164,9 +163,9 @@ class Subject(object):
 			print(e)
 			#print(self.id, subject_surveys)
 			#return pd_DataFrame({'Date':[], 'id
-
+		
 		#Create dateframe, 90 days is standard
-		df = pd.DataFrame({'Date': [first_day + datetime.timedelta(days=x) for x in range(min(number_of_days, number_of_days))], 'id':self.id})
+		df = pd.DataFrame({'Date': [first_day + datetime.timedelta(days=x) for x in range(min(number_of_days, ndays))], 'id':self.id})
 
 		#Create null dataframes for all survey types
 		for cat in ['Mood', 'Anxiety', 'Psychosis', 'Sleep', 'Social']:
@@ -194,8 +193,10 @@ class Subject(object):
 			df['beta_a'] = np.nan
 			df['beta_b'] = np.nan
 		else:
-			df = pd.merge(df, subj_beta_vals[['Date', 'beta_a', 'beta_b']], on='Date')
-
+			
+			df = pd.merge(df, subj_beta_vals[['Date', 'beta_a', 'beta_b']], on='Date', how='outer')
+		
+		#print(df)
 		def parse_beiwe_pipeline(subject_id, ndays=90):
 			#Find beiwe id
 			if self.beiwe_filepath is None:
@@ -226,7 +227,7 @@ class Subject(object):
 			return steps_file, sleep_file
 
 		steps_file, sleep_file = parse_beiwe_pipeline(self.id)
-
+		
 		dataframes = [df]
 		#print(dataframes)
 		if steps_file is not None:
@@ -283,7 +284,7 @@ class Subject(object):
 				#Find total in bin
 				slice_val = sum(subj_slice_no_nan * [val / sum(weighted_dict_vals) for val in weighted_dict_vals])
 				col_values.append(slice_val)
-
+			
 			self.df[col] = col_values
 		
 		self.impute_status = True
@@ -340,6 +341,26 @@ class Subject(object):
 		
 		self.normalize_status = True
 		
+	def create_transition_dict(self, level):
+		"""
+		Create nested dictionary structure 
+		
+		:param level (int): the level dictionary structure. Must be >= 0
+		"""
+		trans_dict = {}
+		for comb in itertools.product(('out', 'in'), repeat=level):
+			trans_dict[comb] = {comb2:0 for comb2 in itertools.product(('out', 'in'), repeat=level)}
+		return trans_dict
+	
+	
+	def assign_transition_dict(self, trans_dict, row, row2):
+		"""
+		Increment transition dict
+		"""
+		label1 = tuple(['in' if col < 1.0 else 'out' for col in row])
+		label2 = tuple(['in' if col < 1.0 else 'out' for col in row2])
+		trans_dict[label1][label2] += 1
+		
 	def get_transitions(self, columns, joint_size=1):
 		"""
 		Count transition events for each col in subj_df
@@ -347,30 +368,59 @@ class Subject(object):
 		#print('heer')
 		
 		all_trans_dict = {}
-		for col_group in itertools.combinations
-		
-		
-		
-		for col in columns:
-			col_values = self.df[col].loc[self.df[col].notnull()]
-			col_trans_dict = {'in':{'in':0, 'out':0}, 'out':{'in':0, 'out':0}}
+		for col_group in itertools.combinations(columns, r=joint_size):
+			
+			#Create trans dictionary
+			group_dict = self.create_transition_dict(level=joint_size)
+			
+			#Find bins with values for each group
+			good_bins = self.bins[list(col_group)].dropna()
 
-			for i in range(len(col_values.values) - 1):
-				first, sec = col_values.values[i], col_values.values[i + 1]   
-
-				if col_values.index[i+1] - col_values.index[i] > 7: #if more than a week separated, than ignore
-					continue
-				if first < 1.0:
-					if sec < 1.0:
-						col_trans_dict['in']['in'] += 1
-					else:
-						col_trans_dict['in']['out'] += 1    
-				else:
-					if sec < 1.0:
-						col_trans_dict['out']['in'] += 1
-					else:
-						col_trans_dict['out']['out'] += 1
-
-			all_trans_dict[col] = col_trans_dict
-
+			#Assign
+			row_iterator = good_bins.iterrows()
+			try:
+				last_i, last = next(row_iterator)
+			except StopIteration:
+				continue
+			for index, row in row_iterator:
+				if int(index) - int(last_i) == 1:
+					self.assign_transition_dict(group_dict, last, row)
+				last_i, last = index, row
+			
+			all_trans_dict[col_group] = group_dict
+			
 		return all_trans_dict
+				
+			
+				
+		
+			
+		
+		
+		
+			
+		
+		
+# 		for col in columns:
+# 			col_values = self.df[col].loc[self.df[col].notnull()]
+# 			col_trans_dict = {'in':{'in':0, 'out':0}, 'out':{'in':0, 'out':0}}
+
+# 			for i in range(len(col_values.values) - 1):
+# 				first, sec = col_values.values[i], col_values.values[i + 1]   
+
+# 				if col_values.index[i+1] - col_values.index[i] > 7: #if more than a week separated, than ignore
+# 					continue
+# 				if first < 1.0:
+# 					if sec < 1.0:
+# 						col_trans_dict['in']['in'] += 1
+# 					else:
+# 						col_trans_dict['in']['out'] += 1    
+# 				else:
+# 					if sec < 1.0:
+# 						col_trans_dict['out']['in'] += 1
+# 					else:
+# 						col_trans_dict['out']['out'] += 1
+
+# 			all_trans_dict[col] = col_trans_dict
+
+# 		return all_trans_dict

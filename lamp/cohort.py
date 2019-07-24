@@ -2,6 +2,7 @@ import lamp
 import numpy as np
 from lamp import cohort_analysis
 from functools import reduce
+#from collections import Counter
 """
 """
 
@@ -22,6 +23,9 @@ class Cohort():
 			
 	def __len__(self):
 		return len(self.subjects)
+	
+	def __getitem__(self, key):
+		return self.subjects[key]
 	
 	@property
 	def subjects(self):
@@ -99,10 +103,11 @@ class Cohort():
 		return None
 	
 	def add_subject(self, subject):
-		subject_age = self.ages[subject] if subject in self.ages else None
-		subject_race = self.races[subject] if subject in self.races else None
-		subject_sex = self.sexes[subject] if subject in self.sexes else None
-		subject_beiwe_id = self.beiwe_ids[subject] if subject in self.beiwe_ids else None
+		subject_age = self.ages[subject] if self.ages and subject in self.ages else None
+		
+		subject_race = self.races[subject] if self.races and subject in self.races else None
+		subject_sex = self.sexes[subject] if self.sexes and subject in self.sexes else None
+		subject_beiwe_id = self.beiwe_ids[subject] if self.beiwe_ids and subject in self.beiwe_ids else None
 		self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
 	
 	
@@ -210,13 +215,38 @@ class Cohort():
 			for subj in self.subjects:
 				subj.normalize(columns=columns, col_means=col_means, col_vars=col_vars)
 				
-# 	def transition_probabilities(self, joint_size=1):
-# 		"""
-# 		Get cohort_wide transistion probabilities.
+	def transition_probabilities(self, columns, joint_size=1):
+		"""
+		Get cohort_wide transistion probabilities.
 		
-# 		:param joint_size (int): the number of variables used when calculating the joint probabilities for transistion event. Defaults to 1. 
-# 		"""
-# 		samples_tp = [pro.get_transitions() for pro in self]
+		:param joint_size (int): the number of variables used when calculating the joint probabilities for transistion event. Defaults to 1. 
+		"""
+		samples_tp = [pro.get_transitions(columns = columns, joint_size = joint_size) for pro in self]
+		
+		master_dict = {}
+		
+		for sample in samples_tp:
+			for cat in sample:				
+				if cat not in master_dict:
+					master_dict[cat] = {state: sample[cat][state] for state in sample[cat]}
+				else: #merge
+					for state in sample[cat]:
+						master_dict[cat][state] = {state2: master_dict[cat][state][state2] + sample[cat][state][state2] for state2 in 
+																														master_dict[cat][state]}			
+		#Convert to probabilities
+		trans_dict = {}
+		for cat in master_dict:
+			trans_dict[cat] = {}
+			for state in master_dict[cat]:
+				trans_dict[cat][state] = {}
+				for state2 in master_dict[cat][state]:
+					if sum(master_dict[cat][state].values()) == 0:
+						trans_dict[cat][state][state2] = None
+					else:
+						trans_dict[cat][state][state2] = float(master_dict[cat][state][state2]) / float(sum(master_dict[cat][state].values()))			
+		return trans_dict, master_dict
+					
+			
 		
 	
 		
