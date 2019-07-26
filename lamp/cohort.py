@@ -2,19 +2,19 @@ import lamp
 import numpy as np
 from lamp import cohort_analysis
 from functools import reduce
-#from collections import Counter
 """
 """
 
 class Cohort():
 	"""
 	"""
-	def __init__(self, subjects, beiwe_filepath=None, ages=None, races=None, sexes=None, beiwe_ids=None):
+	def __init__(self, subjects, domains=None, beiwe_filepath=None, ages=None, races=None, sexes=None, beiwe_ids=None):
 		self.beiwe_filepath = beiwe_filepath
 		self.ages = ages
 		self.races = races
 		self.sexes = sexes
 		self.beiwe_ids = beiwe_ids
+		self.domains = domains
 		self.init_subjects(subjects)
 		
 	def __iter__(self):
@@ -50,6 +50,10 @@ class Cohort():
 	def beiwe_ids(self):
 		return self._beiwe_ids
 	
+	@property
+	def domains(self):
+		return self._domains
+	
 	@subjects.setter
 	def subjects(self, value):
 		self._subjects = value
@@ -73,6 +77,22 @@ class Cohort():
 	@beiwe_ids.setter
 	def beiwe_ids(self, value):
 		self._beiwe_ids = value
+		
+	@domains.setter
+	def domains(self, value):
+		self._domains = value
+		
+	def domain_check(self, domains):
+		"""
+		If domains is passed in, just return it.
+		
+		Else, see if domains is set as object attribute
+		"""
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+		return domains
 		
 	def init_subjects(self, subjects):
 		"""
@@ -104,11 +124,10 @@ class Cohort():
 	
 	def add_subject(self, subject):
 		subject_age = self.ages[subject] if self.ages and subject in self.ages else None
-		
 		subject_race = self.races[subject] if self.races and subject in self.races else None
 		subject_sex = self.sexes[subject] if self.sexes and subject in self.sexes else None
 		subject_beiwe_id = self.beiwe_ids[subject] if self.beiwe_ids and subject in self.beiwe_ids else None
-		self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
+		self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, domains=self.domains, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
 	
 	
 	def mean_age(self):
@@ -185,43 +204,73 @@ class Cohort():
 		for subj in self.subjects:
 			if subj.id in subject_beiwe_ids:
 				subj.beiwe_id = subject_beiwe_ids[subj.id]
-				
-	def column_mean(self, column):
+			
+
+	def domain_mean(self, domain):
 		"""
 		Find the mean value for particular domain in cohort
 		"""
-		col_values = np.concatenate([subj.df[column].values for subj in self.subjects if column in subj.df.columns])
+		col_values = np.concatenate([subj.df[domain].values for subj in self.subjects if domain in subj.df.columns])
 		return np.nanmean(col_values)
 				
-	def column_stdev(self, column):
+	def domain_stdev(self, domain):
 		"""
 		Find the std value for particular domain in cohort
 		"""
-		col_values = np.concatenate([subj.df[column].values for subj in self.subjects if column in subj.df.columns])
+		col_values = np.concatenate([subj.df[domain].values for subj in self.subjects if domain in subj.df.columns])
 		return np.nanstd(col_values)
 		
-	def normalize(self, columns, in_sample=False):
+	def normalize(self, domains=None, in_sample=False):
 		"""
 		Normalize each domain in cohort so that values have 0 mean/unit variance
 		
 		If in_sample is true, then performs within-sample normalization
 		"""
-		if in_sample:
-			for subj in self.subjects:
-				subj.normalize(columns)
-		else:
-			col_means, col_vars = {col: self.column_mean(col) for col in columns}, {col: self.column_stdev(col) for col in columns}
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
 			
-			for subj in self.subjects:
-				subj.normalize(columns=columns, col_means=col_means, col_vars=col_vars)
+		if in_sample:
+			for subj in self.subjects: subj.normalize(domains)
+		else:
+			dom_means, dom_vars = {dom: self.domain_mean(dom) for dom in domains}, {dom: self.domain_stdev(dom) for dom in domains}
+			for subj in self.subjects: subj.normalize(domains=domains, domain_means=dom_means, domain_vars=dom_vars)
 				
-	def transition_probabilities(self, columns, joint_size=1):
+	def impute(self, domains=None):
+		"""
+		Impute every subject in cohort.
+		"""
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+		
+		for subj in self: subj.impute(domains=domains)
+			
+	def bin(self, domains=None, window_size=3):
+		"""
+		Bins all subjects in cohort.
+		"""
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+			
+		for subj in self: subj.bin(domains=domains, window_size=window_size)
+		
+	def transition_probabilities(self, domains=None, joint_size=1):
 		"""
 		Get cohort_wide transistion probabilities.
 		
 		:param joint_size (int): the number of variables used when calculating the joint probabilities for transistion event. Defaults to 1. 
 		"""
-		samples_tp = [pro.get_transitions(columns = columns, joint_size = joint_size) for pro in self]
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+			
+		samples_tp = [pro.get_transitions(domains = domains, joint_size = joint_size) for pro in self]
 		
 		master_dict = {}
 		
@@ -246,6 +295,24 @@ class Cohort():
 						trans_dict[cat][state][state2] = float(master_dict[cat][state][state2]) / float(sum(master_dict[cat][state].values()))			
 		return trans_dict, master_dict
 					
+	def domain_bouts(self, domains=None):
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+			
+		bout_dict = {}
+		for subj in self: 
+			subj_bout_dict = subj.domain_bouts(domains=domains)
+			for dom in subj_bout_dict:
+				if dom not in bout_dict: bout_dict[dom] = subj_bout_dict[dom]
+				else: 
+					bout_dict[dom]['low'] += subj_bout_dict[dom]['low']
+					bout_dict[dom]['high'] += subj_bout_dict[dom]['high']
+					bout_dict[dom]['low ends'] += subj_bout_dict[dom]['low ends']
+					bout_dict[dom]['high ends'] += subj_bout_dict[dom]['high ends']
+		
+		return bout_dict
 			
 		
 	

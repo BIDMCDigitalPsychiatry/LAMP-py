@@ -8,13 +8,14 @@ import itertools
 from functools import reduce
 #import
 
-class Subject(object):
+class Subject():
 	"""
 	Create subject dataframe
 	
 	"""
-	def __init__(self, id, age=None, race=None, sex=None, beiwe_id=None, beiwe_filepath=None):
+	def __init__(self, id, domains=None, age=None, race=None, sex=None, beiwe_id=None, beiwe_filepath=None):
 		self.id = id
+		self.domains = domains
 		self.beiwe_id = beiwe_id
 		self.beiwe_filepath = beiwe_filepath
 		self.df = self.create_subject_df()
@@ -82,6 +83,19 @@ class Subject(object):
 		"""
 		self.df = self.create_subject_df()
 		self.impute_status, self.bin_status, self.normalize_status = False, False, False
+		
+	def domain_check(self, domains):
+		"""
+		If domains is passed in, just return it.
+		
+		Else, see if domains is set as object attribute
+		"""
+		if domains is None:
+			if not hasattr(self, 'domains'):
+				raise AttributeError('Domains were not set for cohort and were not provided.')
+			domains = self.domains
+		return domains
+		
 	
 	def survey_results(self, participant=None, datetime_object=False):
 		"""
@@ -152,8 +166,9 @@ class Subject(object):
 	
 	def create_subject_df(self, ndays=120):
 	
+	
 		subject_surveys = self.survey_results()
-
+		
 		#Find the first, last date
 		try:
 			first_day = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[key][0][1]/1000 for key in subject_surveys])[0]).date()
@@ -161,14 +176,12 @@ class Subject(object):
 			number_of_days = (last_day - first_day).days
 		except Exception as e:
 			print(e)
-			#print(self.id, subject_surveys)
-			#return pd_DataFrame({'Date':[], 'id
 		
-		#Create dateframe, 90 days is standard
+		#Create dateframe for the number of days that have data; cap at 'ndays' if this number is large
 		df = pd.DataFrame({'Date': [first_day + datetime.timedelta(days=x) for x in range(min(number_of_days, ndays))], 'id':self.id})
 
 		#Create null dataframes for all survey types
-		for cat in ['Mood', 'Anxiety', 'Psychosis', 'Sleep', 'Social']:
+		for cat in #['Mood', 'Anxiety', 'Psychosis', 'Sleep', 'Social']:
 			df[cat] = np.nan
 			
 		#Parse surveys
@@ -243,7 +256,7 @@ class Subject(object):
 			
 		return df_final
 	
-	def impute(self, columns):
+	def impute(self, domains):
 		"""
 		Get value for each column for each window
 		"""
@@ -254,11 +267,11 @@ class Subject(object):
 		weighted_dict = [0.05, 0.20, 0.40, 1.5, 0.4, 0.20, 0.05]
 
 		#Get indices of all middle bin values; add them to new df
-		for col in columns:
-			if col not in self.df:
+		for dom in domains:
+			if dom not in self.df:
 				continue
 				
-			col_values = []
+			dom_values = []
 
 			for ind in range(len(self.df.index)):
 
@@ -271,11 +284,11 @@ class Subject(object):
 				subj_slice = self.df.iloc[starting_index:ending_index]
 
 				#Remove na
-				subj_slice_no_nan = subj_slice[col].dropna()
+				subj_slice_no_nan = subj_slice[dom].dropna()
 				slice_indices = subj_slice_no_nan.index
 
 				if len(slice_indices) == 0:
-					col_values.append(np.nan)
+					dom_values.append(np.nan)
 					continue
 
 				#Match slice index with weight index
@@ -283,30 +296,43 @@ class Subject(object):
 
 				#Find total in bin
 				slice_val = sum(subj_slice_no_nan * [val / sum(weighted_dict_vals) for val in weighted_dict_vals])
-				col_values.append(slice_val)
+				dom_values.append(slice_val)
 			
-			self.df[col] = col_values
+			self.df[dom] = dom_values
 		
 		self.impute_status = True
 
 	
-	def bin(self, columns, window_size=3):
+	def bin(self, domains, window_size=3, shift=None):
 		"""
 		Bin dataframe
+		
+		:param domains (list): the domains to bin 
+		:window_size (int): the size of the bins (in days)
+		:shift (int): the day of the week to start the binning on (Monday == 0)
+		
 		"""
-
-		self.df['bin'] = np.floor(self.df.index / window_size )
-		bins = self.df.groupby('bin')
-		subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date']+columns)
+		
+		domains = self.domain_check(domains)
+		#Shift until Monday
+		df_copy = self.df.copy()
+		if shift not is None:			
+			dow = datetime.datetime.strptime(df_copy['Date'].values[0], '%Y-%m-%d').weekday()
+			if dow > 0 and len(df_copy) > dow:
+				df_copy = df_copy.shift(shift - dow)
+				
+		df_copy['bin'] = np.floor(df_copy.index / window_size )
+		bins = df_copy.groupby('bin')
+		subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date']+domains)
 		for b in bins:
 			bin_values = []
 			#Add bin start/end dates
 			start_date, end_date = b[1].iloc[0]['Date'], b[1].iloc[-1]['Date']
 			bin_values.extend((start_date, end_date))
-			for col in columns:
-				if col in b[1].columns:
-					bin_col_value = b[1][col].mean()
-					bin_values.append(bin_col_value)
+			for dom in domains:
+				if dom in b[1].columns:
+					bin_dom_value = b[1][dom].mean()
+					bin_values.append(bin_dom_value)
 				else:
 					bin_values.append(np.nan)
 
@@ -317,11 +343,11 @@ class Subject(object):
 		self.bins = subj_bin_df
 
 	
-	def normalize(self, columns, col_means={}, col_vars={}):
+	def normalize(self, domains, domain_means={}, domain_vars={}):
 		"""
 		Normalize columns values to 0 mean/ unit variance
-		:param col_means (dict): the mean for each column value
-		:param col_vars (dict): the variance for each column value
+		:param domain_means (dict): the mean for each column value
+		:param domain_vars (dict): the variance for each column value
 		
 		If mean/var not provided, resort to in-sample normalization
 		"""
@@ -329,15 +355,16 @@ class Subject(object):
 			print("Dataframe has already been normalized. Please reset dataframe if you wish to normalize it in a different way.")
 			return
 		
-		if col_means == {} and col_vars == {}:
-			for col in columns:
-				if col in self.df:
-					col_means[col] = self.df[col].mean()
-					col_vars[col] = self.df[col].std()
+		domains = self.domain_check(domains)
+		if domain_means == {} and domain_vars == {}:
+			for dom in domains:
+				if dom in self.df:
+					domain_means[dom] = self.df[dom].mean()
+					domain_vars[dom] = self.df[dom].std()
 		
-		for col in columns:
-			if col in self.df.columns:
-				self.df[col] = (self.df[col] - col_means[col]) / col_vars[col]
+		for dom in domains:
+			if dom in self.df.columns and dom in domain_means and dom in domain_vars:
+				self.df[dom] = (self.df[dom] - domain_means[dom]) / domain_vars[dom]
 		
 		self.normalize_status = True
 		
@@ -361,20 +388,19 @@ class Subject(object):
 		label2 = tuple(['in' if col < 1.0 else 'out' for col in row2])
 		trans_dict[label1][label2] += 1
 		
-	def get_transitions(self, columns, joint_size=1):
+	def get_transitions(self, domains=None, joint_size=1):
 		"""
 		Count transition events for each col in subj_df
 		"""
-		#print('heer')
-		
+		domains = self.domain_check(domains)
 		all_trans_dict = {}
-		for col_group in itertools.combinations(columns, r=joint_size):
+		for dom_group in itertools.combinations(domains, r=joint_size):
 			
 			#Create trans dictionary
 			group_dict = self.create_transition_dict(level=joint_size)
 			
 			#Find bins with values for each group
-			good_bins = self.bins[list(col_group)].dropna()
+			good_bins = self.bins[list(dom_group)].dropna()
 
 			#Assign
 			row_iterator = good_bins.iterrows()
@@ -383,44 +409,70 @@ class Subject(object):
 			except StopIteration:
 				continue
 			for index, row in row_iterator:
-				if int(index) - int(last_i) == 1:
+				if int(index) - int(last_i) <= 3:
 					self.assign_transition_dict(group_dict, last, row)
 				last_i, last = index, row
 			
-			all_trans_dict[col_group] = group_dict
+			all_trans_dict[dom_group] = group_dict
 			
 		return all_trans_dict
+	
+	def domain_bouts(self, domains=None):
+		"""
+		"""
+		def parse_bout_list(bout_list, state, low_bouts, high_bouts):
+			"""
+			Helper function to parse bout list at end of bout
+			"""
+			if len(bout_list) == 1: bout_list.append(bout_list[-1] + 3) #edge case where last domain event is only one in its bout
 				
+			if state: low_bouts.append(float(bout_list[-1]) - float(bout_list[0]))
+			else: high_bouts.append(float(bout_list[-1]) - float(bout_list[0]))
+			return low_bouts, high_bouts
 			
+		domains = self.domain_check(domains)
+		bout_dict = {}
+		for dom in domains:
+			if dom not in self.df:
+				continue
+
+			bout_list = [] #temporary list that contains times of current bout
+			subj_dom = self.df.loc[self.df[dom].notnull(), dom]
+			row_iterator = subj_dom.iteritems()
+			try:
+				last_day, last_val = next(row_iterator)
+				bout_list.append(last_day)
+				if last_val < 1.0: last_state = True #set this back on first val
+				else: last_state = False
+			except StopIteration:
+				continue
 				
+			bout_dict[dom] = {}
+			low_bouts, high_bouts = [], [] #duration of all in-range bouts
+			low_bouts_end, high_bouts_end = 0, 0 #counter the keep track of # of ended bout things
+			for day, val in row_iterator:
+				if val < 1.0: state = True
+				else: state = False
+					
+				if last_state == state and day - last_day <= 6: #continue bout
+					bout_list.append(day)
+					
+				else: #discontinue bout
+					if day - last_day > 8: 
+						bout_list.append(last_day + 3) #If adjacent rows are day outside threshold, discontinue bout;cap last bout at 3 days past last activity	
+						if last_state: low_bouts_end += 1
+						else: high_bouts_end += 1
+					else: bout_list.append(day) #then normal switch
 		
+					low_bouts, high_bouts = parse_bout_list(bout_list, last_state, low_bouts, high_bouts)
+					bout_list = [day]
+
+				last_day, last_val = day, val
+				last_state = state
 			
-		
-		
-		
-			
-		
-		
-# 		for col in columns:
-# 			col_values = self.df[col].loc[self.df[col].notnull()]
-# 			col_trans_dict = {'in':{'in':0, 'out':0}, 'out':{'in':0, 'out':0}}
+			low_bouts, high_bouts = parse_bout_list(bout_list, last_state, low_bouts, high_bouts) #parse last bout
+			bout_dict[dom]['low'], bout_dict[dom]['high'] = [float(b) for b in low_bouts], [float(b) for b in high_bouts]
+			bout_dict[dom]['low ends'], bout_dict[dom]['high ends'] = low_bouts_end, high_bouts_end
 
-# 			for i in range(len(col_values.values) - 1):
-# 				first, sec = col_values.values[i], col_values.values[i + 1]   
+		return bout_dict
 
-# 				if col_values.index[i+1] - col_values.index[i] > 7: #if more than a week separated, than ignore
-# 					continue
-# 				if first < 1.0:
-# 					if sec < 1.0:
-# 						col_trans_dict['in']['in'] += 1
-# 					else:
-# 						col_trans_dict['in']['out'] += 1    
-# 				else:
-# 					if sec < 1.0:
-# 						col_trans_dict['out']['in'] += 1
-# 					else:
-# 						col_trans_dict['out']['out'] += 1
-
-# 			all_trans_dict[col] = col_trans_dict
-
-# 		return all_trans_dict
