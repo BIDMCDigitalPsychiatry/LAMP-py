@@ -159,39 +159,45 @@ class Subject():
     def create_subject_df(self, days_cap=120, day_first=None, day_last=None):
         """
         """
-        subject_surveys = self.survey_results()
-
-        #Find the first, last date
-        if day_first is None: day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0]).date()
+        
+        def parse_surveys(days_cap=120, day_first=None, day_last=None):
+            subject_surveys = self.survey_results()
+            if len(subject_surveys) == 0:
+                return None
             
-        if day_last is not None: 
-            days_elapsed = (day_last - day_first).days 
-            df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, days_elapsed)], 'id':self.id})
-        else:
-            day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1]).date()
-            days_elapsed = (day_last - day_first).days 
-            #Create dateframe for the number of days that have data; cap at 'ndays' if this number is large
-            df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
-            df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
+            #Find the first, last date
+            if day_first is None: 
+                day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0]).date()
 
-        if self.domains is None: domains = [dom for dom in subject_surveys] #if not set, just use cats from surveys
-        else: domains = self.domains
-        for dom in domains: 
-            if dom not in ['Sleep Duration', 'Steps', 'beta_a', 'beta_b']:
-                df[dom] = np.nan
+            if day_last is not None: 
+                days_elapsed = (day_last - day_first).days 
+                df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, days_elapsed)], 'id':self.id})
+            else:
+                day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1]).date()
+                days_elapsed = (day_last - day_first).days 
+                #Create dateframe for the number of days that have data; cap at 'ndays' if this number is large
+                df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
+                df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 
-        #Parse surveys
-        for dom in subject_surveys:
-            if dom not in domains:
-                print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
-                continue
+            if self.domains is None: domains = [dom for dom in subject_surveys] #if not set, just use cats from surveys
+            else: domains = self.domains
+            for dom in domains: 
+                if dom not in ['Sleep Duration', 'Steps', 'beta_a', 'beta_b']:
+                    df[dom] = np.nan
 
-            #Add result to df by grouping by date, averaging, adding		
-            dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom]] #.strftime('%Y-%m-%d')
-            results = [event_val for event_val, _ in subject_surveys[dom]]
-            dom_results = pd.DataFrame({'Date':dates, 'Result':results})
-            for _, date_df in dom_results.groupby('Date'):
-                df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
+            #Parse surveys
+            for dom in subject_surveys:
+                if dom not in domains:
+                    print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
+                    continue
+
+                #Add result to df by grouping by date, averaging, adding        
+                dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom]] #.strftime('%Y-%m-%d')
+                results = [event_val for event_val, _ in subject_surveys[dom]]
+                dom_results = pd.DataFrame({'Date':dates, 'Result':results})
+                for _, date_df in dom_results.groupby('Date'):
+                    df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
+            return df
 
         def parse_beta_values():
             """
@@ -225,11 +231,12 @@ class Subject():
                 sleep_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv'))
                 sleep_file['Date'] = pd.to_datetime(sleep_file['Date'], format='%Y-%m-%d')
             return steps_file, sleep_file
-
+        
+        surveys = parse_surveys(days_cap=days_cap, day_first=day_first, day_last=day_last)
         beta_vals = parse_beta_values()
         steps_file, sleep_file = parse_beiwe_pipeline()
 
-        dataframes = [d for d in [df, beta_vals, steps_file, sleep_file] if d is not None] # 
+        dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] # 
         df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes)
         return df_final
 
