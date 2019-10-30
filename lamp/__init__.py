@@ -5,7 +5,7 @@ from cohort import Cohort
 from survey_question_dict import SurveyQuestionDict
 
 HOST = "https://api.lamp.digital"
-KEY = "root:lampadmin" # your login credentials go here
+KEY = LOGIN_CREDENTIALS # your login credentials go here
 
 configuration = openapi_client.Configuration()
 configuration.host = HOST
