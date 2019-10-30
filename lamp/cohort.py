@@ -80,6 +80,9 @@ class Cohort():
     def domains(self, value):
         self._domains = value
 
+#     def select(self, subjects):
+#         """
+#         """
     def domain_check(self, domains):
         """
         If domains is passed in, just return it.
@@ -215,9 +218,9 @@ class Cohort():
         """
         dom_values = [subj.df[domain].values for subj in self.subjects if domain in subj.df.columns]
         if len(dom_values) == 0: return None
-        return np.nanmean(np.concatenate(dom_values))
+        return np.nanstd(np.concatenate(dom_values))
 
-    def normalize(self, domains=None, in_sample=False):
+    def normalize(self, domains=None, dom_means=None, dom_vars=None, in_sample=False):
         """
         Normalize each domain in cohort so that values have 0 mean/unit variance
 
@@ -231,8 +234,10 @@ class Cohort():
         if in_sample:
             for subj in self.subjects: subj.normalize(domains)
         else:
-            dom_means = {dom: self.domain_mean(dom) for dom in domains if self.domain_mean(dom) is not None}
-            dom_vars = {dom: self.domain_stdev(dom) for dom in domains if self.domain_stdev(dom) is not None}
+            if dom_means is None:
+                dom_means = {dom: self.domain_mean(dom) for dom in domains if self.domain_mean(dom) is not None}
+            if dom_vars is None:
+                dom_vars = {dom: self.domain_stdev(dom) for dom in domains if self.domain_stdev(dom) is not None}
             for subj in self.subjects: subj.normalize(domains=domains, domain_means=dom_means, domain_vars=dom_vars)
 
     def impute(self, domains=None):
@@ -256,6 +261,18 @@ class Cohort():
             domains = self.domains
 
         for subj in self: subj.bin(domains=domains, window_size=window_size)
+            
+    def impute_bins(self, domains=None):
+        """
+        Impute bins
+        """
+        if domains is None:
+            if not hasattr(self, 'domains'):
+                raise AttributeError('Domains were not set for cohort and were not provided.')
+            domains = self.domains
+            
+        for subj in self: subj.impute_bins(domains=domains)
+        
 
     def transition_probabilities(self, domains=None, joint_size=1):
         """

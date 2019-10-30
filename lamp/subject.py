@@ -12,6 +12,7 @@ class Subject():
     """
     Create subject dataframe
 
+
     """
     def __init__(self, id, domains=None, age=None, race=None, sex=None, beiwe_id=None, beiwe_filepath=None):
         self.id = id
@@ -159,7 +160,6 @@ class Subject():
     def create_subject_df(self, days_cap=120, day_first=None, day_last=None):
         """
         """
-        
         def parse_surveys(days_cap=120, day_first=None, day_last=None):
             subject_surveys = self.survey_results()
             if len(subject_surveys) == 0:
@@ -175,7 +175,7 @@ class Subject():
             else:
                 day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1]).date()
                 days_elapsed = (day_last - day_first).days 
-                #Create dateframe for the number of days that have data; cap at 'ndays' if this number is large
+                #Create dateframe for the number of days that have data; cap at 'days_cap' if this number is large
                 df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
                 df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
 
@@ -188,7 +188,7 @@ class Subject():
             #Parse surveys
             for dom in subject_surveys:
                 if dom not in domains:
-                    print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
+                    #print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
                     continue
 
                 #Add result to df by grouping by date, averaging, adding		
@@ -199,45 +199,53 @@ class Subject():
                     df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
             return df
 
-        def parse_beta_values():
+        def parse_beta_values(days_cap=120):
             """
             """
-            beta_val_list = pd.read_csv('/home/jupyter/shared/Data/LAMP Part 1/daily_beta_vals.csv')
+            beta_val_list = pd.read_csv('/home/jupyter/shared/Data/LAMP Part 1/daily_beta_8-19-19.csv')
             subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
-            subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['Date'], format='%Y-%m-%d')
-            return subj_beta_vals[['Date', 'beta_a', 'beta_b']]
+            subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['date'], format='%Y-%m-%d')
+            if subj_beta_vals.empty: return subj_beta_vals
+            first_date = subj_beta_vals.iloc[0]['Date']
+#             print(type(first_date))
+#             print(subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']])
+            return subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']]
 
         #print(df)
-        def parse_beiwe_pipeline(ndays=120):
+        def parse_beiwe_pipeline(days_cap=120):
             """
             """
             #Find beiwe id
             if self.beiwe_filepath is None:
-                print('Beiwe filepath is not set. Please set filepath to add passive data to dataframe.')
-                return None, None
+                return None, None #print('Beiwe filepath is not set. Please set filepath to add passive data to dataframe.')
 
-            if not isinstance(self.beiwe_id, str):
-                print('Beiwe id not set. Please set id to add passive data to dataframe', self.id)
-                return None, None
+            if not isinstance(self.beiwe_id, str):                
+                return None, None #print('Beiwe id not set. Please set id to add passive data to dataframe', self.id)
 
             steps_file, sleep_file = None, None
             #Get step data
             if os.path.exists(os.path.join(self.beiwe_filepath, self.beiwe_id, 'steps.csv')):
                 steps_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'steps.csv'))
                 steps_file['Date'] = pd.to_datetime(steps_file['Date'], format='%Y-%m-%d')
+                if steps_file.empty: pass
+                else: steps_file = steps_file.loc[(steps_file['Date'] >= steps_file.iloc[0]['Date']) & (steps_file['Date'] < steps_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
 
             #Get sleep_data
             if os.path.exists(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv')):
                 sleep_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv'))
                 sleep_file['Date'] = pd.to_datetime(sleep_file['Date'], format='%Y-%m-%d')
+                if sleep_file.empty: pass
+                else: sleep_file = sleep_file.loc[(sleep_file['Date'] >= sleep_file.iloc[0]['Date']) & (sleep_file['Date'] < sleep_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
+
+
             return steps_file, sleep_file
-        
+ 
         surveys = parse_surveys(days_cap=days_cap, day_first=day_first, day_last=day_last)
-        beta_vals = parse_beta_values()
-        steps_file, sleep_file = parse_beiwe_pipeline()
+        beta_vals = parse_beta_values(days_cap=days_cap)
+        steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
 
         dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] # 
-        df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes)
+        df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date']).reset_index()
         return df_final
 
     def impute(self, domains):
@@ -307,13 +315,13 @@ class Subject():
                 print(self.id, df_copy)
             if dow > 0 and len(df_copy) > dow:
                 df_copy = df_copy.shift(shift - dow)
-
         df_copy['bin'] = np.floor(df_copy.index / window_size )
         bins = df_copy.groupby('bin')
         subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date']+domains)
         for b in bins:
             bin_values = []
             #Add bin start/end dates
+            
             start_date, end_date = b[1].iloc[0]['Date'], b[1].iloc[-1]['Date']
             bin_values.extend((start_date, end_date))
             for dom in domains:
@@ -327,7 +335,21 @@ class Subject():
             subj_bin_df.loc[b[0]] = bin_values    
 
         subj_bin_df['id'] = self.id
+        
         self.bins = subj_bin_df
+        
+    def impute_bins(self, domains):
+        """
+        Try to impute bin objects
+        """
+        assert self.bins is not None
+        
+        for d in domains:
+            for index, row in self.bins.iterrows():
+                if 0 < index < len(self.bins.index) - 1:
+                    index = int(index)
+                    if pd.isnull(self.bins.iloc[index][d]) and not pd.isnull(self.bins.iloc[index-1][d]) and not pd.isnull(self.bins.iloc[index+1][d]):                        
+                        self.bins.at[index,d] = np.mean([self.bins.iloc[index-1][d], self.bins.iloc[index+1][d]])
 
 
     def normalize(self, domains, domain_means={}, domain_vars={}):
@@ -341,7 +363,7 @@ class Subject():
         if self.normalize_status:
             print("Dataframe has already been normalized. Please reset dataframe if you wish to normalize it in a different way.")
             return
-
+ 
         domains = self.domain_check(domains)
         if domain_means == {} and domain_vars == {}:
             for dom in domains:
@@ -353,7 +375,7 @@ class Subject():
             if dom in self.df.columns and dom in domain_means and dom in domain_vars:
                 self.df[dom] = (self.df[dom] - domain_means[dom]) / domain_vars[dom]
 
-        self.normalize_status = True
+            self.normalize_status = True
 
     def create_transition_dict(self, level):
         """
