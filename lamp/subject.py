@@ -187,11 +187,9 @@ class Subject():
 
             #Parse surveys
             for dom in subject_surveys:
-                if dom not in domains:
-                    #print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
+                if dom not in domains:	
+                    print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
                     continue
-
-                #Add result to df by grouping by date, averaging, adding		
                 dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom]] #.strftime('%Y-%m-%d')
                 results = [event_val for event_val, _ in subject_surveys[dom]]
                 dom_results = pd.DataFrame({'Date':dates, 'Result':results})
