@@ -188,10 +188,10 @@ class Subject():
             #Parse surveys
             for dom in subject_surveys:
                 if dom not in domains:	
-                    print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
+                    #print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
                     continue
-                dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom]] #.strftime('%Y-%m-%d')
-                results = [event_val for event_val, _ in subject_surveys[dom]]
+                dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last] 
+                results = [event_val for event_val, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last]
                 dom_results = pd.DataFrame({'Date':dates, 'Result':results})
                 for _, date_df in dom_results.groupby('Date'):
                     df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
@@ -205,8 +205,6 @@ class Subject():
             subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['date'], format='%Y-%m-%d')
             if subj_beta_vals.empty: return subj_beta_vals
             first_date = subj_beta_vals.iloc[0]['Date']
-#             print(type(first_date))
-#             print(subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']])
             return subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']]
 
         #print(df)
@@ -359,7 +357,7 @@ class Subject():
         If mean/var not provided, resort to in-sample normalization
         """
         if self.normalize_status:
-            print("Dataframe has already been normalized. Please reset dataframe if you wish to normalize it in a different way.")
+            #print("Dataframe has already been normalized. Please reset dataframe if you wish to normalize it in a different way.")
             return
  
         domains = self.domain_check(domains)

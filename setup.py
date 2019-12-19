@@ -9,6 +9,6 @@ setup(name='lamp',
       license='MIT',
       packages=['lamp'],
       install_requires=[
-          'numpy','functools','pandas','datetime','matplotlib','math', 'os'
+          'numpy','functools','pandas','datetime','matplotlib','math', 'lifelines','os'
       ],
       zip_safe=False)
