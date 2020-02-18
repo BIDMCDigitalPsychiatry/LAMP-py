@@ -142,7 +142,7 @@ class Subject():
         participant_surveys = {} #initialize dict mapping survey_type to occurence of scores
         if participant is None:
             participant = self.id
-        participant_results = lamp.result_event.result_event_all_by_participant(participant).data
+        participant_results = lamp.result_event.result_event_all_by_participant(participant)['data']
         for res in participant_results:
             #Check if its a survey event
             if 'survey_name' in res['static_data'].keys():
@@ -307,10 +307,10 @@ class Subject():
         if shift is not None:
             try:
                 dow = df_copy.iloc[0]['Date'].weekday()
+                if dow > 0 and len(df_copy) > dow:
+                    df_copy = df_copy.shift(shift - dow)
             except:
                 print(self.id, df_copy)
-            if dow > 0 and len(df_copy) > dow:
-                df_copy = df_copy.shift(shift - dow)
         df_copy['bin'] = np.floor(df_copy.index / window_size )
         bins = df_copy.groupby('bin')
         subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date']+domains)

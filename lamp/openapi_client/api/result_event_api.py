@@ -36,7 +36,7 @@ class ResultEventApi(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def result_event_all_by_participant(self, participant_id, origin, _from, to, **kwargs):  # noqa: E501
+    def result_event_all_by_participant(self, participant_id, origin=None, _from=None, to=None, **kwargs):  # noqa: E501
         """result_event_all_by_participant  # noqa: E501
 
         Get the set of all result events produced by a  given participant, by identifier.  # noqa: E501
@@ -112,18 +112,18 @@ class ResultEventApi(object):
         if self.api_client.client_side_validation and ('participant_id' not in local_var_params or  # noqa: E501
                                                         local_var_params['participant_id'] is None):  # noqa: E501
             raise ApiValueError("Missing the required parameter `participant_id` when calling `result_event_all_by_participant`")  # noqa: E501
-        # verify the required parameter 'origin' is set
-        if self.api_client.client_side_validation and ('origin' not in local_var_params or  # noqa: E501
-                                                        local_var_params['origin'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `origin` when calling `result_event_all_by_participant`")  # noqa: E501
-        # verify the required parameter '_from' is set
-        if self.api_client.client_side_validation and ('_from' not in local_var_params or  # noqa: E501
-                                                        local_var_params['_from'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `_from` when calling `result_event_all_by_participant`")  # noqa: E501
-        # verify the required parameter 'to' is set
-        if self.api_client.client_side_validation and ('to' not in local_var_params or  # noqa: E501
-                                                        local_var_params['to'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `to` when calling `result_event_all_by_participant`")  # noqa: E501
+#         # verify the required parameter 'origin' is set
+#         if self.api_client.client_side_validation and ('origin' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['origin'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `origin` when calling `result_event_all_by_participant`")  # noqa: E501
+#         # verify the required parameter '_from' is set
+#         if self.api_client.client_side_validation and ('_from' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['_from'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `_from` when calling `result_event_all_by_participant`")  # noqa: E501
+#         # verify the required parameter 'to' is set
+#         if self.api_client.client_side_validation and ('to' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['to'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `to` when calling `result_event_all_by_participant`")  # noqa: E501
 
         collection_formats = {}
 
@@ -245,17 +245,17 @@ class ResultEventApi(object):
                                                         local_var_params['researcher_id'] is None):  # noqa: E501
             raise ApiValueError("Missing the required parameter `researcher_id` when calling `result_event_all_by_researcher`")  # noqa: E501
         # verify the required parameter 'origin' is set
-        if self.api_client.client_side_validation and ('origin' not in local_var_params or  # noqa: E501
-                                                        local_var_params['origin'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `origin` when calling `result_event_all_by_researcher`")  # noqa: E501
-        # verify the required parameter '_from' is set
-        if self.api_client.client_side_validation and ('_from' not in local_var_params or  # noqa: E501
-                                                        local_var_params['_from'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `_from` when calling `result_event_all_by_researcher`")  # noqa: E501
-        # verify the required parameter 'to' is set
-        if self.api_client.client_side_validation and ('to' not in local_var_params or  # noqa: E501
-                                                        local_var_params['to'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `to` when calling `result_event_all_by_researcher`")  # noqa: E501
+#         if self.api_client.client_side_validation and ('origin' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['origin'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `origin` when calling `result_event_all_by_researcher`")  # noqa: E501
+#         # verify the required parameter '_from' is set
+#         if self.api_client.client_side_validation and ('_from' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['_from'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `_from` when calling `result_event_all_by_researcher`")  # noqa: E501
+#         # verify the required parameter 'to' is set
+#         if self.api_client.client_side_validation and ('to' not in local_var_params or  # noqa: E501
+#                                                         local_var_params['to'] is None):  # noqa: E501
+#             raise ApiValueError("Missing the required parameter `to` when calling `result_event_all_by_researcher`")  # noqa: E501
 
         collection_formats = {}
 
