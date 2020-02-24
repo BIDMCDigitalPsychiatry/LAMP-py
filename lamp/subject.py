@@ -139,22 +139,40 @@ class Subject():
                 survey_result[cat] = float(sum(survey_result[cat])/len(survey_result[cat]))
             return survey_result 
 
-        participant_surveys = {} #initialize dict mapping survey_type to occurence of scores
+        
         if participant is None:
             participant = self.id
+            
+        participant_activities = lamp.activity.activity_all_by_participant(participant)['data']
+        participant_activities_surveys = [activity for activity in participant_activities if activity['spec'] == 'lamp.survey']
+        participant_activities_surveys_ids = [survey['id'] for survey in participant_activities_surveys]        
+        
+        participant_surveys = {} #initialize dict mapping survey_type to occurence of scores
         participant_results = lamp.result_event.result_event_all_by_participant(participant)['data']
-        for res in participant_results:
-            #Check if its a survey event
-            if 'survey_name' in res['static_data'].keys():
-                survey_result = survey_event_parse(res['temporal_events'])
-                survey_time = res['timestamp']
-                if datetime_object:
-                    survey_time = datetime.datetime.utcfromtimestamp(survey_time/1000).date()
-                #Add to master dictionary
-                for category in survey_result:
-                    if category not in participant_surveys: participant_surveys[category] = [(survey_result[category], survey_time)]
-                    else: participant_surveys[category].append((survey_result[category], survey_time))
+        
+        for result in participant_results:
 
+            #Check if it's a survey event
+            if result['activity'] not in participant_activities_surveys_ids: continue
+            activity = lamp.activity.activity_view(result['activity'])['data'][0]
+            
+            #Check to see if all the event values are numerical 
+            if not all(isinstance(event['value'], float) or isinstance(event['value'], int) for event in result['temporal_events']):
+                continue
+            
+            #Get survey time
+            survey_time = result['timestamp']
+            if datetime_object: 
+                survey_time = datetime.datetime.utcfromtimestamp(survey_time/100).date()
+            
+            #Get survey score
+            survey_score = sum([float(event['value']) for event in result['temporal_events']]) / len([result['temporal_events']])
+            
+            #Add result
+            if activity['name'] not in participant_surveys:
+                participant_surveys[activity['name']] = []
+            participant_surveys[activity['name']].append((survey_score, survey_time))
+            
         return participant_surveys
 
     def create_subject_df(self, days_cap=120, day_first=None, day_last=None):
@@ -195,19 +213,21 @@ class Subject():
                 dom_results = pd.DataFrame({'Date':dates, 'Result':results})
                 for _, date_df in dom_results.groupby('Date'):
                     df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
+
             return df
 
+        
         def parse_beta_values(days_cap=120):
             """
             """
             beta_val_list = pd.read_csv('/home/jupyter/shared/Data/LAMP Part 1/daily_beta_8-19-19.csv')
             subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
             subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['date'], format='%Y-%m-%d')
-            if subj_beta_vals.empty: return subj_beta_vals
+            if subj_beta_vals.empty: return subj_beta_vals[['Date', 'beta_a', 'beta_b']]
             first_date = subj_beta_vals.iloc[0]['Date']
             return subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']]
 
-        #print(df)
+
         def parse_beiwe_pipeline(days_cap=120):
             """
             """
@@ -239,7 +259,6 @@ class Subject():
         surveys = parse_surveys(days_cap=days_cap, day_first=day_first, day_last=day_last)
         beta_vals = parse_beta_values(days_cap=days_cap)
         steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
-
         dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] # 
         df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date']).reset_index()
         return df_final
