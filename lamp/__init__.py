@@ -45,10 +45,11 @@ from openapi_client.models.study import Study
 from openapi_client.models.temporal_event import TemporalEvent
 
 HOST = "https://api.lamp.digital"
-KEY = 'admin:LAMPLAMP' # your login credentials go here
+KEY = "PASSWORDS" # your login credentials go here
+BETA_VALUES_FILEPATH = "filepath_to_beta_values" #filepath to folder holding beta values
 
-configuration = Configuration()
-configuration.host = HOST
+
+configuration = Configuration(host = HOST)
 configuration.api_key['Authorization'] = KEY
 configuration.api_key_prefix['Authorization'] = 'Basic'
 

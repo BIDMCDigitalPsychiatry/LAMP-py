@@ -14,11 +14,12 @@ class Subject():
 
 
     """
-    def __init__(self, id, domains=None, age=None, race=None, sex=None, beiwe_id=None, beiwe_filepath=None):
+    def __init__(self, id, domains=None, age=None, race=None, sex=None, beiwe_id=None, beiwe_filepath=None, beta_values_filepath=None):
         self.id = id
         self.domains = domains
         self.beiwe_id = beiwe_id
         self.beiwe_filepath = beiwe_filepath
+        self.beta_values_filepath = beta_values_filepath
         self.df = self.create_subject_df()
 
         self.age = age
@@ -52,6 +53,10 @@ class Subject():
     @property
     def beiwe_filepath(self):
         return self._beiwe_filepath
+    
+    @property
+    def beta_values_filepath(self):
+        return self._beta_values_filepath
 
     @id.setter
     def id(self, value):
@@ -76,6 +81,10 @@ class Subject():
     @beiwe_filepath.setter
     def beiwe_filepath(self, value):
         self._beiwe_filepath = value
+        
+    @beta_values_filepath.setter
+    def beta_values_filepath(self, value):
+        self._beta_values_filepath = value
 
     def reset(self):
         """
@@ -220,7 +229,7 @@ class Subject():
         def parse_beta_values(days_cap=120):
             """
             """
-            beta_val_list = pd.read_csv('/home/jupyter/shared/Data/LAMP Part 1/daily_beta_8-19-19.csv')
+            beta_val_list = pd.read_csv(self.beta_values_filepath)
             subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
             subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['date'], format='%Y-%m-%d')
             if subj_beta_vals.empty: return subj_beta_vals[['Date', 'beta_a', 'beta_b']]
