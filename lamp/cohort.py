@@ -6,8 +6,9 @@ from functools import reduce
 class Cohort():
     """
     """
-    def __init__(self, subjects, domains=None, beiwe_filepath=None, ages=None, races=None, sexes=None, beiwe_ids=None):
+    def __init__(self, subjects, domains=None, beiwe_filepath=None, beta_values_filepath=None, ages=None, races=None, sexes=None, beiwe_ids=None):
         self.beiwe_filepath = beiwe_filepath
+        self.beta_values_filepath = beta_values_filepath
         self.ages = ages
         self.races = races
         self.sexes = sexes
@@ -31,6 +32,10 @@ class Cohort():
     @property
     def beiwe_filepath(self):
         return self._beiwe_filepath
+    
+    @property
+    def beta_values_filepath(self):
+        return self._beta_values_filepath
 
     @property
     def ages(self):
@@ -59,6 +64,10 @@ class Cohort():
     @beiwe_filepath.setter
     def beiwe_filepath(self, value):
         self._beiwe_filepath = value
+        
+    @beta_values_filepath.setter
+    def beta_values_filepath(self, value):
+        self._beta_values_filepath = value
 
     @ages.setter
     def ages(self, value):
@@ -125,7 +134,7 @@ class Cohort():
         subject_race = self.races[subject] if self.races and subject in self.races else None
         subject_sex = self.sexes[subject] if self.sexes and subject in self.sexes else None
         subject_beiwe_id = self.beiwe_ids[subject] if self.beiwe_ids and subject in self.beiwe_ids else None
-        self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, domains=self.domains, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
+        self.subjects.append(lamp.Subject(id = subject, beiwe_filepath = self.beiwe_filepath, beta_values_filepath = self.beta_values_filepath, domains=self.domains, age=subject_age, race=subject_race, sex=subject_sex, beiwe_id=subject_beiwe_id))
 
 
     def mean_age(self):
