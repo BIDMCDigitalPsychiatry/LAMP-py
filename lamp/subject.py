@@ -113,41 +113,6 @@ class Subject():
         :param participant (str): the LAMP ID for participant. If not provided, then take subjects
         :param datetime_object (bool): flag that determines whether survey timestamps are given in Unix timestamp or datetime objects
         """
-        def survey_event_parse(survey):
-            """
-            Helper function that parses survey event 
-
-            Parameters:
-            survey (list): contains all questions in particicular survey 
-
-            Returns:
-                survey_result (dict): maps relevant question categories to a score
-            """
-            survey_result = {}
-            for event in survey:
-                question = event['item']
-
-                #Check if question in one of the categories
-                if question in lamp.SurveyQuestionDict:
-                    category = lamp.SurveyQuestionDict[question]
-
-                    #If reverse coded social question, then flip the score
-                    if category == "Social_Reverse":
-                        category = 'Social'
-                        score = 3 - event['value']
-                    elif category == 'Medication':
-                        score = 3 - event['value']
-                    else:
-                        score = event['value']
-
-                    if category in survey_result: survey_result[category].append(score) 
-                    else: survey_result[category] = [score]
-
-            #Take mean for each cat
-            for cat in survey_result:
-                survey_result[cat] = float(sum(survey_result[cat])/len(survey_result[cat]))
-            return survey_result 
-
         
         if participant is None:
             participant = self.id
@@ -165,23 +130,23 @@ class Subject():
             if result['activity'] not in participant_activities_surveys_ids: continue
             activity = lamp.activity.activity_view(result['activity'])['data'][0]
             
-            #Check to see if all the event values are numerical 
-            if not all(isinstance(event['value'], float) or isinstance(event['value'], int) for event in result['temporal_events']):
-                continue
-            
+            #Check to see if all the event values are numerical
+            try: [float(event['value']) for event in result['temporal_events']]
+            except: continue
+                
             #Get survey time
             survey_time = result['timestamp']
             if datetime_object: 
                 survey_time = datetime.datetime.utcfromtimestamp(survey_time/100).date()
             
             #Get survey score
-            survey_score = sum([float(event['value']) for event in result['temporal_events']]) / len([result['temporal_events']])
+            survey_score = sum([float(event['value']) for event in result['temporal_events']]) / len(result['temporal_events'])
             
             #Add result
             if activity['name'] not in participant_surveys:
                 participant_surveys[activity['name']] = []
             participant_surveys[activity['name']].append((survey_score, survey_time))
-            
+          
         return participant_surveys
 
     def create_subject_df(self, days_cap=120, day_first=None, day_last=None):
@@ -195,16 +160,12 @@ class Subject():
             #Find the first, last date
             if day_first is None: 
                 day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0]).date()
-
-            if day_last is not None: 
-                days_elapsed = (day_last - day_first).days 
-                df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, days_elapsed)], 'id':self.id})
-            else:
+                
+            if day_last is None:
                 day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1]).date()
-                days_elapsed = (day_last - day_first).days 
-                #Create dateframe for the number of days that have data; cap at 'days_cap' if this number is large
-                df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
-                df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
+            days_elapsed = (day_last - day_first).days 
+            #Create dateframe for the number of days that have data; cap at 'days_cap' if this number is large
+            df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
 
             if self.domains is None: domains = [dom for dom in subject_surveys] #if not set, just use cats from surveys
             else: domains = self.domains
@@ -214,15 +175,15 @@ class Subject():
 
             #Parse surveys
             for dom in subject_surveys:
-                if dom not in domains:	
-                    #print(dom + ' domain found in surveys. Please add to domains if you would like to parse.')
+                if dom not in domains and domains is not None:
                     continue
                 dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last] 
                 results = [event_val for event_val, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last]
                 dom_results = pd.DataFrame({'Date':dates, 'Result':results})
                 for _, date_df in dom_results.groupby('Date'):
                     df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
-
+               
+            df['Date'] = pd.to_datetime(df['Date'])
             return df
 
         
@@ -230,8 +191,8 @@ class Subject():
             """
             """
             beta_val_list = pd.read_csv(self.beta_values_filepath)
+            beta_val_list['Date'] = pd.to_datetime(beta_val_list['date'])
             subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
-            subj_beta_vals['Date'] = pd.to_datetime(subj_beta_vals['date'], format='%Y-%m-%d')
             if subj_beta_vals.empty: return subj_beta_vals[['Date', 'beta_a', 'beta_b']]
             first_date = subj_beta_vals.iloc[0]['Date']
             return subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']]
@@ -242,10 +203,10 @@ class Subject():
             """
             #Find beiwe id
             if self.beiwe_filepath is None:
-                return None, None #print('Beiwe filepath is not set. Please set filepath to add passive data to dataframe.')
-
+                return None, None 
+            
             if not isinstance(self.beiwe_id, str):                
-                return None, None #print('Beiwe id not set. Please set id to add passive data to dataframe', self.id)
+                return None, None 
 
             steps_file, sleep_file = None, None
             #Get step data
@@ -262,14 +223,17 @@ class Subject():
                 if sleep_file.empty: pass
                 else: sleep_file = sleep_file.loc[(sleep_file['Date'] >= sleep_file.iloc[0]['Date']) & (sleep_file['Date'] < sleep_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
 
-
             return steps_file, sleep_file
  
         surveys = parse_surveys(days_cap=days_cap, day_first=day_first, day_last=day_last)
         beta_vals = parse_beta_values(days_cap=days_cap)
         steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
-        dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] # 
-        df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date']).reset_index()
+        dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] 
+        df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date'])
+
+        #Set domains
+        if self.domains is None: self.domains = [col for col in df_final.columns if col not in ['Date', 'id']]
+
         return df_final
 
     def impute(self, domains):
