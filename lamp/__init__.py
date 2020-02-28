@@ -45,8 +45,8 @@ from openapi_client.models.study import Study
 from openapi_client.models.temporal_event import TemporalEvent
 
 HOST = "https://api.lamp.digital"
-KEY = "admin:LAMPLAMP" # your login credentials go here
-BETA_VALUES_FILEPATH = "/home/jupyter/shared/Data/LAMP Part 1/daily_beta_8-19-19.csv" #filepath to folder holding beta values
+KEY = "USERNAME:PASSWORD" # your login credentials go here
+BETA_VALUES_FILEPATH = "BETA_FILEPATH" #filepath to folder holding beta values
 
 
 configuration = Configuration(host = HOST)
