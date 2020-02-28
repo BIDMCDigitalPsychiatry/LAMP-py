@@ -190,6 +190,7 @@ class Subject():
         def parse_beta_values(days_cap=120):
             """
             """
+            if self.beta_values_filepath is None: return None
             beta_val_list = pd.read_csv(self.beta_values_filepath)
             beta_val_list['Date'] = pd.to_datetime(beta_val_list['date'])
             subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
