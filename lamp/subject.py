@@ -127,7 +127,7 @@ class Subject():
         for result in participant_results:
 
             #Check if it's a survey event
-            if result['activity'] not in participant_activities_surveys_ids: continue
+            if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_events']) == 0: continue
             activity = lamp.activity.activity_view(result['activity'])['data'][0]
             
             #Check to see if all the event values are numerical
@@ -230,7 +230,10 @@ class Subject():
         beta_vals = parse_beta_values(days_cap=days_cap)
         steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
         dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] 
-        df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date'])
+        if len(dataframes) == 0:
+            df_final = pd.DataFrame({})
+        else:
+            df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date'])
 
         #Set domains
         if self.domains is None: self.domains = [col for col in df_final.columns if col not in ['Date', 'id']]
