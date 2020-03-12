@@ -40,5 +40,4 @@ SurveyQuestionDict = {'Today I feel little interest or pleasure':'Mood',
                       'This app encourages me to accomplish tasks and make progress':'App Usability',
                       'I agree that the tasks within this app are important for my goals':'App Usability',
                       'This app is easy to use and operate':'App Usability',
-                      'This app supports me to overcome challenges':'App Usability'
-                      }
+                      'This app supports me to overcome challenges':'App Usability'}
