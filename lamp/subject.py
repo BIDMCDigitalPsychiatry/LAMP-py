@@ -106,24 +106,58 @@ class Subject():
         return domains
 
 
-    def survey_results(self, participant=None, datetime_object=False):
+    def survey_results(self, participant=None, question_categories=False):
         """
         Get survey events for participant
 
         :param participant (str): the LAMP ID for participant. If not provided, then take subjects
-        :param datetime_object (bool): flag that determines whether survey timestamps are given in Unix timestamp or datetime objects
+        :param question_categories (bool): indicates whether to use custom question mappings as defined in params file
         """
-        
+        def survey_results_with_custom_categories(participant_results):
+            """
+            """
+
+            participant_surveys = {}
+            for result in participant_results:
+                survey_time = result['timestamp']
+
+                #Parse survey event with defined questions
+                survey_result = {}
+                for event in result['temporal_events']:
+                    question = event['item']                    
+                    if question in lamp.SurveyQuestionDict: #Check if question in one of the categories
+                        score = int(event['value'])
+                        category = lamp.SurveyQuestionDict[question]
+                        if category in survey_result: survey_result[category].append(score) 
+                        else: survey_result[category] = [score]
+
+                #Take mean for each cat
+                for cat in survey_result:
+                    survey_result[cat] = float(sum(survey_result[cat])/len(survey_result[cat]))
+                
+                for category in survey_result: #Add to master dictionary
+                    if category not in participant_surveys: participant_surveys[category] = [(survey_result[category], survey_time)]
+                    else: participant_surveys[category].append((survey_result[category], survey_time))
+
+            return participant_surveys
+
+
         if participant is None:
             participant = self.id
             
+
         participant_activities = lamp.activity.activity_all_by_participant(participant)['data']
         participant_activities_surveys = [activity for activity in participant_activities if activity['spec'] == 'lamp.survey']
         participant_activities_surveys_ids = [survey['id'] for survey in participant_activities_surveys]        
         
-        participant_surveys = {} #initialize dict mapping survey_type to occurence of scores
-        participant_results = lamp.result_event.result_event_all_by_participant(participant)['data']
-        
+        participant_results = [result for result in lamp.result_event.result_event_all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_events']) > 0]
+
+        #Perform different parsing if user-defined question categories
+        if question_categories:
+            assert lamp.SurveyQuestionDict is not None
+            return survey_results_with_custom_categories(participant_results)
+
+        participant_surveys = {} #maps survey_type to occurence of scores 
         for result in participant_results:
 
             #Check if it's a survey event
@@ -134,12 +168,7 @@ class Subject():
             try: [float(event['value']) for event in result['temporal_events']]
             except: continue
                 
-            #Get survey time
             survey_time = result['timestamp']
-            if datetime_object: 
-                survey_time = datetime.datetime.utcfromtimestamp(survey_time/100).date()
-            
-            #Get survey score
             survey_score = sum([float(event['value']) for event in result['temporal_events']]) / len(result['temporal_events'])
             
             #Add result
@@ -149,41 +178,67 @@ class Subject():
           
         return participant_surveys
 
-    def create_subject_df(self, days_cap=120, day_first=None, day_last=None):
+    def create_subject_df(self, days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=False):
         """
+        Create subject dataframe
+
+        :param day_first (datetime.Date)
         """
-        def parse_surveys(days_cap=120, day_first=None, day_last=None):
-            subject_surveys = self.survey_results()
+
+        FIFTEEN_MIN_PER_UNIT = {'15 min': 1, 'day': 4*24, 'week': 4*24*7, 'month': 4*24*30}
+        UNITS_PER_DAY = {'15 min': 4*24, 'day': 1, 'week': 1/7, 'month': 1/30}
+
+        def parse_surveys(days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=False):            
+            subject_surveys = self.survey_results(question_categories=question_categories)
             if len(subject_surveys) == 0:
                 return None
             
             #Find the first, last date
-            if day_first is None: 
-                day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0]).date()
-                
-            if day_last is None:
-                day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1]).date()
+            if day_first is None: day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0])
+            else: day_first = datetime.datetime.combine(day_first, datetime.time.min) #convert to datetime
+
+            if day_last is None: day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1])
+            else: day_first = datetime.datetime.combine(day_first, datetime.time.min) #convert to datetime
+
+            #Clip days based on morning and weekday parameters
+            if start_monday:
+                if day_first.weekday() > 0: 
+                    day_first += datetime.timedelta(days = - day_first.weekday())
+
+            if start_morning: 
+                day_first, day_last = day_first.replace(hour=9, minute=0, second=0), day_last.replace(hour=9, minute=0, second=0)
             days_elapsed = (day_last - day_first).days 
-            #Create dateframe for the number of days that have data; cap at 'days_cap' if this number is large
-            df = pd.DataFrame({'Date': [day_first] + [day_first + datetime.timedelta(days=d) for d in range(1, min(days_elapsed, days_cap))], 'id':self.id})
+
+            date_list = [day_first + datetime.timedelta(minutes=15*FIFTEEN_MIN_PER_UNIT[resolution]*x) for x in range(0, int(min(days_elapsed, days_cap) * UNITS_PER_DAY[resolution]))]
+
+            #Create dateframe for the number of time units that have data; limited by days; cap at 'days_cap' if this number is large
+            df = pd.DataFrame({'Date': date_list, 'id':self.id})
 
             if self.domains is None: domains = [dom for dom in subject_surveys] #if not set, just use cats from surveys
             else: domains = self.domains
             for dom in domains: 
-                if dom not in ['Sleep Duration', 'Steps', 'beta_a', 'beta_b']:
-                    df[dom] = np.nan
+                df[dom] = np.nan
 
             #Parse surveys
             for dom in subject_surveys:
                 if dom not in domains and domains is not None:
                     continue
-                dates = [datetime.datetime.utcfromtimestamp(event_time/1000).date() for _, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last] 
-                results = [event_val for event_val, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000).date() <= day_last]
-                dom_results = pd.DataFrame({'Date':dates, 'Result':results})
-                for _, date_df in dom_results.groupby('Date'):
-                    df.loc[df['Date'] == date_df.iloc[0]['Date'], dom] = np.mean(date_df['Result'])
-               
-            df['Date'] = pd.to_datetime(df['Date'])
+
+                #Based on resolution, match each survey event to its closest date
+                dates = [datetime.datetime.utcfromtimestamp(event_time/1000) for _, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last] 
+
+                #Choose closest date if "time centered"; else, choose preceding date
+                if time_centered: rounded_dates = [df.loc[df.index[(date - df['Date']).abs().sort_values().index[0]], 'Date'] for date in dates]
+                else: rounded_dates = [df.loc[df.index[(date - df['Date'])[(date - df['Date']) >= datetime.timedelta(0)].sort_values().index[0]], 'Date'] for date in dates]
+
+                results = [event_val for event_val, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last]
+                dom_results = pd.DataFrame({'Date':dates, 'Rounded Date':rounded_dates, 'Result':results})
+                for date, date_df in dom_results.groupby('Rounded Date'):                    
+                    df.loc[df['Date'] == date.to_pydatetime(), dom] = np.mean(date_df['Result']) 
+    
+            #Convert to date to actual date objects if resolution is day or greater
+            if resolution != '15 min':
+                df['Date'] = df['Date'].apply(lambda d: d.date())
             return df
 
         
@@ -226,7 +281,18 @@ class Subject():
 
             return steps_file, sleep_file
  
-        surveys = parse_surveys(days_cap=days_cap, day_first=day_first, day_last=day_last)
+        assert resolution in ['15 min', 'day', 'week', 'month']
+
+
+        surveys = parse_surveys(days_cap=days_cap, 
+                                day_first=day_first, 
+                                day_last=day_last, 
+                                resolution=resolution, 
+                                start_monday=start_monday, 
+                                start_morning=start_morning, 
+                                time_centered=time_centered,
+                                question_categories=question_categories)
+
         beta_vals = parse_beta_values(days_cap=days_cap)
         steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
         dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] 
@@ -236,7 +302,7 @@ class Subject():
             df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date'])
 
         #Set domains
-        if self.domains is None: self.domains = [col for col in df_final.columns if col not in ['Date', 'id']]
+        #if self.domains is None: self.domains = [col for col in df_final.columns if col not in ['Date', 'id']]
 
         return df_final
 

@@ -1,6 +1,5 @@
 import lamp
 import numpy as np
-from lamp import cohort_analysis
 from functools import reduce
 
 class Cohort():
