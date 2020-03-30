@@ -1,0 +1,1 @@
+This is the API associated with the mindLAMP app. 
