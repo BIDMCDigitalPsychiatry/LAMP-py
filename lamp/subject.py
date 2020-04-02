@@ -128,6 +128,9 @@ class Subject():
                     if question in lamp.SurveyQuestionDict: #Check if question in one of the categories
                         score = int(event['value'])
                         category = lamp.SurveyQuestionDict[question]
+                        if category == 'Social_Reverse':
+                            category = 'Social'
+                            score = 3 - score
                         if category in survey_result: survey_result[category].append(score) 
                         else: survey_result[category] = [score]
 
@@ -270,14 +273,18 @@ class Subject():
                 steps_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'steps.csv'))
                 steps_file['Date'] = pd.to_datetime(steps_file['Date'], format='%Y-%m-%d')
                 if steps_file.empty: pass
-                else: steps_file = steps_file.loc[(steps_file['Date'] >= steps_file.iloc[0]['Date']) & (steps_file['Date'] < steps_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
+                else: 
+                    steps_file = steps_file.loc[(steps_file['Date'] >= steps_file.iloc[0]['Date']) & (steps_file['Date'] < steps_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
+                    steps_file['Date'] = steps_file['Date'].dt.date
 
             #Get sleep_data
             if os.path.exists(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv')):
                 sleep_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv'))
                 sleep_file['Date'] = pd.to_datetime(sleep_file['Date'], format='%Y-%m-%d')
                 if sleep_file.empty: pass
-                else: sleep_file = sleep_file.loc[(sleep_file['Date'] >= sleep_file.iloc[0]['Date']) & (sleep_file['Date'] < sleep_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
+                else: 
+                    sleep_file = sleep_file.loc[(sleep_file['Date'] >= sleep_file.iloc[0]['Date']) & (sleep_file['Date'] < sleep_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
+                    sleep_file['Date'] = sleep_file['Date'].dt.date
 
             return steps_file, sleep_file
  
