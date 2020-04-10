@@ -61,6 +61,9 @@ from LAMP.models.sensor_spec import SensorSpec
 from LAMP.models.study import Study
 from LAMP.models.temporal_slice import TemporalSlice
 
+from LAMP.analysis.subject import Subject
+from LAMP.analysis.cohort import Cohort
+
 API = APIApi()
 Type = TypeApi()
 Credential = CredentialApi()
