@@ -3,7 +3,7 @@ import numpy as np
 import datetime
 import os
 import math
-import lamp
+import LAMP
 import itertools
 from functools import reduce
 #import
@@ -158,11 +158,11 @@ class Subject():
             participant = self.id
             
 
-        participant_activities = lamp.activity.activity_all_by_participant(participant)['data']
+        participant_activities = LAMP.Activity.all_by_participant(participant)['data']
         participant_activities_surveys = [activity for activity in participant_activities if activity['spec'] == 'lamp.survey']
         participant_activities_surveys_ids = [survey['id'] for survey in participant_activities_surveys]        
         
-        participant_results = [result for result in lamp.result_event.result_event_all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_events']) > 0]
+        participant_results = [result for result in LAMP.ActivityEvent.all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_events']) > 0]
 
         #Perform different parsing if user-defined question categories
         if question_categories:
@@ -173,7 +173,7 @@ class Subject():
 
             #Check if it's a survey event
             if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_events']) == 0: continue
-            activity = lamp.activity.activity_view(result['activity'])['data'][0]
+            activity = LAMP.Activity.view(result['activity'])['data'][0]
             
             #Check to see if all the event values are numerical
             try: [float(event['value']) for event in result['temporal_events']]
