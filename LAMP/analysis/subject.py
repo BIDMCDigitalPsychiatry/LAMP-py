@@ -133,7 +133,7 @@ class Subject():
 
                 #Parse survey event with defined questions
                 survey_result = {}
-                for event in result['temporal_events']:
+                for event in result['temporal_slices']:
                     question = event['item']                    
                     if question in question_categories: #Check if question in one of the categories
                         score = int(event['value'])
@@ -162,7 +162,7 @@ class Subject():
         participant_activities_surveys = [activity for activity in participant_activities if activity['spec'] == 'lamp.survey']
         participant_activities_surveys_ids = [survey['id'] for survey in participant_activities_surveys]        
         
-        participant_results = [result for result in LAMP.ActivityEvent.all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_events']) > 0]
+        participant_results = [result for result in LAMP.ActivityEvent.all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_slices']) > 0]
 
         #Perform different parsing if user-defined question categories
         if question_categories:
@@ -172,15 +172,15 @@ class Subject():
         for result in participant_results:
 
             #Check if it's a survey event
-            if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_events']) == 0: continue
+            if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_slices']) == 0: continue
             activity = LAMP.Activity.view(result['activity'])['data'][0]
             
             #Check to see if all the event values are numerical
-            try: [float(event['value']) for event in result['temporal_events']]
+            try: [float(event['value']) for event in result['temporal_slices']]
             except: continue
                 
             survey_time = result['timestamp']
-            survey_score = sum([float(event['value']) for event in result['temporal_events']]) / len(result['temporal_events'])
+            survey_score = sum([float(event['value']) for event in result['temporal_slices']]) / len(result['temporal_slices'])
             
             #Add result
             if activity['name'] not in participant_surveys:
