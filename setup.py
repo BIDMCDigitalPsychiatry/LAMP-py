@@ -25,6 +25,8 @@ setup(
       "certifi",
       "python-dateutil",
       "nulltype",
+      "numpy",
+      "pandas"
     ],
     extras_require={':python_version <= "2.7"': ['future']},
     packages=find_packages(exclude=["test", "tests"]),
