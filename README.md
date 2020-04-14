@@ -15,7 +15,7 @@ Python 3.4+ and `pip`.
 ### Installation
 
 ```sh
-pip install git+https://github.com/BIDMCDigitalPsychiatry/LAMP-py.git
+pip install LAMP-core
 ```
 
 ### Configuration
