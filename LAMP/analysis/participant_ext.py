@@ -8,7 +8,7 @@ import itertools
 from functools import reduce
 #import
 
-class Subject():
+class ParticipantExt():
     """
     Create subject dataframe
 

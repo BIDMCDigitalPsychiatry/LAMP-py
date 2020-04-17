@@ -12,7 +12,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="LAMP",
+    name="LAMP_core",
     version="1.0.0",
     description="LAMP Platform",
     author="Division of Digital Psychiatry at Beth Israel Deaconess Medical Center.",
@@ -26,7 +26,7 @@ setup(
       "python-dateutil",
       "nulltype",
       "numpy",
-      "pandas"
+      "pandas",
     ],
     extras_require={':python_version <= "2.7"': ['future']},
     packages=find_packages(exclude=["test", "tests"]),
