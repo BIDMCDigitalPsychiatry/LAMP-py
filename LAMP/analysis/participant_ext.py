@@ -10,7 +10,7 @@ from functools import reduce
 
 class ParticipantExt():
     """
-    Create subject dataframe
+    Create participant dataframe
 
 
     """
@@ -20,21 +20,15 @@ class ParticipantExt():
                  age=None, 
                  race=None, 
                  sex=None, 
-                 beiwe_id=None, 
-                 beiwe_filepath=None, 
-                 beta_values_filepath=None,
                  df_props={}):
 
         self.id = id
         self.domains = domains
-        self.beiwe_id = beiwe_id
-        self.beiwe_filepath = beiwe_filepath
-        self.beta_values_filepath = beta_values_filepath
         self.age = age
         self.race = race
         self.sex = sex
 
-        self.df = self.create_subject_df(**df_props)
+        self.df = self.create_df(**df_props)
 
         self.impute_status = False
         self.bin_status = False
@@ -56,18 +50,6 @@ class ParticipantExt():
     def sex(self):
         return self._sex
 
-    @property
-    def beiwe_id(self):
-        return self._beiwe_id
-
-    @property
-    def beiwe_filepath(self):
-        return self._beiwe_filepath
-    
-    @property
-    def beta_values_filepath(self):
-        return self._beta_values_filepath
-
     @id.setter
     def id(self, value):
         self._id = value
@@ -84,23 +66,12 @@ class ParticipantExt():
     def sex(self, value):
         self._sex = value
 
-    @beiwe_id.setter
-    def beiwe_id(self, value):
-        self._beiwe_id = value
-
-    @beiwe_filepath.setter
-    def beiwe_filepath(self, value):
-        self._beiwe_filepath = value
-        
-    @beta_values_filepath.setter
-    def beta_values_filepath(self, value):
-        self._beta_values_filepath = value
 
     def reset(self):
         """
-        Resets the subject's df to be the original version
+        Resets the participant's df to be the original version
         """
-        self.df = self.create_subject_df()
+        self.df = self.create_df()
         self.impute_status, self.bin_status, self.normalize_status = False, False, False
 
     def domain_check(self, domains):
@@ -115,18 +86,75 @@ class ParticipantExt():
             domains = self.domains
         return domains
 
+    def attachment_results(self):
+        ATTACHMENTS = {"beta_a", "beta_b", 
+                      "screen_features.screen_time", 'screen_features.sessions', 'screen_features.checks', 'screen_features.session_time'}
+        
+        attachment_dict = {}
+        for feature in ATTACHMENTS:
+            try:
+                attachment_events = LAMP.Type.get_attachment(type_id=self.id, attachment_key="lamp." + feature)["data"]
+            except Exception as e: #unable to find resource
+                continue
+            
+            if len(attachment_events) > 0:
+                attachment_dict[feature] = [(event['value'], event['timestamp']) for event in attachment_events]
+        
+        #Sort
+        for feature in attachment_dict:
+            attachment_dict[feature] = sorted(attachment_dict[feature], key=lambda x: x[1])
+        
+        return attachment_dict
+    
+    def passive_feature_results(self, resolution):
+        """
+        """
+        #Find beiwe id
+        RESOLUTION_KEY = {'day':'daily', 'week':'weekly', 'month':'monthly'}
+        PASSIVE_FEATURES = ['Hometime', 'DistTravelled', 'RoG', 'MaxDiam',
+                           'MaxHomeDist', 'SigLocsVisited', 'AvgFlightLen', 'StdFlightLen',
+                           'AvgFlightDur', 'StdFlightDur', 'ProbPause', 'SigLocEntropy',
+                           'MinsMissing', 'CircdnRtn', 'WkEndDayRtn', 'outgoing_texts',
+                           'outgoing_textlengths', 'text_outdegree', 'incoming_texts',
+                           'incoming_textlengths', 'text_indegree', 'text_reciprocity',
+                           'text_responsiveness', 'outgoing_calls', 'outgoing_calllengths',
+                           'call_outdegree', 'incoming_calls', 'incoming_calllengths',
+                           'call_indegree', 'call_reciprocity', 'call_responsiveness']
+
+        #Get all passive feature events
+        passive_feature_dict = {}
+        for feature in PASSIVE_FEATURES:            
+            feature_query, feature_query_2 = 'beiwe.' + feature + '.' + RESOLUTION_KEY[resolution], 'beiwe.passive_features.' + feature + '.' + RESOLUTION_KEY[resolution] 
+
+            feature_events, feature_events_2 = LAMP.SensorEvent.all_by_participant(participant_id=self.id, origin=feature_query), LAMP.SensorEvent.all_by_participant(participant_id=self.id, origin=feature_query_2)
+
+            if len(feature_events['data']) > 0:
+                passive_feature_dict[feature] = []
+                for event in feature_events['data']:
+                    passive_feature_dict[feature].append((event['data']['value'], event['timestamp']))
+                    
+            elif len(feature_events_2['data']) > 0:
+                passive_feature_dict[feature] = []
+                for event in feature_events_2['data']:
+                    passive_feature_dict[feature].append((event['data']['value'], event['timestamp']))
+
+        #Sort
+        for feature in passive_feature_dict:
+            passive_feature_dict[feature] = sorted(passive_feature_dict[feature], key=lambda x: x[1])
+        
+        return passive_feature_dict
 
     def survey_results(self, participant=None, question_categories=None):
         """
         Get survey events for participant
 
-        :param participant (str): the LAMP ID for participant. If not provided, then take subjects
+        :param participant (str): the LAMP ID for participant. If not provided, then take participant id
         :param question_categories (bool): indicates whether to use custom question mappings as defined in params file
         """
         def survey_results_with_custom_categories(participant_results, question_categories):
             """
             """
-
+        
             participant_surveys = {}
             for result in participant_results:
                 survey_time = result['timestamp']
@@ -136,8 +164,11 @@ class ParticipantExt():
                 for event in result['temporal_slices']:
                     question = event['item']                    
                     if question in question_categories: #Check if question in one of the categories
-                        score = int(event['value'])
-                        if question_categories[question]['category']['reverse_scoring']:
+                        try:
+                            score = int(event['value'])
+                        except:
+                            continue
+                        if question_categories[question]['reverse_scoring']:
                             score = 3 - score 
                         category = question_categories[question]['category']
                         if category in survey_result: survey_result[category].append(score) 
@@ -151,6 +182,9 @@ class ParticipantExt():
                     if category not in participant_surveys: participant_surveys[category] = [(survey_result[category], survey_time)]
                     else: participant_surveys[category].append((survey_result[category], survey_time))
 
+            #Sort surveys by time
+            for activity_category in participant_surveys:
+                participant_surveys[activity_category] = sorted(participant_surveys[activity_category], key=lambda x: x[1])
             return participant_surveys
 
 
@@ -175,6 +209,10 @@ class ParticipantExt():
             if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_slices']) == 0: continue
             activity = LAMP.Activity.view(result['activity'])['data'][0]
             
+            #ADD in list parsing
+            
+            #
+            
             #Check to see if all the event values are numerical
             try: [float(event['value']) for event in result['temporal_slices']]
             except: continue
@@ -187,11 +225,16 @@ class ParticipantExt():
                 participant_surveys[activity['name']] = []
             participant_surveys[activity['name']].append((survey_score, survey_time))
           
+        #Sort surveys by time
+        for activity_category in participant_surveys:
+            participant_surveys[activity_category] = sorted(participant_surveys[activity_category], key=lambda x: x[1])
+
         return participant_surveys
 
-    def create_subject_df(self, days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=None):
+
+    def create_df(self, days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=None):
         """
-        Create subject dataframe
+        Create participant dataframe
 
         :param day_first (datetime.Date)
         """
@@ -199,123 +242,71 @@ class ParticipantExt():
         FIFTEEN_MIN_PER_UNIT = {'15 min': 1, 'day': 4*24, 'week': 4*24*7, 'month': 4*24*30}
         UNITS_PER_DAY = {'15 min': 4*24, 'day': 1, 'week': 1/7, 'month': 1/30}
 
-        def parse_surveys(days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=None):            
-            subject_surveys = self.survey_results(question_categories=question_categories)
-            if len(subject_surveys) == 0:
-                return None
-            
-            #Find the first, last date
-            if day_first is None: day_first = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][0][1]/1000 for dom in subject_surveys])[0])
-            else: day_first = datetime.datetime.combine(day_first, datetime.time.min) #convert to datetime
-
-            if day_last is None: day_last = datetime.datetime.utcfromtimestamp(sorted([subject_surveys[dom][-1][1]/1000 for dom in subject_surveys])[-1])
-            else: day_first = datetime.datetime.combine(day_first, datetime.time.min) #convert to datetime
-
-            #Clip days based on morning and weekday parameters
-            if start_monday:
-                if day_first.weekday() > 0: 
-                    day_first += datetime.timedelta(days = - day_first.weekday())
-
-            if start_morning: 
-                day_first, day_last = day_first.replace(hour=9, minute=0, second=0), day_last.replace(hour=9, minute=0, second=0)
-            days_elapsed = (day_last - day_first).days 
-            date_list = [day_first + datetime.timedelta(minutes=15*FIFTEEN_MIN_PER_UNIT[resolution]*x) for x in range(0, math.ceil(min(days_elapsed, days_cap) * UNITS_PER_DAY[resolution]))]
-
-            #Create dateframe for the number of time units that have data; limited by days; cap at 'days_cap' if this number is large
-            df = pd.DataFrame({'Date': date_list, 'id':self.id})
-            
-            if self.domains is None: domains = [dom for dom in subject_surveys] #if not set, just use cats from surveys
-            else: domains = self.domains
-            for dom in domains: 
-                df[dom] = np.nan
-
-            #Parse surveys
-            for dom in subject_surveys:
-                if dom not in domains and domains is not None:
-                    continue
-
-                #Based on resolution, match each survey event to its closest date
-                dates = [datetime.datetime.utcfromtimestamp(event_time/1000) for _, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last] 
-
-                #Choose closest date if "time centered"; else, choose preceding date
-                if time_centered: rounded_dates = [df.loc[df.index[(date - df['Date']).abs().sort_values().index[0]], 'Date'] for date in dates]
-                else: rounded_dates = [df.loc[df.index[(date - df['Date'])[(date - df['Date']) >= datetime.timedelta(0)].sort_values().index[0]], 'Date'] for date in dates]
-
-                results = [event_val for event_val, event_time in subject_surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last]
-                dom_results = pd.DataFrame({'Date':dates, 'Rounded Date':rounded_dates, 'Result':results})
-                for date, date_df in dom_results.groupby('Rounded Date'):                    
-                    df.loc[df['Date'] == date.to_pydatetime(), dom] = np.mean(date_df['Result']) 
-    
-            #Convert to date to actual date objects if resolution is day or greater
-            if resolution != '15 min':
-                df['Date'] = df['Date'].apply(lambda d: d.date())
-            return df
-
-        
-        def parse_beta_values(days_cap=120):
-            """
-            """
-            if self.beta_values_filepath is None: return None
-            beta_val_list = pd.read_csv(self.beta_values_filepath)
-            beta_val_list['Date'] = pd.to_datetime(beta_val_list['date'])
-            subj_beta_vals = beta_val_list.loc[beta_val_list['id'] == self.id]
-            if subj_beta_vals.empty: return subj_beta_vals[['Date', 'beta_a', 'beta_b']]
-            first_date = subj_beta_vals.iloc[0]['Date']
-            return subj_beta_vals.loc[(subj_beta_vals['Date'] >= first_date) & (subj_beta_vals['Date'] < first_date + datetime.timedelta(days=days_cap)), ['Date', 'beta_a', 'beta_b']]
-
-
-        def parse_beiwe_pipeline(days_cap=120):
-            """
-            """
-            #Find beiwe id
-            if self.beiwe_filepath is None:
-                return None, None 
-            
-            if not isinstance(self.beiwe_id, str):                
-                return None, None 
-
-            steps_file, sleep_file = None, None
-            #Get step data
-            if os.path.exists(os.path.join(self.beiwe_filepath, self.beiwe_id, 'steps.csv')):
-                steps_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'steps.csv'))
-                steps_file['Date'] = pd.to_datetime(steps_file['Date'], format='%Y-%m-%d')
-                if steps_file.empty: pass
-                else: steps_file = steps_file.loc[(steps_file['Date'] >= steps_file.iloc[0]['Date']) & (steps_file['Date'] < steps_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
-
-            #Get sleep_data
-            if os.path.exists(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv')):
-                sleep_file = pd.read_csv(os.path.join(self.beiwe_filepath, self.beiwe_id, 'sleep_estimates.csv'))
-                sleep_file['Date'] = pd.to_datetime(sleep_file['Date'], format='%Y-%m-%d')
-                if sleep_file.empty: pass
-                else: sleep_file = sleep_file.loc[(sleep_file['Date'] >= sleep_file.iloc[0]['Date']) & (sleep_file['Date'] < sleep_file.iloc[0]['Date'] + datetime.timedelta(days=days_cap))]
-
-            return steps_file, sleep_file
- 
+  
         assert resolution in ['15 min', 'day', 'week', 'month']
 
+        surveys = self.survey_results(question_categories=question_categories) #survey ActivityEvents
+        passive_features = self.passive_feature_results(resolution=resolution) #beiewe.passive_features
+        attachment_features = self.attachment_results() #static attachment features
+        
+        surveys = {**surveys, **passive_features, **attachment_features}
+        #surveys.update(passive_features).update(attachment_features)
 
-        surveys = parse_surveys(days_cap=days_cap, 
-                                day_first=day_first, 
-                                day_last=day_last, 
-                                resolution=resolution, 
-                                start_monday=start_monday, 
-                                start_morning=start_morning, 
-                                time_centered=time_centered,
-                                question_categories=question_categories)
+        if len(surveys) == 0:
+            return None
 
-        beta_vals = parse_beta_values(days_cap=days_cap)
-        steps_file, sleep_file = parse_beiwe_pipeline(days_cap=days_cap)
-        dataframes = [d for d in [surveys, beta_vals, steps_file, sleep_file] if d is not None] 
-        if len(dataframes) == 0:
-            df_final = pd.DataFrame({})
-        else:
-            df_final = reduce(lambda left,right: pd.merge(left, right, on='Date', how='outer'), dataframes).sort_values(by=['Date'])
+        #Find the first, last date
+        if day_first is None: day_first = datetime.datetime.utcfromtimestamp(sorted([surveys[dom][0][1]/1000 for dom in surveys])[0])
+        else: day_first = datetime.datetime.combine(day_first, datetime.time.min) #convert to datetime
 
-        #Set domains
-        #if self.domains is None: self.domains = [col for col in df_final.columns if col not in ['Date', 'id']]
+        if day_last is None: day_last = datetime.datetime.utcfromtimestamp(sorted([surveys[dom][-1][1]/1000 for dom in surveys])[-1])
+        else: day_last = datetime.datetime.combine(day_last, datetime.time.min) #convert to datetime
 
-        return df_final
+        #Clip days based on morning and weekday parameters
+        if start_monday:
+            if day_first.weekday() > 0: 
+                day_first += datetime.timedelta(days = - day_first.weekday())
 
+        if start_morning: 
+            day_first, day_last = day_first.replace(hour=9, minute=0, second=0), day_last.replace(hour=9, minute=0, second=0)
+        days_elapsed = (day_last - day_first).days 
+        date_list = [day_first + datetime.timedelta(minutes=15*FIFTEEN_MIN_PER_UNIT[resolution]*x) for x in range(0, math.ceil(min(days_elapsed, days_cap) * UNITS_PER_DAY[resolution]))]
+
+        #Create dateframe for the number of time units that have data; limited by days; cap at 'days_cap' if this number is large
+        df = pd.DataFrame({'Date': date_list, 'id':self.id})
+
+        domains = [dom for dom in surveys]
+        for dom in domains: 
+            df[dom] = np.nan
+
+        #Parse surveys
+        for dom in surveys:
+            if dom not in domains and domains is not None:
+                continue
+
+            #Based on resolution, match each survey event to its closest date
+            dates = [datetime.datetime.utcfromtimestamp(event_time/1000) for _, event_time in surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last] 
+
+            #Choose closest date if "time centered"; else, choose preceding date
+            if time_centered: rounded_dates = [df.loc[df.index[(date - df['Date']).abs().sort_values().index[0]], 'Date'] for date in dates]
+            else: rounded_dates = [df.loc[df.index[(date - df['Date'])[(date - df['Date']) >= datetime.timedelta(0)].sort_values().index[0]], 'Date'] for date in dates]
+
+            results = [event_val for event_val, event_time in surveys[dom] if day_first <= datetime.datetime.utcfromtimestamp(event_time/1000) <= day_last]
+            dom_results = pd.DataFrame({'Date':dates, 'Rounded Date':rounded_dates, 'Result':results})
+            for date, date_df in dom_results.groupby('Rounded Date'):                    
+                df.loc[df['Date'] == date.to_pydatetime(), dom] = np.mean(date_df['Result']) 
+
+        #Convert to date to actual date objects if resolution is day or greater
+        if resolution != '15 min':
+            df['Date'] = df['Date'].apply(lambda d: d.date())
+            
+        #Trim columns if there are predetermined domains
+        if self.domains is not None: 
+            df = df.loc[:, ['id', 'Date'] + [d for d in self.domains if d in df.columns.values]]
+
+        return df
+
+ 
     def impute(self, domains):
         """
         Get value for each column for each window
@@ -373,7 +364,9 @@ class ParticipantExt():
 
         """
 
-        domains = self.domain_check(domains)
+        #domains = self.domain_check(domains)
+        domains = self.df.columns.drop(['Date', 'id'])
+        
         #Shift until Monday
         df_copy = self.df.copy()
         if shift is not None:
@@ -385,7 +378,7 @@ class ParticipantExt():
                 print(self.id, df_copy)
         df_copy['bin'] = np.floor(df_copy.index / window_size )
         bins = df_copy.groupby('bin')
-        subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date']+domains)
+        subj_bin_df = pd.DataFrame(columns=['Bin Start Date', 'Bin End Date'] + domains.values.tolist())
         for b in bins:
             bin_values = []
             #Add bin start/end dates
@@ -428,14 +421,12 @@ class ParticipantExt():
 
         If mean/var not provided, resort to in-sample normalization
         """
-        if self.normalize_status:
-            #print("Dataframe has already been normalized. Please reset dataframe if you wish to normalize it in a different way.")
-            return
+        if self.normalize_status: return
  
         domains = self.domain_check(domains)
         if domain_means == {} and domain_vars == {}:
             for dom in domains:
-                if dom in self.df:
+                if dom in self.df.columns:
                     domain_means[dom] = self.df[dom].mean()
                     domain_vars[dom] = self.df[dom].std()
 
