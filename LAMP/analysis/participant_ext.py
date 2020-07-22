@@ -6,13 +6,11 @@ import math
 import LAMP
 import itertools
 from functools import reduce
-#import
+
 
 class ParticipantExt():
     """
     Create participant dataframe
-
-
     """
     def __init__(self, 
                  id, 
@@ -66,7 +64,6 @@ class ParticipantExt():
     def sex(self, value):
         self._sex = value
 
-
     def reset(self):
         """
         Resets the participant's df to be the original version
@@ -77,7 +74,6 @@ class ParticipantExt():
     def domain_check(self, domains):
         """
         If domains is passed in, just return it.
-
         Else, see if domains is set as object attribute
         """
         if domains is None:
@@ -147,95 +143,94 @@ class ParticipantExt():
     def survey_results(self, participant=None, question_categories=None):
         """
         Get survey events for participant
-
         :param participant (str): the LAMP ID for participant. If not provided, then take participant id
         :param question_categories (bool): indicates whether to use custom question mappings as defined in params file
         """
-        def survey_results_with_custom_categories(participant_results, question_categories):
-            """
-            """
-        
-            participant_surveys = {}
-            for result in participant_results:
-                survey_time = result['timestamp']
-
-                #Parse survey event with defined questions
-                survey_result = {}
-                for event in result['temporal_slices']:
-                    question = event['item']                    
-                    if question in question_categories: #Check if question in one of the categories
-                        try:
-                            score = int(event['value'])
-                        except:
-                            continue
-                        if question_categories[question]['reverse_scoring']:
-                            score = 3 - score 
-                        category = question_categories[question]['category']
-                        if category in survey_result: survey_result[category].append(score) 
-                        else: survey_result[category] = [score]
-
-                #Take mean for each cat
-                for cat in survey_result:
-                    survey_result[cat] = float(sum(survey_result[cat])/len(survey_result[cat]))
-                
-                for category in survey_result: #Add to master dictionary
-                    if category not in participant_surveys: participant_surveys[category] = [(survey_result[category], survey_time)]
-                    else: participant_surveys[category].append((survey_result[category], survey_time))
-
-            #Sort surveys by time
-            for activity_category in participant_surveys:
-                participant_surveys[activity_category] = sorted(participant_surveys[activity_category], key=lambda x: x[1])
-            return participant_surveys
-
 
         if participant is None:
             participant = self.id
-            
 
         participant_activities = LAMP.Activity.all_by_participant(participant)['data']
         participant_activities_surveys = [activity for activity in participant_activities if activity['spec'] == 'lamp.survey']
         participant_activities_surveys_ids = [survey['id'] for survey in participant_activities_surveys]        
-        
+
         participant_results = [result for result in LAMP.ActivityEvent.all_by_participant(participant)['data'] if result['activity'] in participant_activities_surveys_ids and len(result['temporal_slices']) > 0]
-
-        #Perform different parsing if user-defined question categories
-        if question_categories:
-            return survey_results_with_custom_categories(participant_results, question_categories)
-
         participant_surveys = {} #maps survey_type to occurence of scores 
         for result in participant_results:
-
             #Check if it's a survey event
-            if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_slices']) == 0: continue
+            if result['activity'] not in participant_activities_surveys_ids or len(result['temporal_slices']) == 0: 
+                continue
+
             activity = LAMP.Activity.view(result['activity'])['data'][0]
-            
-            #ADD in list parsing
-            
-            #
-            
-            #Check to see if all the event values are numerical
-            try: [float(event['value']) for event in result['temporal_slices']]
-            except: continue
-                
+            result_settings = activity['settings']
+
             survey_time = result['timestamp']
-            survey_score = sum([float(event['value']) for event in result['temporal_slices']]) / len(result['temporal_slices'])
-            
-            #Add result
-            if activity['name'] not in participant_surveys:
-                participant_surveys[activity['name']] = []
-            participant_surveys[activity['name']].append((survey_score, survey_time))
-          
+            survey_result = {} #maps question domains to scores
+            for event in result['temporal_slices']: #individual questions in a survey
+                question = event['item']
+                
+                for i in range(len(result_settings)) : #match question info to question
+                    if result_settings[i]['text'] == question: 
+                        current_question_info=result_settings[i]
+                        break
+
+                #score based on question type:
+                if current_question_info['type'] =='likert': 
+                    score = float(event['value'])
+
+                elif current_question_info['type']=='boolean':
+                    if event['value'] == 'no': score = 0.0 #no is healthy in standard scoring
+                    elif event['value'] =='yes' : score = 3.0 # yes is healthy in reverse scoring
+
+                elif current_question_info['type'] == 'list' :
+                    for option_index in range(len(current_question_info['options'])) :
+                        if event['value'] == current_question_info['options'][option_index] :
+                            score = option_index * 3 / (len(current_question_info['options'])-1)
+
+                elif current_question_info['type'] == 'text':  #skip
+                    continue
+
+                #add event to a category, either user-defined or default activity
+                if question_categories:
+                    #See if there is an extra space in the string
+                    if question not in question_categories:
+                        if question[:-1] in question_categories:
+                            question = question[:-1]
+                        else:
+                            continue
+
+                    event_category = question_categories[question]['category']
+                    #flip score if necessary
+                    if question_categories[question]['reverse_scoring']: 
+                        score = 3.0 - score
+
+                    if event_category in survey_result: survey_result[event_category].append(score) 
+                    else: survey_result[event_category] = [score]
+
+                else:
+                    if activity['name'] not in survey_result:
+                        survey_result[activity['name']] = []
+                    survey_result[activity['name']].append(score)
+                    
+
+            #add mean to each cat to master dictionary           
+            for category in survey_result: 
+                survey_result[category] = np.mean(survey_result[category])
+                if category not in participant_surveys: 
+                    participant_surveys[category] = [(survey_result[category], survey_time)]
+                else: 
+                    participant_surveys[category].append((survey_result[category], survey_time))
+
         #Sort surveys by time
         for activity_category in participant_surveys:
             participant_surveys[activity_category] = sorted(participant_surveys[activity_category], key=lambda x: x[1])
 
         return participant_surveys
-
+        
 
     def create_df(self, days_cap=120, day_first=None, day_last=None, resolution='day', start_monday=False, start_morning=True, time_centered=False, question_categories=None):
         """
         Create participant dataframe
-
         :param day_first (datetime.Date)
         """
 
@@ -357,11 +352,9 @@ class ParticipantExt():
     def bin(self, domains, window_size=3, shift=0):
         """
         Bin dataframe
-
         :param domains (list): the domains to bin 
         :window_size (int): the size of the bins (in days)
         :shift (int): the day of the week to start the binning on (Monday == 0)
-
         """
 
         #domains = self.domain_check(domains)
@@ -418,7 +411,6 @@ class ParticipantExt():
         Normalize columns values to 0 mean/ unit variance
         :param domain_means (dict): the mean for each column value
         :param domain_vars (dict): the variance for each column value
-
         If mean/var not provided, resort to in-sample normalization
         """
         if self.normalize_status: return
@@ -439,7 +431,6 @@ class ParticipantExt():
     def create_transition_dict(self, level):
         """
         Create nested dictionary structure 
-
         :param level (int): the level dictionary structure. Must be >= 0
         """
         trans_dict = {}
@@ -543,4 +534,3 @@ class ParticipantExt():
             bout_dict[dom]['low ends'], bout_dict[dom]['high ends'] = low_bouts_end, high_bouts_end
 
         return bout_dict
-
