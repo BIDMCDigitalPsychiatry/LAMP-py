@@ -176,16 +176,18 @@ class ParticipantExt():
 
                 #score based on question type:
                 score=None
-                if current_question_info['type'] =='likert' and event['value']!=None :
-                    score = float(event['value'])
+                event_value=event.get('value') #safely get event['value'] to protect from missing keys
+                
+                if current_question_info['type'] =='likert' and event_value!=None :
+                    score = float(event_value)
                         
                 elif current_question_info['type']=='boolean':
-                    if event['value'] == 'no': score = 0.0 #no is healthy in standard scoring
-                    elif event['value'] =='yes' : score = 3.0 # yes is healthy in reverse scoring
+                    if event_value == 'no': score = 0.0 #no is healthy in standard scoring
+                    elif event_value =='yes' : score = 3.0 # yes is healthy in reverse scoring
 
                 elif current_question_info['type'] == 'list' :
                     for option_index in range(len(current_question_info['options'])) :
-                        if event['value'] == current_question_info['options'][option_index] :
+                        if event_value == current_question_info['options'][option_index] :
                             score = option_index * 3 / (len(current_question_info['options'])-1)
 
                 elif current_question_info['type'] == 'text':  #skip
