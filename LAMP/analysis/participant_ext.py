@@ -175,9 +175,10 @@ class ParticipantExt():
                         break
 
                 #score based on question type:
-                if current_question_info['type'] =='likert': 
+                score=None
+                if current_question_info['type'] =='likert' and event['value']!=None :
                     score = float(event['value'])
-
+                        
                 elif current_question_info['type']=='boolean':
                     if event['value'] == 'no': score = 0.0 #no is healthy in standard scoring
                     elif event['value'] =='yes' : score = 3.0 # yes is healthy in reverse scoring
@@ -189,7 +190,8 @@ class ParticipantExt():
 
                 elif current_question_info['type'] == 'text':  #skip
                     continue
-
+                
+                if score==None : continue
                 #add event to a category, either user-defined or default activity
                 if question_categories:
                     #See if there is an extra space in the string
