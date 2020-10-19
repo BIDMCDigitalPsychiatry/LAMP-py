@@ -478,7 +478,7 @@ class ParticipantApi(object):
 
         self.create = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (dict,),
                 'auth': [
                     'Authorization'
                 ],
