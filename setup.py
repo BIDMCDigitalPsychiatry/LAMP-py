@@ -11,9 +11,11 @@
 
 from setuptools import setup, find_packages
 
+__version__ = "develop"
+
 setup(
     name="LAMP_core",
-    version="1.0.4",
+    version=__version__,
     description="LAMP Platform",
     author="Division of Digital Psychiatry at Beth Israel Deaconess Medical Center.",
     author_email="team@digitalpsych.org",

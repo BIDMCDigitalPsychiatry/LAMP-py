@@ -12,7 +12,7 @@
 
 from __future__ import absolute_import
 
-__version__ = "1.0.0"
+__version__ = "develop"
 
 # import apis into sdk package
 from LAMP.api.api_api import APIApi
