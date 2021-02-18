@@ -127,13 +127,14 @@ class SensorEventApi(object):
                 'http_method': 'GET',
                 'servers': [],
             },
-            params_map={
+             params_map={
                 'all': [
                     'participant_id',
                     'origin',
                     '_from',
                     'to',
                     'transform',
+                    '_limit',
                 ],
                 'required': [
                     'participant_id',
@@ -161,6 +162,8 @@ class SensorEventApi(object):
                         (float,),
                     'transform':
                         (str,),
+                    '_limit':
+                        (float,),
                 },
                 'attribute_map': {
                     'participant_id': 'participant_id',
@@ -168,6 +171,7 @@ class SensorEventApi(object):
                     '_from': 'from',
                     'to': 'to',
                     'transform': 'transform',
+                    '_limit':'limit'
                 },
                 'location_map': {
                     'participant_id': 'path',
@@ -175,6 +179,7 @@ class SensorEventApi(object):
                     '_from': 'query',
                     'to': 'query',
                     'transform': 'query',
+                    '_limit':'query'
                 },
                 'collection_format_map': {
                 }
@@ -258,7 +263,7 @@ class SensorEventApi(object):
                 researcher_id
             return self.call_with_http_info(**kwargs)
 
-        self.all_by_researcher = Endpoint(
+          self.all_by_researcher = Endpoint(
             settings={
                 'response_type': (dict,),
                 'auth': [
@@ -276,6 +281,7 @@ class SensorEventApi(object):
                     '_from',
                     'to',
                     'transform',
+                    '_limit',
                 ],
                 'required': [
                     'researcher_id',
@@ -303,6 +309,8 @@ class SensorEventApi(object):
                         (float,),
                     'transform':
                         (str,),
+                    '_limit':
+                        (float,),
                 },
                 'attribute_map': {
                     'researcher_id': 'researcher_id',
@@ -310,6 +318,7 @@ class SensorEventApi(object):
                     '_from': 'from',
                     'to': 'to',
                     'transform': 'transform',
+                    '_limit':'limit',
                 },
                 'location_map': {
                     'researcher_id': 'path',
@@ -317,6 +326,7 @@ class SensorEventApi(object):
                     '_from': 'query',
                     'to': 'query',
                     'transform': 'query',
+                    '_limit':'query',
                 },
                 'collection_format_map': {
                 }
@@ -400,7 +410,7 @@ class SensorEventApi(object):
                 study_id
             return self.call_with_http_info(**kwargs)
 
-        self.all_by_study = Endpoint(
+          self.all_by_study = Endpoint(
             settings={
                 'response_type': (dict,),
                 'auth': [
@@ -418,6 +428,7 @@ class SensorEventApi(object):
                     '_from',
                     'to',
                     'transform',
+                    '_limit',
                 ],
                 'required': [
                     'study_id',
@@ -445,6 +456,8 @@ class SensorEventApi(object):
                         (float,),
                     'transform':
                         (str,),
+                    '_limit':
+                        (float,),
                 },
                 'attribute_map': {
                     'study_id': 'study_id',
@@ -452,6 +465,7 @@ class SensorEventApi(object):
                     '_from': 'from',
                     'to': 'to',
                     'transform': 'transform',
+                    '_limit':'limit',
                 },
                 'location_map': {
                     'study_id': 'path',
@@ -459,6 +473,7 @@ class SensorEventApi(object):
                     '_from': 'query',
                     'to': 'query',
                     'transform': 'query',
+                    '_limit':'query',
                 },
                 'collection_format_map': {
                 }
@@ -472,7 +487,7 @@ class SensorEventApi(object):
             api_client=api_client,
             callable=__all_by_study
         )
-
+        
         def __create(
             self,
             participant_id,
