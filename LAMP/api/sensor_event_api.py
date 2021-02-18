@@ -127,7 +127,7 @@ class SensorEventApi(object):
                 'http_method': 'GET',
                 'servers': [],
             },
-             params_map={
+            params_map={
                 'all': [
                     'participant_id',
                     'origin',
@@ -263,7 +263,7 @@ class SensorEventApi(object):
                 researcher_id
             return self.call_with_http_info(**kwargs)
 
-          self.all_by_researcher = Endpoint(
+        self.all_by_researcher = Endpoint(
             settings={
                 'response_type': (dict,),
                 'auth': [
@@ -487,7 +487,7 @@ class SensorEventApi(object):
             api_client=api_client,
             callable=__all_by_study
         )
-        
+
         def __create(
             self,
             participant_id,
