@@ -410,7 +410,7 @@ class SensorEventApi(object):
                 study_id
             return self.call_with_http_info(**kwargs)
 
-          self.all_by_study = Endpoint(
+        self.all_by_study = Endpoint(
             settings={
                 'response_type': (dict,),
                 'auth': [
