@@ -673,6 +673,7 @@ class TypeApi(object):
                     'body',
                 ],
                 'nullable': [
+                    'body'
                 ],
                 'enum': [
                 ],
@@ -692,7 +693,7 @@ class TypeApi(object):
                     'attachment_key':
                         (str,),
                     'body':
-                        (bool, date, datetime, dict, float, int, list, str,),
+                        (bool, date, datetime, dict, float, int, list, str,none_type),
                 },
                 'attribute_map': {
                     'type_id': 'type_id',
