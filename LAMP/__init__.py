@@ -75,10 +75,12 @@ Sensor = SensorEventApi()
 SensorSpec = SensorEventApi()
 SensorEvent = SensorEventApi()
 
-def connect(access_key=None, secret_key=None, server_address="api.lamp.digital"):
+def connect(access_key=None, secret_key=None, server_address=None):
 	if access_key is None and secret_key is None:
 		access_key = os.getenv('LAMP_ACCESS_KEY')
 		secret_key = os.getenv('LAMP_SECRET_KEY')
+    if server_address is None:  # let arg override environmental var
+        server_address = os.getenv('LAMP_SERVER_ADDRESS', 'api.lamp.digital')
 	if access_key is None or secret_key is None:
 		raise TypeError("connect() requires 2 positional arguments: 'access_key' and 'secret_key', unless environmental variables 'LAMP_ACCESS_KEY' and 'LAMP_SECRET_KEY' are provided")
 
