@@ -516,7 +516,7 @@ class TypeApi(object):
 
         self.parent = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str,dict,),
                 'auth': [
                     'Authorization'
                 ],
