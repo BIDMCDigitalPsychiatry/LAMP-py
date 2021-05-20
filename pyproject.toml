@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "LAMP-core"
+version = "0.0.0"
+license = "BSD-3-Clause"
+description = "The LAMP Platform API."
+authors = ["Division of Digital Psychiatry at Beth Israel Deaconess Medical Center <team@digitalpsych.org>"]
+readme = "README.md"
+homepage = "docs.lamp.digital"
+documentation = "docs.lamp.digital"
+repository = "https://github.com/BIDMCDigitalPsychiatry/LAMP-py"
+keywords = ["LAMP API"]
+packages = [
+    { include = "LAMP" }
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/BIDMCDigitalPsychiatry/LAMP-platform/issues"
+
+[tool.poetry.dependencies]
+python = "^3.0"
+nulltype = "^2.3.1"
+certifi = ">=14.05.14"
+python-dateutil = ">=2.5.3"
+urllib3 = ">=1.15.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
