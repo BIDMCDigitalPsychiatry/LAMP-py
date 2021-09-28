@@ -559,7 +559,7 @@ class ActivityEventApi(object):
 
         self.create = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -688,7 +688,7 @@ class ActivityEventApi(object):
 
         self.delete = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],

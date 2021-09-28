@@ -226,7 +226,7 @@ class ResearcherApi(object):
 
         self.create = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -345,7 +345,7 @@ class ResearcherApi(object):
 
         self.delete = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -468,7 +468,7 @@ class ResearcherApi(object):
 
         self.update = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],

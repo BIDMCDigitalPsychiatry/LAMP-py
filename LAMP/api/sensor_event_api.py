@@ -559,7 +559,7 @@ class SensorEventApi(object):
 
         self.create = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -687,7 +687,7 @@ class SensorEventApi(object):
 
         self.delete = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
