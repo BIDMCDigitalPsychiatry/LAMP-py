@@ -226,7 +226,7 @@ class ActivitySpecApi(object):
 
         self.create = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -345,7 +345,7 @@ class ActivitySpecApi(object):
 
         self.delete = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -467,7 +467,7 @@ class ActivitySpecApi(object):
 
         self.update = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
@@ -593,7 +593,7 @@ class ActivitySpecApi(object):
 
         self.view = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str, dict,),
                 'auth': [
                     'Authorization'
                 ],
