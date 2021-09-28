@@ -849,7 +849,7 @@ class ActivityApi(object):
 
         self.update = Endpoint(
             settings={
-                'response_type': (str,),
+                'response_type': (str,dict),
                 'auth': [
                     'Authorization'
                 ],
