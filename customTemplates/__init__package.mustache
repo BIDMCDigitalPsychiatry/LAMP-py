@@ -1,0 +1,47 @@
+# flake8: noqa
+
+{{>partial_header}}
+
+__version__ = "{{packageVersion}}"
+
+# import ApiClient
+from {{packageName}}.api_client import ApiClient
+
+# import Configuration
+from {{packageName}}.configuration import Configuration
+{{#hasHttpSignatureMethods}}
+from {{packageName}}.signing import HttpSigningConfiguration
+{{/hasHttpSignatureMethods}}
+
+# import exceptions
+from {{packageName}}.exceptions import OpenApiException
+from {{packageName}}.exceptions import ApiAttributeError
+from {{packageName}}.exceptions import ApiTypeError
+from {{packageName}}.exceptions import ApiValueError
+from {{packageName}}.exceptions import ApiKeyError
+from {{packageName}}.exceptions import ApiException
+{{#recursionLimit}}
+
+__import__('sys').setrecursionlimit({{{.}}})
+{{/recursionLimit}}
+
+
+{{! TODO LAMP SHOULD ONLY EXPORT WHAT I WANT IT TO! }}
+{{#apiInfo}}
+{{#apis}}from {{apiPackage}}.{{classVarName}} import {{classname}} #{{baseName}}
+{{/apis}}
+{{/apiInfo}}
+
+{{#apiInfo}}{{#apis}}{{baseName}} = {{classname}}()
+{{/apis}}{{/apiInfo}}
+
+
+def connect(server_address=None, api_key=None):
+    {{! TODO: ADD ERROR CHECKS }}
+    client = ApiClient(Configuration(host=server_address, api_key={"ApiKeyAuth": api_key}))
+
+    {{#apiInfo}}{{#apis}}global {{baseName}}
+    {{/apis}}{{/apiInfo}}
+
+    {{#apiInfo}}{{#apis}}{{baseName}} = {{classname}}(client)
+    {{/apis}}{{/apiInfo}}
