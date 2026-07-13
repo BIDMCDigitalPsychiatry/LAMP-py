@@ -7,7 +7,7 @@ This API client is used to connect to the LAMP Platform from the Python programm
 ## Installation
 ### Prerequisites
 
-Python 3.4+ and `pip`. 
+Python 3.6+ and `pip`. 
   - You may need root permissions, using `sudo`.
   - Alternatively, to install locally, use `pip --user`.
   - If `pip` is not recognized as a command, use `python3 -m pip`.
