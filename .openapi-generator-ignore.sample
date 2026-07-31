@@ -1,7 +1,10 @@
 test/*
+test
 tox.ini
 .gitignore
 .gitlab-ci.yml
 .travis.yml
 git_push.sh
 test-requirements.txt
+setup.py
+setup.cfg

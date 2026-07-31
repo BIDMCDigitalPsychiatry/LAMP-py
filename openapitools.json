@@ -8,9 +8,9 @@
         "generatorName": "python",
         "packageName": "LAMP",
         "inputSpec": "processed_spec.json",
-        "output": "./dist",
+        "output": "./lampCore",
         "skipValidateSpec": true,
-        "templateDir": "./customTemplates"
+        "config": "./config.yaml"
       }
     }
   }

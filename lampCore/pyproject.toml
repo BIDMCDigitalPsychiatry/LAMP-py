@@ -1,0 +1,19 @@
+[project]
+name = "LAMP-core"
+version = "2.0.0"
+description = "LAMP Platform"
+requires-python = ">3.6"
+dependencies = [
+  "urllib3 (>=1.25.3)",
+  "python-dateutil",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [
+    {include = "LAMP"}
+]
+
