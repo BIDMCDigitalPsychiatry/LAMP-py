@@ -44,6 +44,7 @@ class CredentialApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/credential',
@@ -103,6 +104,7 @@ class CredentialApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/credential/{access_key}',
@@ -161,6 +163,7 @@ class CredentialApi(object):
                 'response_type': (InlineResponse20024,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/credential',
@@ -213,6 +216,7 @@ class CredentialApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/credential/{access_key}',

@@ -1,10 +1,18 @@
 ```python
 import LAMP
 
-# Connect to the server using the server address and your api key
-LAMP.connect("https://lamp.digital", "Your api key")
+# To connect to servers that support api keys
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 print(LAMP.Authentication.session_info())
+
+```
+
+```python
+# You may also connect to legacy lamp servers that use basic auth using one of the following calls:
+
+LAMP.connect(access_key="accessKeyValue", secret_key="secreteKeyValue", server_address="https://api.lamp.digital")
+LAMP.connect("accessKeyValue", "secreteKeyValue", "https://api.lamp.digital")
 
 ```
 

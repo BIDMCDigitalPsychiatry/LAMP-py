@@ -1,6 +1,6 @@
 # LAMP.StudyApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -22,6 +22,7 @@ List all studies for a Researcher.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -29,7 +30,7 @@ List all studies for a Researcher.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -69,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -94,6 +95,7 @@ Create a deep copy of a study. Including activities and sensors
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -101,7 +103,7 @@ Create a deep copy of a study. Including activities and sensors
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -135,7 +137,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -162,6 +164,7 @@ Create a Study for a Researcher.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -169,7 +172,7 @@ Create a Study for a Researcher.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -202,7 +205,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -229,6 +232,7 @@ Delete a Study.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -236,7 +240,7 @@ Delete a Study.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -265,7 +269,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -292,6 +296,7 @@ Update a Study.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -299,7 +304,7 @@ Update a Study.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -332,7 +337,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -359,6 +364,7 @@ View a Study.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -366,7 +372,7 @@ View a Study.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
@@ -406,7 +412,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

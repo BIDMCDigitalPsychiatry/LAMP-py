@@ -40,7 +40,9 @@ class AuthenticationApi(object):
         self.server_info_endpoint = _Endpoint(
             settings={
                 'response_type': (InlineResponse200,),
-                'auth': [],
+                'auth': [
+                    'OldServer'
+                ],
                 'endpoint_path': '/server-info',
                 'operation_id': 'server_info',
                 'http_method': 'GET',
@@ -84,6 +86,8 @@ class AuthenticationApi(object):
                 'response_type': (CurrentSessionInfo,),
                 'auth': [
                     'ApiKeyAuth',
+                    'MobileToken',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/session-info',

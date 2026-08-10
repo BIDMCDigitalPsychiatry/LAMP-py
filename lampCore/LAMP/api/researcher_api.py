@@ -46,6 +46,7 @@ class ResearcherApi(object):
                 'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher',
@@ -96,6 +97,7 @@ class ResearcherApi(object):
                 'response_type': (InlineResponse2004,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher',
@@ -149,6 +151,7 @@ class ResearcherApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{id}',
@@ -201,6 +204,7 @@ class ResearcherApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{id}',
@@ -260,6 +264,7 @@ class ResearcherApi(object):
                 'response_type': (InlineResponse2005,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{id}',

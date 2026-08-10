@@ -1,6 +1,6 @@
 # LAMP.TypeApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,6 +21,7 @@ Get the value of an attachment
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -28,7 +29,7 @@ Get the value of an attachment
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -59,7 +60,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -84,6 +85,7 @@ Get the value of a tag
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -91,7 +93,7 @@ Get the value of a tag
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -122,7 +124,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -149,6 +151,7 @@ Get a list of attachment names
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -156,7 +159,7 @@ Get a list of attachment names
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -185,7 +188,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -212,6 +215,7 @@ Get a list of tag names
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -219,7 +223,7 @@ Get a list of tag names
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -248,7 +252,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -275,6 +279,7 @@ Get the parent type identifier of the data structure referenced by the identifie
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -282,7 +287,7 @@ Get the parent type identifier of the data structure referenced by the identifie
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -322,7 +327,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -347,6 +352,7 @@ Set or delete an attachment
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -354,7 +360,7 @@ Set or delete an attachment
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -387,7 +393,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -412,6 +418,7 @@ Set or delete a tag
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -419,7 +426,7 @@ Set or delete a tag
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
@@ -452,7 +459,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

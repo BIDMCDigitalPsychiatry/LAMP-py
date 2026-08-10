@@ -1,6 +1,6 @@
 # LAMP.SensorSpecApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,6 +21,7 @@ List all SensorSpecs.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -28,7 +29,7 @@ List all SensorSpecs.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.SensorSpec
@@ -58,7 +59,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -85,6 +86,7 @@ Create a SensorSpec.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -92,7 +94,7 @@ Create a SensorSpec.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.SensorSpec
@@ -125,7 +127,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -152,6 +154,7 @@ Delete a SensorSpec.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -159,7 +162,7 @@ Delete a SensorSpec.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.SensorSpec
@@ -188,7 +191,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -215,6 +218,7 @@ Update a SensorSpec.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -222,7 +226,7 @@ Update a SensorSpec.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.SensorSpec
@@ -257,7 +261,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -284,6 +288,7 @@ View a SensorSpec.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -291,7 +296,7 @@ View a SensorSpec.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.SensorSpec
@@ -331,7 +336,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

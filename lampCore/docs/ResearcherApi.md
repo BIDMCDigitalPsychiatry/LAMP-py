@@ -1,6 +1,6 @@
 # LAMP.ResearcherApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,6 +21,7 @@ This action requires system administrator privileges.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -28,7 +29,7 @@ This action requires system administrator privileges.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
@@ -58,7 +59,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -85,6 +86,7 @@ This action requires system administrator privileges.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -92,7 +94,7 @@ This action requires system administrator privileges.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
@@ -123,7 +125,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -150,6 +152,7 @@ Delete a Researcher.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -157,7 +160,7 @@ Delete a Researcher.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
@@ -186,7 +189,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -213,6 +216,7 @@ Update a Researcher's settings.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -220,7 +224,7 @@ Update a Researcher's settings.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
@@ -253,7 +257,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -280,6 +284,7 @@ View a Researcher.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -287,7 +292,7 @@ View a Researcher.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
@@ -327,7 +332,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

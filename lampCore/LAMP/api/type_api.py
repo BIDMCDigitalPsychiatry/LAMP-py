@@ -43,6 +43,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/attachment/{key}',
@@ -101,6 +102,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/tag/{key}',
@@ -159,6 +161,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20023,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/attachment',
@@ -211,6 +214,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20023,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/tag',
@@ -263,6 +267,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/parent',
@@ -320,6 +325,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/attachment/{key}/{target}',
@@ -384,6 +390,7 @@ class TypeApi(object):
                 'response_type': (InlineResponse20022,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/type/{id}/tag/{key}/{target}',

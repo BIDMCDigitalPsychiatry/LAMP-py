@@ -11,7 +11,9 @@
 """
 
 
-__version__ = "2.0.0"
+__version__ = "1.0.0"
+
+import os
 
 # import ApiClient
 from LAMP.api_client import ApiClient
@@ -28,38 +30,49 @@ from LAMP.exceptions import ApiKeyError
 from LAMP.exceptions import ApiException
 
 
-from LAMP.api.api_api import APIApi #API
-from LAMP.api.activity_api import ActivityApi #Activity
-from LAMP.api.activity_event_api import ActivityEventApi #ActivityEvent
-from LAMP.api.activity_spec_api import ActivitySpecApi #ActivitySpec
-from LAMP.api.authentication_api import AuthenticationApi #Authentication
-from LAMP.api.credential_api import CredentialApi #Credential
-from LAMP.api.participant_api import ParticipantApi #Participant
-from LAMP.api.researcher_api import ResearcherApi #Researcher
-from LAMP.api.sensor_api import SensorApi #Sensor
-from LAMP.api.sensor_event_api import SensorEventApi #SensorEvent
-from LAMP.api.sensor_spec_api import SensorSpecApi #SensorSpec
-from LAMP.api.study_api import StudyApi #Study
-from LAMP.api.type_api import TypeApi #Type
+from LAMP.api.api_api import APIApi as __APIApi #API
+from LAMP.api.activity_api import ActivityApi as __ActivityApi #Activity
+from LAMP.api.activity_event_api import ActivityEventApi as __ActivityEventApi #ActivityEvent
+from LAMP.api.activity_spec_api import ActivitySpecApi as __ActivitySpecApi #ActivitySpec
+from LAMP.api.authentication_api import AuthenticationApi as __AuthenticationApi #Authentication
+from LAMP.api.credential_api import CredentialApi as __CredentialApi #Credential
+from LAMP.api.participant_api import ParticipantApi as __ParticipantApi #Participant
+from LAMP.api.researcher_api import ResearcherApi as __ResearcherApi #Researcher
+from LAMP.api.sensor_api import SensorApi as __SensorApi #Sensor
+from LAMP.api.sensor_event_api import SensorEventApi as __SensorEventApi #SensorEvent
+from LAMP.api.sensor_spec_api import SensorSpecApi as __SensorSpecApi #SensorSpec
+from LAMP.api.study_api import StudyApi as __StudyApi #Study
+from LAMP.api.type_api import TypeApi as __TypeApi #Type
 
-API = APIApi()
-Activity = ActivityApi()
-ActivityEvent = ActivityEventApi()
-ActivitySpec = ActivitySpecApi()
-Authentication = AuthenticationApi()
-Credential = CredentialApi()
-Participant = ParticipantApi()
-Researcher = ResearcherApi()
-Sensor = SensorApi()
-SensorEvent = SensorEventApi()
-SensorSpec = SensorSpecApi()
-Study = StudyApi()
-Type = TypeApi()
+API = __APIApi()
+Activity = __ActivityApi()
+ActivityEvent = __ActivityEventApi()
+ActivitySpec = __ActivitySpecApi()
+Authentication = __AuthenticationApi()
+Credential = __CredentialApi()
+Participant = __ParticipantApi()
+Researcher = __ResearcherApi()
+Sensor = __SensorApi()
+SensorEvent = __SensorEventApi()
+SensorSpec = __SensorSpecApi()
+Study = __StudyApi()
+Type = __TypeApi()
 
 
 
-def connect(server_address=None, api_key=None):
-    client = ApiClient(Configuration(host=server_address, api_key={"ApiKeyAuth": api_key}))
+def connect(access_key=None, secret_key=None, server_address=None, api_key=None):
+    server_address = server_address or os.getenv('LAMP_SERVER_ADDRESS', 'https://api.lamp.digital')
+    if not server_address.startswith("https://") and not server_address.startswith("http://"):
+        server_address = f"https://{server_address}"
+
+    access_key = access_key or os.getenv('LAMP_ACCESS_KEY')
+    secret_key = secret_key or os.getenv('LAMP_SECRET_KEY')
+    api_key = api_key or os.getenv('LAMP_API_KEY')
+    
+    if api_key:
+        client = ApiClient(Configuration(host=server_address, api_key={"ApiKeyAuth": api_key}))
+    else:
+        client = ApiClient(Configuration(host=server_address, username=access_key, password=secret_key))
 
     global API
     global Activity
@@ -76,17 +89,17 @@ def connect(server_address=None, api_key=None):
     global Type
     
 
-    API = APIApi(client)
-    Activity = ActivityApi(client)
-    ActivityEvent = ActivityEventApi(client)
-    ActivitySpec = ActivitySpecApi(client)
-    Authentication = AuthenticationApi(client)
-    Credential = CredentialApi(client)
-    Participant = ParticipantApi(client)
-    Researcher = ResearcherApi(client)
-    Sensor = SensorApi(client)
-    SensorEvent = SensorEventApi(client)
-    SensorSpec = SensorSpecApi(client)
-    Study = StudyApi(client)
-    Type = TypeApi(client)
+    API = __APIApi(client)
+    Activity = __ActivityApi(client)
+    ActivityEvent = __ActivityEventApi(client)
+    ActivitySpec = __ActivitySpecApi(client)
+    Authentication = __AuthenticationApi(client)
+    Credential = __CredentialApi(client)
+    Participant = __ParticipantApi(client)
+    Researcher = __ResearcherApi(client)
+    Sensor = __SensorApi(client)
+    SensorEvent = __SensorEventApi(client)
+    SensorSpec = __SensorSpecApi(client)
+    Study = __StudyApi(client)
+    Type = __TypeApi(client)
     

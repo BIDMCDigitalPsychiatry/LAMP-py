@@ -1,6 +1,6 @@
 # LAMP.ActivityApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -22,6 +22,7 @@ List all Activities available to a Participant.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -29,7 +30,7 @@ List all Activities available to a Participant.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -69,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -96,6 +97,7 @@ List all Activities available to Participants of a Study.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -103,7 +105,7 @@ List all Activities available to Participants of a Study.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -143,7 +145,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -170,6 +172,7 @@ Create an Activity for a Study.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -177,7 +180,7 @@ Create an Activity for a Study.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -215,7 +218,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -242,6 +245,7 @@ Delete an Activity.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -249,7 +253,7 @@ Delete an Activity.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -278,7 +282,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -305,6 +309,7 @@ Update an Activity.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -312,7 +317,7 @@ Update an Activity.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -350,7 +355,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 
@@ -377,6 +382,7 @@ View an Activity.
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -384,7 +390,7 @@ View an Activity.
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Activity
@@ -424,7 +430,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

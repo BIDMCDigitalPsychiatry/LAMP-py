@@ -44,6 +44,7 @@ class ParticipantApi(object):
                 'response_type': (InlineResponse2001,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/study/{id}/participant',
@@ -101,6 +102,7 @@ class ParticipantApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/study/{id}/participant',
@@ -160,6 +162,7 @@ class ParticipantApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/participant/{id}',
@@ -212,6 +215,7 @@ class ParticipantApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/participant/{id}',
@@ -271,6 +275,7 @@ class ParticipantApi(object):
                 'response_type': (InlineResponse2001,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/participant/{id}',

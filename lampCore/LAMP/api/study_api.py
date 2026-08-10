@@ -48,6 +48,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2006,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{id}/study',
@@ -105,6 +106,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2009,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{ResearcherId}/study/clone',
@@ -164,6 +166,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2007,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/researcher/{id}/study',
@@ -223,6 +226,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/study/{id}',
@@ -275,6 +279,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/study/{id}',
@@ -334,6 +339,7 @@ class StudyApi(object):
                 'response_type': (InlineResponse2008,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/study/{id}',

@@ -32,8 +32,10 @@ from LAMP.exceptions import ApiAttributeError
 
 def lazy_import():
     from LAMP.model.account_setup_state import AccountSetupState
+    from LAMP.model.mobile_auth_tokens import MobileAuthTokens
     from LAMP.model.user_type import UserType
     globals()['AccountSetupState'] = AccountSetupState
+    globals()['MobileAuthTokens'] = MobileAuthTokens
     globals()['UserType'] = UserType
 
 
@@ -95,6 +97,7 @@ class CurrentSessionInfo(ModelNormal):
             'me': (str, none_type,),  # noqa: E501
             'require2_fa_verification': (bool,),  # noqa: E501
             'account_setup_state': (AccountSetupState,),  # noqa: E501
+            'mobile_auth': (MobileAuthTokens,),  # noqa: E501
         }
 
     @cached_property
@@ -108,6 +111,7 @@ class CurrentSessionInfo(ModelNormal):
         'me': 'me',  # noqa: E501
         'require2_fa_verification': 'require2FAVerification',  # noqa: E501
         'account_setup_state': 'accountSetupState',  # noqa: E501
+        'mobile_auth': 'mobileAuth',  # noqa: E501
     }
 
     read_only_vars = {
@@ -117,8 +121,15 @@ class CurrentSessionInfo(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, access_key, user_type, me, require2_fa_verification, account_setup_state, *args, **kwargs):  # noqa: E501
         """CurrentSessionInfo - a model defined in OpenAPI
+
+        Args:
+            access_key (str):
+            user_type (UserType):
+            me (str, none_type):
+            require2_fa_verification (bool):
+            account_setup_state (AccountSetupState):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -151,11 +162,7 @@ class CurrentSessionInfo(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            access_key (str): [optional]  # noqa: E501
-            user_type (UserType): [optional]  # noqa: E501
-            me (str, none_type): [optional]  # noqa: E501
-            require2_fa_verification (bool): [optional]  # noqa: E501
-            account_setup_state (AccountSetupState): [optional]  # noqa: E501
+            mobile_auth (MobileAuthTokens): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -183,6 +190,11 @@ class CurrentSessionInfo(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.access_key = access_key
+        self.user_type = user_type
+        self.me = me
+        self.require2_fa_verification = require2_fa_verification
+        self.account_setup_state = account_setup_state
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -203,8 +215,15 @@ class CurrentSessionInfo(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, *args, **kwargs):  # noqa: E501
+    def __init__(self, access_key, user_type, me, require2_fa_verification, account_setup_state, *args, **kwargs):  # noqa: E501
         """CurrentSessionInfo - a model defined in OpenAPI
+
+        Args:
+            access_key (str):
+            user_type (UserType):
+            me (str, none_type):
+            require2_fa_verification (bool):
+            account_setup_state (AccountSetupState):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -237,11 +256,7 @@ class CurrentSessionInfo(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            access_key (str): [optional]  # noqa: E501
-            user_type (UserType): [optional]  # noqa: E501
-            me (str, none_type): [optional]  # noqa: E501
-            require2_fa_verification (bool): [optional]  # noqa: E501
-            account_setup_state (AccountSetupState): [optional]  # noqa: E501
+            mobile_auth (MobileAuthTokens): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -267,6 +282,11 @@ class CurrentSessionInfo(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.access_key = access_key
+        self.user_type = user_type
+        self.me = me
+        self.require2_fa_verification = require2_fa_verification
+        self.account_setup_state = account_setup_state
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

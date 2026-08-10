@@ -45,6 +45,7 @@ class ActivitySpecApi(object):
                 'response_type': (InlineResponse20010,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/activity_spec',
@@ -95,6 +96,7 @@ class ActivitySpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/activity_spec',
@@ -148,6 +150,7 @@ class ActivitySpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/activity_spec/{id}',
@@ -200,6 +203,7 @@ class ActivitySpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/activity_spec/{id}',
@@ -259,6 +263,7 @@ class ActivitySpecApi(object):
                 'response_type': (InlineResponse20011,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/activity_spec/{id}',

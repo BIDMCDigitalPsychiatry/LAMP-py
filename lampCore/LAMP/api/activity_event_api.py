@@ -43,6 +43,7 @@ class ActivityEventApi(object):
                 'response_type': (InlineResponse20020,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/participant/{id}/activity_event',
@@ -120,6 +121,7 @@ class ActivityEventApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/participant/{id}/activity_event',

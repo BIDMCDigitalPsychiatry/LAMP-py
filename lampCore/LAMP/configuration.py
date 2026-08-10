@@ -97,6 +97,22 @@ conf = LAMP.Configuration(
 
     The following cookie will be added to the HTTP request:
        Cookie: JSESSIONID abc123
+
+    HTTP Basic Authentication Example.
+    Given the following security scheme in the OpenAPI specification:
+      components:
+        securitySchemes:
+          http_basic_auth:
+            type: http
+            scheme: basic
+
+    Configure API client with HTTP basic authentication:
+
+conf = LAMP.Configuration(
+    username='the-user',
+    password='the-password',
+)
+
     """
 
     _default = None
@@ -113,7 +129,7 @@ conf = LAMP.Configuration(
                  ):
         """Constructor
         """
-        self._base_path = "http://localhost" if host is None else host
+        self._base_path = "https://api.lamp.digital" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -399,6 +415,22 @@ conf = LAMP.Configuration(
                     'ApiKeyAuth',
                 ),
             }
+        if 'MobileToken' in self.api_key:
+            auth['MobileToken'] = {
+                'type': 'api_key',
+                'in': 'header',
+                'key': 'Authorization',
+                'value': self.get_api_key_with_prefix(
+                    'MobileToken',
+                ),
+            }
+        if self.username is not None and self.password is not None:
+            auth['OldServer'] = {
+                'type': 'basic',
+                'in': 'header',
+                'key': 'Authorization',
+                'value': self.get_basic_auth_token()
+            }
         if 'SessionLogin' in self.api_key:
             auth['SessionLogin'] = {
                 'type': 'api_key',
@@ -419,7 +451,7 @@ conf = LAMP.Configuration(
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
                "Version of the API: 2.0.0\n"\
-               "SDK Package Version: 2.0.0".\
+               "SDK Package Version: 1.0.0".\
                format(env=sys.platform, pyversion=sys.version)
 
     def get_host_settings(self):
@@ -429,8 +461,14 @@ conf = LAMP.Configuration(
         """
         return [
             {
-                'url': "",
-                'description': "No description provided",
+                'url': "https://{server_url}",
+                'description': "LAMP Platform API Server",
+                'variables': {
+                    'server_url': {
+                        'description': "A specific API server instance (HTTPS required).",
+                        'default_value': "api.lamp.digital",
+                        }
+                    }
             }
         ]
 

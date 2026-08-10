@@ -1,6 +1,6 @@
 # LAMP.AuthenticationApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,13 +15,14 @@ Method | HTTP request | Description
 
 ### Example
 
+* Basic Authentication (OldServer):
 
 ```python
 
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Authentication
@@ -45,7 +46,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OldServer](../README.md#OldServer)
 
 ### HTTP request headers
 
@@ -69,6 +70,8 @@ No authorization required
 ### Example
 
 * Api Key Authentication (ApiKeyAuth):
+* Api Key Authentication (MobileToken):
+* Basic Authentication (OldServer):
 * Api Key Authentication (SessionLogin):
 
 ```python
@@ -76,7 +79,7 @@ No authorization required
 import LAMP
 
 
-LAMP.connect("http://localhost", "apiKeyValue")
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 
 # Enter a context with an instance of the API client
 api_client = LAMP.Authentication
@@ -100,7 +103,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[ApiKeyAuth](../README.md#ApiKeyAuth), [SessionLogin](../README.md#SessionLogin)
+[ApiKeyAuth](../README.md#ApiKeyAuth), [MobileToken](../README.md#MobileToken), [OldServer](../README.md#OldServer), [SessionLogin](../README.md#SessionLogin)
 
 ### HTTP request headers
 

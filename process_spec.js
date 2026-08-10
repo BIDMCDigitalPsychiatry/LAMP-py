@@ -7,12 +7,25 @@ console.log("Processing: ", fileName)
 
 const spec = JSON.parse(fs.readFileSync(fileName, "utf-8"))
 
+spec.components.securitySchemes.OldServer = {
+    type: "http",
+    scheme: "basic",
+}
+console.log("SECURITY: ", spec.components.securitySchemes, "\n\n\n")
+
 const newPaths = {}
 
 for (let [pathName, path] of Object.entries(spec.paths)) {
     let newPath = {}
     let newPathName = pathName
     for (let [method, operation] of Object.entries(path)) {
+        // Add basic auth to security schemes
+        if (operation.security) {
+            operation.security.push({"OldServer": []})
+        } else {
+            operation.security = [{"OldServer": []}]
+        }
+
         // Do not generate client functions for endpoints marked with "x-internal"
         if (!operation["x-internal"]) {
             newPath[method] = operation

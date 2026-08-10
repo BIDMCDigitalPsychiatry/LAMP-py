@@ -41,6 +41,7 @@ class APIApi(object):
                 'response_type': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/',
@@ -93,7 +94,9 @@ class APIApi(object):
         self.schema_endpoint = _Endpoint(
             settings={
                 'response_type': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
-                'auth': [],
+                'auth': [
+                    'OldServer'
+                ],
                 'endpoint_path': '/',
                 'operation_id': 'schema',
                 'http_method': 'GET',

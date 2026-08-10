@@ -45,6 +45,7 @@ from LAMP.model.inline_response2007 import InlineResponse2007
 from LAMP.model.inline_response2008 import InlineResponse2008
 from LAMP.model.inline_response2009 import InlineResponse2009
 from LAMP.model.json_schema import JSONSchema
+from LAMP.model.mobile_auth_tokens import MobileAuthTokens
 from LAMP.model.participant import Participant
 from LAMP.model.researcher import Researcher
 from LAMP.model.sensor import Sensor

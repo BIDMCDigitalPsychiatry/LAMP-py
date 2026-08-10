@@ -54,6 +54,7 @@ LAMP/model/inline_response2007.py
 LAMP/model/inline_response2008.py
 LAMP/model/inline_response2009.py
 LAMP/model/json_schema.py
+LAMP/model/mobile_auth_tokens.py
 LAMP/model/participant.py
 LAMP/model/researcher.py
 LAMP/model/sensor.py
@@ -109,6 +110,7 @@ docs/InlineResponse2007.md
 docs/InlineResponse2008.md
 docs/InlineResponse2009.md
 docs/JSONSchema.md
+docs/MobileAuthTokens.md
 docs/Participant.md
 docs/ParticipantApi.md
 docs/Researcher.md

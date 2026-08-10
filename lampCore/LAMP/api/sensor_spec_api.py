@@ -45,6 +45,7 @@ class SensorSpecApi(object):
                 'response_type': (InlineResponse20012,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/sensor_spec',
@@ -95,6 +96,7 @@ class SensorSpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/sensor_spec',
@@ -148,6 +150,7 @@ class SensorSpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/sensor_spec/{id}',
@@ -200,6 +203,7 @@ class SensorSpecApi(object):
                 'response_type': (InlineResponse2002,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/sensor_spec/{id}',
@@ -259,6 +263,7 @@ class SensorSpecApi(object):
                 'response_type': (InlineResponse20013,),
                 'auth': [
                     'ApiKeyAuth',
+                    'OldServer',
                     'SessionLogin'
                 ],
                 'endpoint_path': '/sensor_spec/{id}',
