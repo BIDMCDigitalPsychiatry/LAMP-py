@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 
 # **all_by_participant**
-> InlineResponse20021 all_by_participant(id)
+> InlineResponse2003 all_by_participant(id)
 
 Query SensorEvents for a Participant.
 
@@ -72,7 +72,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20021**](InlineResponse20021.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 
@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **all_by_researcher**
-> InlineResponse20021 all_by_researcher(id)
+> InlineResponse2003 all_by_researcher(id)
 
 Query sensor events across for a researcher's participants
 
@@ -151,7 +151,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20021**](InlineResponse20021.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 

@@ -25,6 +25,7 @@ from LAMP.model_utils import (  # noqa: F401
 from LAMP.model.error import Error
 from LAMP.model.inline_response2001 import InlineResponse2001
 from LAMP.model.inline_response2002 import InlineResponse2002
+from LAMP.model.inline_response2003 import InlineResponse2003
 from LAMP.model.participant import Participant
 
 
@@ -41,24 +42,24 @@ class ParticipantApi(object):
         self.api_client = api_client
         self.all_by_study_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2001,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/study/{id}/participant',
+                'endpoint_path': '/study/{study_id}/participant',
                 'operation_id': 'all_by_study',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'study_id',
                     'transform',
                 ],
                 'required': [
-                    'id',
+                    'study_id',
                 ],
                 'nullable': [
                 ],
@@ -73,17 +74,17 @@ class ParticipantApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'study_id':
                         (str,),
                     'transform':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'study_id': 'study_id',
                     'transform': 'transform',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'study_id': 'path',
                     'transform': 'query',
                 },
                 'collection_format_map': {
@@ -105,18 +106,18 @@ class ParticipantApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/study/{id}/participant',
+                'endpoint_path': '/study/{study_id}/participant',
                 'operation_id': 'create',
                 'http_method': 'POST',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'study_id',
                     'participant',
                 ],
                 'required': [
-                    'id',
+                    'study_id',
                     'participant',
                 ],
                 'nullable': [
@@ -132,16 +133,16 @@ class ParticipantApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'study_id':
                         (str,),
                     'participant':
                         (Participant,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'study_id': 'study_id',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'study_id': 'path',
                     'participant': 'body',
                 },
                 'collection_format_map': {
@@ -165,17 +166,17 @@ class ParticipantApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/participant/{id}',
+                'endpoint_path': '/participant/{participant_id}',
                 'operation_id': 'delete',
                 'http_method': 'DELETE',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'participant_id',
                 ],
                 'required': [
-                    'id',
+                    'participant_id',
                 ],
                 'nullable': [
                 ],
@@ -190,14 +191,14 @@ class ParticipantApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'participant_id':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'participant_id': 'participant_id',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'participant_id': 'path',
                 },
                 'collection_format_map': {
                 }
@@ -218,19 +219,19 @@ class ParticipantApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/participant/{id}',
+                'endpoint_path': '/participant/{participant_id}',
                 'operation_id': 'update',
                 'http_method': 'PUT',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
-                    'participant',
+                    'participant_id',
+                    'request_body',
                 ],
                 'required': [
-                    'id',
-                    'participant',
+                    'participant_id',
+                    'request_body',
                 ],
                 'nullable': [
                 ],
@@ -245,17 +246,17 @@ class ParticipantApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'participant_id':
                         (str,),
-                    'participant':
-                        (Participant,),
+                    'request_body':
+                        ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'participant_id': 'participant_id',
                 },
                 'location_map': {
-                    'id': 'path',
-                    'participant': 'body',
+                    'participant_id': 'path',
+                    'request_body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -278,18 +279,18 @@ class ParticipantApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/participant/{id}',
+                'endpoint_path': '/participant/{participant_id}',
                 'operation_id': 'view',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'participant_id',
                     'transform',
                 ],
                 'required': [
-                    'id',
+                    'participant_id',
                 ],
                 'nullable': [
                 ],
@@ -304,17 +305,17 @@ class ParticipantApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'participant_id':
                         (str,),
                     'transform':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'participant_id': 'participant_id',
                     'transform': 'transform',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'participant_id': 'path',
                     'transform': 'query',
                 },
                 'collection_format_map': {
@@ -331,7 +332,7 @@ class ParticipantApi(object):
 
     def all_by_study(
         self,
-        id,
+        study_id,
         **kwargs
     ):
         """List all Participants for a Study.  # noqa: E501
@@ -340,11 +341,11 @@ class ParticipantApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.all_by_study(id, async_req=True)
+        >>> thread = api.all_by_study(study_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            study_id (str):
 
         Keyword Args:
             transform (str): [optional]
@@ -363,6 +364,10 @@ class ParticipantApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -372,7 +377,7 @@ class ParticipantApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2001
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -394,16 +399,19 @@ class ParticipantApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['study_id'] = \
+            study_id
         return self.all_by_study_endpoint.call_with_http_info(**kwargs)
 
     def create(
         self,
-        id,
+        study_id,
         participant,
         **kwargs
     ):
@@ -413,11 +421,11 @@ class ParticipantApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create(id, participant, async_req=True)
+        >>> thread = api.create(study_id, participant, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            study_id (str):
             participant (Participant):
 
         Keyword Args:
@@ -436,6 +444,10 @@ class ParticipantApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -467,18 +479,21 @@ class ParticipantApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['study_id'] = \
+            study_id
         kwargs['participant'] = \
             participant
         return self.create_endpoint.call_with_http_info(**kwargs)
 
     def delete(
         self,
-        id,
+        participant_id,
         **kwargs
     ):
         """Delete a Participant.  # noqa: E501
@@ -487,11 +502,11 @@ class ParticipantApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.delete(id, async_req=True)
+        >>> thread = api.delete(participant_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            participant_id (str):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -509,6 +524,10 @@ class ParticipantApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -540,17 +559,20 @@ class ParticipantApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['participant_id'] = \
+            participant_id
         return self.delete_endpoint.call_with_http_info(**kwargs)
 
     def update(
         self,
-        id,
-        participant,
+        participant_id,
+        request_body,
         **kwargs
     ):
         """Update a Participant.  # noqa: E501
@@ -559,12 +581,12 @@ class ParticipantApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update(id, participant, async_req=True)
+        >>> thread = api.update(participant_id, request_body, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
-            participant (Participant):
+            participant_id (str):
+            request_body ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -582,6 +604,10 @@ class ParticipantApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -613,18 +639,21 @@ class ParticipantApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
-        kwargs['participant'] = \
-            participant
+        kwargs['participant_id'] = \
+            participant_id
+        kwargs['request_body'] = \
+            request_body
         return self.update_endpoint.call_with_http_info(**kwargs)
 
     def view(
         self,
-        id,
+        participant_id,
         **kwargs
     ):
         """View a Participant.  # noqa: E501
@@ -633,11 +662,11 @@ class ParticipantApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.view(id, async_req=True)
+        >>> thread = api.view(participant_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            participant_id (str):
 
         Keyword Args:
             transform (str): [optional]
@@ -656,6 +685,10 @@ class ParticipantApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -687,10 +720,13 @@ class ParticipantApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['participant_id'] = \
+            participant_id
         return self.view_endpoint.call_with_http_info(**kwargs)
 

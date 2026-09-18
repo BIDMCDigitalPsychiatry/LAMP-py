@@ -63,6 +63,8 @@ class InlineResponse20018(ModelNormal):
     }
 
     validations = {
+        ('data',): {
+        },
     }
 
     @cached_property

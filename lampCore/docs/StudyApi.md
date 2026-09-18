@@ -4,16 +4,16 @@ All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**all_by_researcher**](StudyApi.md#all_by_researcher) | **GET** /researcher/{id}/study | List all Studies for a Researcher.
+[**all_by_researcher**](StudyApi.md#all_by_researcher) | **GET** /researcher/{researcher_id}/study | List all Studies for a Researcher.
 [**clone**](StudyApi.md#clone) | **POST** /researcher/{ResearcherId}/study/clone | Create a deep copy of a study. Including activities and sensors
-[**create**](StudyApi.md#create) | **POST** /researcher/{id}/study | Create a Study for a Researcher.
-[**delete**](StudyApi.md#delete) | **DELETE** /study/{id} | Delete a Study.
-[**update**](StudyApi.md#update) | **PUT** /study/{id} | Update a Study.
-[**view**](StudyApi.md#view) | **GET** /study/{id} | View a Study.
+[**create**](StudyApi.md#create) | **POST** /researcher/{researcher_id}/study | Create a Study for a Researcher.
+[**delete**](StudyApi.md#delete) | **DELETE** /study/{study_id} | Delete a Study.
+[**update**](StudyApi.md#update) | **PUT** /study/{study_id} | Update a Study.
+[**view**](StudyApi.md#view) | **GET** /study/{study_id} | View a Study.
 
 
 # **all_by_researcher**
-> InlineResponse2006 all_by_researcher(id)
+> InlineResponse2003 all_by_researcher(researcher_id)
 
 List all Studies for a Researcher.
 
@@ -35,13 +35,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
 
-id = "id_example" # str | 
+researcher_id = "researcher_id_example" # str | 
 transform = "transform_example" # str |  (optional)
 
 # example passing only required values which don't have defaults set
 try:
     # List all Studies for a Researcher.
-    api_response = api_client.all_by_researcher(id)
+    api_response = api_client.all_by_researcher(researcher_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->all_by_researcher: %s\n" % e)
@@ -50,7 +50,7 @@ except LAMP.ApiException as e:
 # and optional values
 try:
     # List all Studies for a Researcher.
-    api_response = api_client.all_by_researcher(id, transform=transform)
+    api_response = api_client.all_by_researcher(researcher_id, transform=transform)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->all_by_researcher: %s\n" % e)
@@ -61,12 +61,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **researcher_id** | **str**|  |
  **transform** | **str**|  | [optional]
 
 ### Return type
 
-[**InlineResponse2006**](InlineResponse2006.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 
@@ -88,7 +88,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **clone**
-> InlineResponse2009 clone(researcher_id, inline_object)
+> InlineResponse2006 clone(researcher_id, inline_object)
 
 Create a deep copy of a study. Including activities and sensors
 
@@ -133,7 +133,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2009**](InlineResponse2009.md)
+[**InlineResponse2006**](InlineResponse2006.md)
 
 ### Authorization
 
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create**
-> InlineResponse2007 create(id, study)
+> InlineResponse2005 create(researcher_id, request_body)
 
 Create a Study for a Researcher.
 
@@ -177,15 +177,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
 
-id = "id_example" # str | 
-study = Study(
-        name="Psychosis Study",
-    ) # Study | 
+researcher_id = "researcher_id_example" # str | 
+request_body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | 
 
 # example passing only required values which don't have defaults set
 try:
     # Create a Study for a Researcher.
-    api_response = api_client.create(id, study)
+    api_response = api_client.create(researcher_id, request_body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->create: %s\n" % e)
@@ -196,12 +194,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
- **study** | [**Study**](Study.md)|  |
+ **researcher_id** | **str**|  |
+ **request_body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**|  |
 
 ### Return type
 
-[**InlineResponse2007**](InlineResponse2007.md)
+[**InlineResponse2005**](InlineResponse2005.md)
 
 ### Authorization
 
@@ -223,7 +221,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete**
-> InlineResponse2002 delete(id)
+> InlineResponse2002 delete(study_id)
 
 Delete a Study.
 
@@ -245,12 +243,12 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
 
-id = "id_example" # str | 
+study_id = "study_id_example" # str | 
 
 # example passing only required values which don't have defaults set
 try:
     # Delete a Study.
-    api_response = api_client.delete(id)
+    api_response = api_client.delete(study_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->delete: %s\n" % e)
@@ -261,7 +259,7 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **study_id** | **str**|  |
 
 ### Return type
 
@@ -287,7 +285,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update**
-> InlineResponse2002 update(id, study)
+> InlineResponse2002 update(study_id, request_body)
 
 Update a Study.
 
@@ -309,15 +307,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
 
-id = "id_example" # str | 
-study = Study(
-        name="Psychosis Study",
-    ) # Study | 
+study_id = "study_id_example" # str | 
+request_body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | 
 
 # example passing only required values which don't have defaults set
 try:
     # Update a Study.
-    api_response = api_client.update(id, study)
+    api_response = api_client.update(study_id, request_body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->update: %s\n" % e)
@@ -328,8 +324,8 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
- **study** | [**Study**](Study.md)|  |
+ **study_id** | **str**|  |
+ **request_body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**|  |
 
 ### Return type
 
@@ -355,7 +351,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> InlineResponse2008 view(id)
+> InlineResponse2003 view(study_id)
 
 View a Study.
 
@@ -377,13 +373,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Study
 
-id = "id_example" # str | 
+study_id = "study_id_example" # str | 
 transform = "transform_example" # str |  (optional)
 
 # example passing only required values which don't have defaults set
 try:
     # View a Study.
-    api_response = api_client.view(id)
+    api_response = api_client.view(study_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->view: %s\n" % e)
@@ -392,7 +388,7 @@ except LAMP.ApiException as e:
 # and optional values
 try:
     # View a Study.
-    api_response = api_client.view(id, transform=transform)
+    api_response = api_client.view(study_id, transform=transform)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling StudyApi->view: %s\n" % e)
@@ -403,12 +399,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **study_id** | **str**|  |
  **transform** | **str**|  | [optional]
 
 ### Return type
 
-[**InlineResponse2008**](InlineResponse2008.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 

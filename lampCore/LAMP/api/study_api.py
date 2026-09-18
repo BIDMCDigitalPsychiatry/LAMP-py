@@ -25,11 +25,9 @@ from LAMP.model_utils import (  # noqa: F401
 from LAMP.model.error import Error
 from LAMP.model.inline_object import InlineObject
 from LAMP.model.inline_response2002 import InlineResponse2002
+from LAMP.model.inline_response2003 import InlineResponse2003
+from LAMP.model.inline_response2005 import InlineResponse2005
 from LAMP.model.inline_response2006 import InlineResponse2006
-from LAMP.model.inline_response2007 import InlineResponse2007
-from LAMP.model.inline_response2008 import InlineResponse2008
-from LAMP.model.inline_response2009 import InlineResponse2009
-from LAMP.model.study import Study
 
 
 class StudyApi(object):
@@ -45,24 +43,24 @@ class StudyApi(object):
         self.api_client = api_client
         self.all_by_researcher_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2006,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/researcher/{id}/study',
+                'endpoint_path': '/researcher/{researcher_id}/study',
                 'operation_id': 'all_by_researcher',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'researcher_id',
                     'transform',
                 ],
                 'required': [
-                    'id',
+                    'researcher_id',
                 ],
                 'nullable': [
                 ],
@@ -77,17 +75,17 @@ class StudyApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'researcher_id':
                         (str,),
                     'transform':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'researcher_id': 'researcher_id',
                     'transform': 'transform',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'researcher_id': 'path',
                     'transform': 'query',
                 },
                 'collection_format_map': {
@@ -103,7 +101,7 @@ class StudyApi(object):
         )
         self.clone_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2009,),
+                'response_type': (InlineResponse2006,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -163,25 +161,25 @@ class StudyApi(object):
         )
         self.create_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2007,),
+                'response_type': (InlineResponse2005,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/researcher/{id}/study',
+                'endpoint_path': '/researcher/{researcher_id}/study',
                 'operation_id': 'create',
                 'http_method': 'POST',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
-                    'study',
+                    'researcher_id',
+                    'request_body',
                 ],
                 'required': [
-                    'id',
-                    'study',
+                    'researcher_id',
+                    'request_body',
                 ],
                 'nullable': [
                 ],
@@ -196,17 +194,17 @@ class StudyApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'researcher_id':
                         (str,),
-                    'study':
-                        (Study,),
+                    'request_body':
+                        ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'researcher_id': 'researcher_id',
                 },
                 'location_map': {
-                    'id': 'path',
-                    'study': 'body',
+                    'researcher_id': 'path',
+                    'request_body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -229,17 +227,17 @@ class StudyApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/study/{id}',
+                'endpoint_path': '/study/{study_id}',
                 'operation_id': 'delete',
                 'http_method': 'DELETE',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'study_id',
                 ],
                 'required': [
-                    'id',
+                    'study_id',
                 ],
                 'nullable': [
                 ],
@@ -254,14 +252,14 @@ class StudyApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'study_id':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'study_id': 'study_id',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'study_id': 'path',
                 },
                 'collection_format_map': {
                 }
@@ -282,19 +280,19 @@ class StudyApi(object):
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/study/{id}',
+                'endpoint_path': '/study/{study_id}',
                 'operation_id': 'update',
                 'http_method': 'PUT',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
-                    'study',
+                    'study_id',
+                    'request_body',
                 ],
                 'required': [
-                    'id',
-                    'study',
+                    'study_id',
+                    'request_body',
                 ],
                 'nullable': [
                 ],
@@ -309,17 +307,17 @@ class StudyApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'study_id':
                         (str,),
-                    'study':
-                        (Study,),
+                    'request_body':
+                        ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'study_id': 'study_id',
                 },
                 'location_map': {
-                    'id': 'path',
-                    'study': 'body',
+                    'study_id': 'path',
+                    'request_body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -336,24 +334,24 @@ class StudyApi(object):
         )
         self.view_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2008,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/study/{id}',
+                'endpoint_path': '/study/{study_id}',
                 'operation_id': 'view',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'study_id',
                     'transform',
                 ],
                 'required': [
-                    'id',
+                    'study_id',
                 ],
                 'nullable': [
                 ],
@@ -368,17 +366,17 @@ class StudyApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'study_id':
                         (str,),
                     'transform':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'study_id': 'study_id',
                     'transform': 'transform',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'study_id': 'path',
                     'transform': 'query',
                 },
                 'collection_format_map': {
@@ -395,7 +393,7 @@ class StudyApi(object):
 
     def all_by_researcher(
         self,
-        id,
+        researcher_id,
         **kwargs
     ):
         """List all Studies for a Researcher.  # noqa: E501
@@ -404,11 +402,11 @@ class StudyApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.all_by_researcher(id, async_req=True)
+        >>> thread = api.all_by_researcher(researcher_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            researcher_id (str):
 
         Keyword Args:
             transform (str): [optional]
@@ -427,6 +425,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -436,7 +438,7 @@ class StudyApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2006
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -458,11 +460,14 @@ class StudyApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['researcher_id'] = \
+            researcher_id
         return self.all_by_researcher_endpoint.call_with_http_info(**kwargs)
 
     def clone(
@@ -499,6 +504,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -508,7 +517,7 @@ class StudyApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2009
+            InlineResponse2006
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -529,6 +538,9 @@ class StudyApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -541,8 +553,8 @@ class StudyApi(object):
 
     def create(
         self,
-        id,
-        study,
+        researcher_id,
+        request_body,
         **kwargs
     ):
         """Create a Study for a Researcher.  # noqa: E501
@@ -551,12 +563,12 @@ class StudyApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create(id, study, async_req=True)
+        >>> thread = api.create(researcher_id, request_body, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
-            study (Study):
+            researcher_id (str):
+            request_body ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -574,6 +586,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -583,7 +599,7 @@ class StudyApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2007
+            InlineResponse2005
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -605,18 +621,21 @@ class StudyApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
-        kwargs['study'] = \
-            study
+        kwargs['researcher_id'] = \
+            researcher_id
+        kwargs['request_body'] = \
+            request_body
         return self.create_endpoint.call_with_http_info(**kwargs)
 
     def delete(
         self,
-        id,
+        study_id,
         **kwargs
     ):
         """Delete a Study.  # noqa: E501
@@ -625,11 +644,11 @@ class StudyApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.delete(id, async_req=True)
+        >>> thread = api.delete(study_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            study_id (str):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -647,6 +666,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -678,17 +701,20 @@ class StudyApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['study_id'] = \
+            study_id
         return self.delete_endpoint.call_with_http_info(**kwargs)
 
     def update(
         self,
-        id,
-        study,
+        study_id,
+        request_body,
         **kwargs
     ):
         """Update a Study.  # noqa: E501
@@ -697,12 +723,12 @@ class StudyApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update(id, study, async_req=True)
+        >>> thread = api.update(study_id, request_body, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
-            study (Study):
+            study_id (str):
+            request_body ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -720,6 +746,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -751,18 +781,21 @@ class StudyApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
-        kwargs['study'] = \
-            study
+        kwargs['study_id'] = \
+            study_id
+        kwargs['request_body'] = \
+            request_body
         return self.update_endpoint.call_with_http_info(**kwargs)
 
     def view(
         self,
-        id,
+        study_id,
         **kwargs
     ):
         """View a Study.  # noqa: E501
@@ -771,11 +804,11 @@ class StudyApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.view(id, async_req=True)
+        >>> thread = api.view(study_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            study_id (str):
 
         Keyword Args:
             transform (str): [optional]
@@ -794,6 +827,10 @@ class StudyApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -803,7 +840,7 @@ class StudyApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2008
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -825,10 +862,13 @@ class StudyApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['study_id'] = \
+            study_id
         return self.view_endpoint.call_with_http_info(**kwargs)
 

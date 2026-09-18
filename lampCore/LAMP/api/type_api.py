@@ -23,8 +23,9 @@ from LAMP.model_utils import (  # noqa: F401
     validate_and_convert_types
 )
 from LAMP.model.error import Error
-from LAMP.model.inline_response20022 import InlineResponse20022
-from LAMP.model.inline_response20023 import InlineResponse20023
+from LAMP.model.inline_response2001 import InlineResponse2001
+from LAMP.model.inline_response20011 import InlineResponse20011
+from LAMP.model.inline_response20012 import InlineResponse20012
 
 
 class TypeApi(object):
@@ -40,25 +41,25 @@ class TypeApi(object):
         self.api_client = api_client
         self.get_attachment_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20022,),
+                'response_type': (InlineResponse20012,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/type/{id}/attachment/{key}',
+                'endpoint_path': '/type/{type_id}/attachment/{attachment_key}',
                 'operation_id': 'get_attachment',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
-                    'key',
+                    'type_id',
+                    'attachment_key',
                 ],
                 'required': [
-                    'id',
-                    'key',
+                    'type_id',
+                    'attachment_key',
                 ],
                 'nullable': [
                 ],
@@ -73,18 +74,18 @@ class TypeApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'type_id':
                         (str,),
-                    'key':
+                    'attachment_key':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
-                    'key': 'key',
+                    'type_id': 'type_id',
+                    'attachment_key': 'attachment_key',
                 },
                 'location_map': {
-                    'id': 'path',
-                    'key': 'path',
+                    'type_id': 'path',
+                    'attachment_key': 'path',
                 },
                 'collection_format_map': {
                 }
@@ -99,7 +100,7 @@ class TypeApi(object):
         )
         self.get_tag_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20022,),
+                'response_type': (InlineResponse20012,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -158,23 +159,23 @@ class TypeApi(object):
         )
         self.list_attachments_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20023,),
+                'response_type': (InlineResponse20011,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/type/{id}/attachment',
+                'endpoint_path': '/type/{type_id}/attachment',
                 'operation_id': 'list_attachments',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'type_id',
                 ],
                 'required': [
-                    'id',
+                    'type_id',
                 ],
                 'nullable': [
                 ],
@@ -189,14 +190,14 @@ class TypeApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'type_id':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'type_id': 'type_id',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'type_id': 'path',
                 },
                 'collection_format_map': {
                 }
@@ -211,7 +212,7 @@ class TypeApi(object):
         )
         self.list_tags_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20023,),
+                'response_type': (InlineResponse20011,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -264,24 +265,24 @@ class TypeApi(object):
         )
         self.parent_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20022,),
+                'response_type': (InlineResponse2001,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/type/{id}/parent',
+                'endpoint_path': '/type/{type_id}/parent',
                 'operation_id': 'parent',
                 'http_method': 'GET',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
+                    'type_id',
                     'transform',
                 ],
                 'required': [
-                    'id',
+                    'type_id',
                 ],
                 'nullable': [
                 ],
@@ -296,17 +297,17 @@ class TypeApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
+                    'type_id':
                         (str,),
                     'transform':
                         (str,),
                 },
                 'attribute_map': {
-                    'id': 'id',
+                    'type_id': 'type_id',
                     'transform': 'transform',
                 },
                 'location_map': {
-                    'id': 'path',
+                    'type_id': 'path',
                     'transform': 'query',
                 },
                 'collection_format_map': {
@@ -322,29 +323,32 @@ class TypeApi(object):
         )
         self.set_attachment_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20022,),
+                'response_type': (InlineResponse2001,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
                     'SessionLogin'
                 ],
-                'endpoint_path': '/type/{id}/attachment/{key}/{target}',
+                'endpoint_path': '/type/{type_id}/attachment/{attachment_key}/{target}',
                 'operation_id': 'set_attachment',
                 'http_method': 'PUT',
                 'servers': None,
             },
             params_map={
                 'all': [
-                    'id',
-                    'key',
+                    'type_id',
                     'target',
+                    'attachment_key',
+                    'body',
                 ],
                 'required': [
-                    'id',
-                    'key',
+                    'type_id',
                     'target',
+                    'attachment_key',
+                    'body',
                 ],
                 'nullable': [
+                    'body',
                 ],
                 'enum': [
                 ],
@@ -357,22 +361,25 @@ class TypeApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'id':
-                        (str,),
-                    'key':
+                    'type_id':
                         (str,),
                     'target':
                         (str,),
+                    'attachment_key':
+                        (str,),
+                    'body':
+                        (bool, date, datetime, dict, float, int, list, str, none_type,),
                 },
                 'attribute_map': {
-                    'id': 'id',
-                    'key': 'key',
+                    'type_id': 'type_id',
                     'target': 'target',
+                    'attachment_key': 'attachment_key',
                 },
                 'location_map': {
-                    'id': 'path',
-                    'key': 'path',
+                    'type_id': 'path',
                     'target': 'path',
+                    'attachment_key': 'path',
+                    'body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -381,13 +388,15 @@ class TypeApi(object):
                 'accept': [
                     'application/json'
                 ],
-                'content_type': [],
+                'content_type': [
+                    'application/json'
+                ]
             },
             api_client=api_client
         )
         self.set_tag_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20022,),
+                'response_type': (InlineResponse2001,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -453,8 +462,8 @@ class TypeApi(object):
 
     def get_attachment(
         self,
-        id,
-        key,
+        type_id,
+        attachment_key,
         **kwargs
     ):
         """Get the value of an attachment  # noqa: E501
@@ -462,12 +471,12 @@ class TypeApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_attachment(id, key, async_req=True)
+        >>> thread = api.get_attachment(type_id, attachment_key, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
-            key (str):
+            type_id (str):
+            attachment_key (str):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -485,6 +494,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -494,7 +507,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20022
+            InlineResponse20012
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -516,13 +529,16 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
-        kwargs['key'] = \
-            key
+        kwargs['type_id'] = \
+            type_id
+        kwargs['attachment_key'] = \
+            attachment_key
         return self.get_attachment_endpoint.call_with_http_info(**kwargs)
 
     def get_tag(
@@ -559,6 +575,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -568,7 +588,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20022
+            InlineResponse20012
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -590,6 +610,9 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
@@ -601,7 +624,7 @@ class TypeApi(object):
 
     def list_attachments(
         self,
-        id,
+        type_id,
         **kwargs
     ):
         """Get a list of attachment names  # noqa: E501
@@ -610,11 +633,11 @@ class TypeApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_attachments(id, async_req=True)
+        >>> thread = api.list_attachments(type_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            type_id (str):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -632,6 +655,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -641,7 +668,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20023
+            InlineResponse20011
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -663,11 +690,14 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['type_id'] = \
+            type_id
         return self.list_attachments_endpoint.call_with_http_info(**kwargs)
 
     def list_tags(
@@ -703,6 +733,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -712,7 +746,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20023
+            InlineResponse20011
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -734,6 +768,9 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
@@ -743,7 +780,7 @@ class TypeApi(object):
 
     def parent(
         self,
-        id,
+        type_id,
         **kwargs
     ):
         """Find the Parent of the Object.  # noqa: E501
@@ -752,11 +789,11 @@ class TypeApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.parent(id, async_req=True)
+        >>> thread = api.parent(type_id, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
+            type_id (str):
 
         Keyword Args:
             transform (str): [optional]
@@ -775,6 +812,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -784,7 +825,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20022
+            InlineResponse2001
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -806,18 +847,22 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
+        kwargs['type_id'] = \
+            type_id
         return self.parent_endpoint.call_with_http_info(**kwargs)
 
     def set_attachment(
         self,
-        id,
-        key,
+        type_id,
         target,
+        attachment_key,
+        body,
         **kwargs
     ):
         """Set or delete an attachment  # noqa: E501
@@ -825,13 +870,14 @@ class TypeApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.set_attachment(id, key, target, async_req=True)
+        >>> thread = api.set_attachment(type_id, target, attachment_key, body, async_req=True)
         >>> result = thread.get()
 
         Args:
-            id (str):
-            key (str):
+            type_id (str):
             target (str):
+            attachment_key (str):
+            body (bool, date, datetime, dict, float, int, list, str, none_type):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -849,6 +895,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -858,7 +908,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20022
+            InlineResponse2001
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -880,15 +930,20 @@ class TypeApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['id'] = \
-            id
-        kwargs['key'] = \
-            key
+        kwargs['type_id'] = \
+            type_id
         kwargs['target'] = \
             target
+        kwargs['attachment_key'] = \
+            attachment_key
+        kwargs['body'] = \
+            body
         return self.set_attachment_endpoint.call_with_http_info(**kwargs)
 
     def set_tag(
@@ -927,6 +982,10 @@ class TypeApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -936,7 +995,7 @@ class TypeApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20022
+            InlineResponse2001
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -957,6 +1016,9 @@ class TypeApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')

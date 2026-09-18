@@ -51,6 +51,12 @@ for (let [pathName, path] of Object.entries(spec.paths)) {
                 }
             }
 
+            if (pythonSettings.replaceResponseContent) {
+                for (let [statusCode, replacementType] of Object.entries(pythonSettings.replaceResponseContent)) {
+                    operation.responses[statusCode].content = getReponseContentReplacement(replacementType)
+                }
+            }
+
             // Replace path parameters with their defined defaults
             if (pythonSettings.pathParameterDefaults) {
                 let currentPathName = pathName
@@ -73,3 +79,42 @@ spec.paths = newPaths
 console.log(spec)
 
 fs.writeFileSync('./processed_spec.json', JSON.stringify(spec));
+
+
+function getReponseContentReplacement(replacementType) {
+    let schema = replacementType
+    if (replacementType === "anyObject") {
+        schema = { 
+            type: "object",
+            additionalProperties: true
+        }
+    } else if (replacementType === "anyData") {
+        schema = {
+            type: "object",
+            properties: {
+                data: {
+                    type: "object",
+                    additionalProperties: true
+                }
+            }
+        }
+    } else if (replacementType === "anyDataList") {
+        schema = {
+            type: "object",
+            properties: {
+                data: {
+                    type: "array",
+                    items: {}
+                }
+            }
+        }
+    } else if (replacementType === "any") {
+        schema = {}
+    }
+
+    return {
+        "application/json": {
+            "schema": schema
+        }
+    }
+}

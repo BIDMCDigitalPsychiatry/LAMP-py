@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **all_by_participant**
-> InlineResponse20020 all_by_participant(id)
+> bool, date, datetime, dict, float, int, list, str, none_type all_by_participant(id)
 
 Query ActivityEvents for a Participant.
 
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20020**](InlineResponse20020.md)
+**bool, date, datetime, dict, float, int, list, str, none_type**
 
 ### Authorization
 

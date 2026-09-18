@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **all**
-> InlineResponse20010 all()
+> InlineResponse2007 all()
 
 List all ActivitySpecs.
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20010**](InlineResponse20010.md)
+[**InlineResponse2007**](InlineResponse2007.md)
 
 ### Authorization
 
@@ -283,7 +283,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> InlineResponse20011 view(id)
+> InlineResponse2003 view(id)
 
 View an ActivitySpec.
 
@@ -336,7 +336,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20011**](InlineResponse20011.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 

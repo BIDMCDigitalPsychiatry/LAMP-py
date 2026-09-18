@@ -24,7 +24,6 @@ from LAMP.model_utils import (  # noqa: F401
 )
 from LAMP.model.error import Error
 from LAMP.model.inline_response2002 import InlineResponse2002
-from LAMP.model.inline_response20020 import InlineResponse20020
 
 
 class ActivityEventApi(object):
@@ -40,7 +39,7 @@ class ActivityEventApi(object):
         self.api_client = api_client
         self.all_by_participant_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20020,),
+                'response_type': (bool, date, datetime, dict, float, int, list, str, none_type,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -215,6 +214,10 @@ class ActivityEventApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -224,7 +227,7 @@ class ActivityEventApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20020
+            bool, date, datetime, dict, float, int, list, str, none_type
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -245,6 +248,9 @@ class ActivityEventApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -288,6 +294,10 @@ class ActivityEventApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -318,6 +328,9 @@ class ActivityEventApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')

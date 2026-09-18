@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **all**
-> InlineResponse20012 all()
+> InlineResponse2003 all()
 
 List all SensorSpecs.
 
@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20012**](InlineResponse20012.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 
@@ -279,7 +279,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> InlineResponse20013 view(id)
+> InlineResponse2003 view(id)
 
 View a SensorSpec.
 
@@ -332,7 +332,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20013**](InlineResponse20013.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 

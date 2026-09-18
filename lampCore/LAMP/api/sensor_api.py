@@ -23,10 +23,9 @@ from LAMP.model_utils import (  # noqa: F401
     validate_and_convert_types
 )
 from LAMP.model.error import Error
-from LAMP.model.inline_response20017 import InlineResponse20017
-from LAMP.model.inline_response20018 import InlineResponse20018
-from LAMP.model.inline_response20019 import InlineResponse20019
+from LAMP.model.inline_response20010 import InlineResponse20010
 from LAMP.model.inline_response2002 import InlineResponse2002
+from LAMP.model.inline_response2003 import InlineResponse2003
 from LAMP.model.sensor import Sensor
 
 
@@ -43,7 +42,7 @@ class SensorApi(object):
         self.api_client = api_client
         self.all_by_participant_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20018,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -101,7 +100,7 @@ class SensorApi(object):
         )
         self.all_by_study_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20018,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -159,7 +158,7 @@ class SensorApi(object):
         )
         self.create_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20019,),
+                'response_type': (InlineResponse20010,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -332,7 +331,7 @@ class SensorApi(object):
         )
         self.view_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse20017,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -423,6 +422,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -432,7 +435,7 @@ class SensorApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20018
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -453,6 +456,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -495,6 +501,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -504,7 +514,7 @@ class SensorApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20018
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -525,6 +535,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -568,6 +581,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -577,7 +594,7 @@ class SensorApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20019
+            InlineResponse20010
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -598,6 +615,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -641,6 +661,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -671,6 +695,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -714,6 +741,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -744,6 +775,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
@@ -788,6 +822,10 @@ class SensorApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -797,7 +835,7 @@ class SensorApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse20017
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -818,6 +856,9 @@ class SensorApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')

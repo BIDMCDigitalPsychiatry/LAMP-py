@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create**
-> InlineResponse2004 create(researcher)
+> InlineResponse2004 create(request_body)
 
 Create a Researcher.
 
@@ -99,14 +99,12 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Researcher
 
-researcher = Researcher(
-        name="Harvard Psychiatry",
-    ) # Researcher | 
+request_body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | 
 
 # example passing only required values which don't have defaults set
 try:
     # Create a Researcher.
-    api_response = api_client.create(researcher)
+    api_response = api_client.create(request_body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ResearcherApi->create: %s\n" % e)
@@ -117,7 +115,7 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **researcher** | [**Researcher**](Researcher.md)|  |
+ **request_body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**|  |
 
 ### Return type
 
@@ -207,7 +205,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update**
-> InlineResponse2002 update(id, researcher)
+> InlineResponse2002 update(id, request_body)
 
 Update a Researcher.
 
@@ -230,14 +228,12 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 api_client = LAMP.Researcher
 
 id = "id_example" # str | Researcher Id
-researcher = Researcher(
-        name="Harvard Psychiatry",
-    ) # Researcher | 
+request_body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | 
 
 # example passing only required values which don't have defaults set
 try:
     # Update a Researcher.
-    api_response = api_client.update(id, researcher)
+    api_response = api_client.update(id, request_body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ResearcherApi->update: %s\n" % e)
@@ -249,7 +245,7 @@ except LAMP.ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **str**| Researcher Id |
- **researcher** | [**Researcher**](Researcher.md)|  |
+ **request_body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**|  |
 
 ### Return type
 
@@ -275,7 +271,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> InlineResponse2005 view(id)
+> InlineResponse2003 view(id)
 
 View a Researcher.
 
@@ -328,7 +324,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse2005**](InlineResponse2005.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 

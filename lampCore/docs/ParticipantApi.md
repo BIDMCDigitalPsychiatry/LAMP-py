@@ -4,15 +4,15 @@ All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**all_by_study**](ParticipantApi.md#all_by_study) | **GET** /study/{id}/participant | List all Participants for a Study.
-[**create**](ParticipantApi.md#create) | **POST** /study/{id}/participant | Create a Participant for a Study.
-[**delete**](ParticipantApi.md#delete) | **DELETE** /participant/{id} | Delete a Participant.
-[**update**](ParticipantApi.md#update) | **PUT** /participant/{id} | Update a Participant.
-[**view**](ParticipantApi.md#view) | **GET** /participant/{id} | View a Participant.
+[**all_by_study**](ParticipantApi.md#all_by_study) | **GET** /study/{study_id}/participant | List all Participants for a Study.
+[**create**](ParticipantApi.md#create) | **POST** /study/{study_id}/participant | Create a Participant for a Study.
+[**delete**](ParticipantApi.md#delete) | **DELETE** /participant/{participant_id} | Delete a Participant.
+[**update**](ParticipantApi.md#update) | **PUT** /participant/{participant_id} | Update a Participant.
+[**view**](ParticipantApi.md#view) | **GET** /participant/{participant_id} | View a Participant.
 
 
 # **all_by_study**
-> InlineResponse2001 all_by_study(id)
+> InlineResponse2003 all_by_study(study_id)
 
 List all Participants for a Study.
 
@@ -34,13 +34,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Participant
 
-id = "id_example" # str | 
+study_id = "study_id_example" # str | 
 transform = "transform_example" # str |  (optional)
 
 # example passing only required values which don't have defaults set
 try:
     # List all Participants for a Study.
-    api_response = api_client.all_by_study(id)
+    api_response = api_client.all_by_study(study_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->all_by_study: %s\n" % e)
@@ -49,7 +49,7 @@ except LAMP.ApiException as e:
 # and optional values
 try:
     # List all Participants for a Study.
-    api_response = api_client.all_by_study(id, transform=transform)
+    api_response = api_client.all_by_study(study_id, transform=transform)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->all_by_study: %s\n" % e)
@@ -60,12 +60,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **study_id** | **str**|  |
  **transform** | **str**|  | [optional]
 
 ### Return type
 
-[**InlineResponse2001**](InlineResponse2001.md)
+[**InlineResponse2003**](InlineResponse2003.md)
 
 ### Authorization
 
@@ -87,7 +87,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create**
-> InlineResponse2002 create(id, participant)
+> InlineResponse2002 create(study_id, participant)
 
 Create a Participant for a Study.
 
@@ -109,14 +109,14 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Participant
 
-id = "id_example" # str | 
+study_id = "study_id_example" # str | 
 participant = Participant(
     ) # Participant | 
 
 # example passing only required values which don't have defaults set
 try:
     # Create a Participant for a Study.
-    api_response = api_client.create(id, participant)
+    api_response = api_client.create(study_id, participant)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->create: %s\n" % e)
@@ -127,7 +127,7 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **study_id** | **str**|  |
  **participant** | [**Participant**](Participant.md)|  |
 
 ### Return type
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete**
-> InlineResponse2002 delete(id)
+> InlineResponse2002 delete(participant_id)
 
 Delete a Participant.
 
@@ -176,12 +176,12 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Participant
 
-id = "id_example" # str | 
+participant_id = "participant_id_example" # str | 
 
 # example passing only required values which don't have defaults set
 try:
     # Delete a Participant.
-    api_response = api_client.delete(id)
+    api_response = api_client.delete(participant_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->delete: %s\n" % e)
@@ -192,7 +192,7 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **participant_id** | **str**|  |
 
 ### Return type
 
@@ -218,7 +218,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update**
-> InlineResponse2002 update(id, participant)
+> InlineResponse2002 update(participant_id, request_body)
 
 Update a Participant.
 
@@ -240,14 +240,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Participant
 
-id = "id_example" # str | 
-participant = Participant(
-    ) # Participant | 
+participant_id = "participant_id_example" # str | 
+request_body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | 
 
 # example passing only required values which don't have defaults set
 try:
     # Update a Participant.
-    api_response = api_client.update(id, participant)
+    api_response = api_client.update(participant_id, request_body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->update: %s\n" % e)
@@ -258,8 +257,8 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
- **participant** | [**Participant**](Participant.md)|  |
+ **participant_id** | **str**|  |
+ **request_body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**|  |
 
 ### Return type
 
@@ -285,7 +284,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **view**
-> InlineResponse2001 view(id)
+> InlineResponse2001 view(participant_id)
 
 View a Participant.
 
@@ -307,13 +306,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Participant
 
-id = "id_example" # str | 
+participant_id = "participant_id_example" # str | 
 transform = "transform_example" # str |  (optional)
 
 # example passing only required values which don't have defaults set
 try:
     # View a Participant.
-    api_response = api_client.view(id)
+    api_response = api_client.view(participant_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->view: %s\n" % e)
@@ -322,7 +321,7 @@ except LAMP.ApiException as e:
 # and optional values
 try:
     # View a Participant.
-    api_response = api_client.view(id, transform=transform)
+    api_response = api_client.view(participant_id, transform=transform)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling ParticipantApi->view: %s\n" % e)
@@ -333,7 +332,7 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **participant_id** | **str**|  |
  **transform** | **str**|  | [optional]
 
 ### Return type

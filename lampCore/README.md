@@ -90,11 +90,11 @@ Class | Method | HTTP request | Description
 *CredentialApi* | [**delete**](docs/CredentialApi.md#delete) | **DELETE** /type/{id}/credential/{access_key} | Delete a credential
 *CredentialApi* | [**list**](docs/CredentialApi.md#list) | **GET** /type/{id}/credential | List credentials
 *CredentialApi* | [**update**](docs/CredentialApi.md#update) | **PUT** /type/{id}/credential/{access_key} | Update a credential
-*ParticipantApi* | [**all_by_study**](docs/ParticipantApi.md#all_by_study) | **GET** /study/{id}/participant | List all Participants for a Study.
-*ParticipantApi* | [**create**](docs/ParticipantApi.md#create) | **POST** /study/{id}/participant | Create a Participant for a Study.
-*ParticipantApi* | [**delete**](docs/ParticipantApi.md#delete) | **DELETE** /participant/{id} | Delete a Participant.
-*ParticipantApi* | [**update**](docs/ParticipantApi.md#update) | **PUT** /participant/{id} | Update a Participant.
-*ParticipantApi* | [**view**](docs/ParticipantApi.md#view) | **GET** /participant/{id} | View a Participant.
+*ParticipantApi* | [**all_by_study**](docs/ParticipantApi.md#all_by_study) | **GET** /study/{study_id}/participant | List all Participants for a Study.
+*ParticipantApi* | [**create**](docs/ParticipantApi.md#create) | **POST** /study/{study_id}/participant | Create a Participant for a Study.
+*ParticipantApi* | [**delete**](docs/ParticipantApi.md#delete) | **DELETE** /participant/{participant_id} | Delete a Participant.
+*ParticipantApi* | [**update**](docs/ParticipantApi.md#update) | **PUT** /participant/{participant_id} | Update a Participant.
+*ParticipantApi* | [**view**](docs/ParticipantApi.md#view) | **GET** /participant/{participant_id} | View a Participant.
 *ResearcherApi* | [**all**](docs/ResearcherApi.md#all) | **GET** /researcher | List all Researchers.
 *ResearcherApi* | [**create**](docs/ResearcherApi.md#create) | **POST** /researcher | Create a Researcher.
 *ResearcherApi* | [**delete**](docs/ResearcherApi.md#delete) | **DELETE** /researcher/{id} | Delete a Researcher.
@@ -115,18 +115,18 @@ Class | Method | HTTP request | Description
 *SensorSpecApi* | [**delete**](docs/SensorSpecApi.md#delete) | **DELETE** /sensor_spec/{id} | Delete a SensorSpec.
 *SensorSpecApi* | [**update**](docs/SensorSpecApi.md#update) | **PUT** /sensor_spec/{id} | Update a SensorSpec.
 *SensorSpecApi* | [**view**](docs/SensorSpecApi.md#view) | **GET** /sensor_spec/{id} | View a SensorSpec.
-*StudyApi* | [**all_by_researcher**](docs/StudyApi.md#all_by_researcher) | **GET** /researcher/{id}/study | List all Studies for a Researcher.
+*StudyApi* | [**all_by_researcher**](docs/StudyApi.md#all_by_researcher) | **GET** /researcher/{researcher_id}/study | List all Studies for a Researcher.
 *StudyApi* | [**clone**](docs/StudyApi.md#clone) | **POST** /researcher/{ResearcherId}/study/clone | Create a deep copy of a study. Including activities and sensors
-*StudyApi* | [**create**](docs/StudyApi.md#create) | **POST** /researcher/{id}/study | Create a Study for a Researcher.
-*StudyApi* | [**delete**](docs/StudyApi.md#delete) | **DELETE** /study/{id} | Delete a Study.
-*StudyApi* | [**update**](docs/StudyApi.md#update) | **PUT** /study/{id} | Update a Study.
-*StudyApi* | [**view**](docs/StudyApi.md#view) | **GET** /study/{id} | View a Study.
-*TypeApi* | [**get_attachment**](docs/TypeApi.md#get_attachment) | **GET** /type/{id}/attachment/{key} | Get the value of an attachment
+*StudyApi* | [**create**](docs/StudyApi.md#create) | **POST** /researcher/{researcher_id}/study | Create a Study for a Researcher.
+*StudyApi* | [**delete**](docs/StudyApi.md#delete) | **DELETE** /study/{study_id} | Delete a Study.
+*StudyApi* | [**update**](docs/StudyApi.md#update) | **PUT** /study/{study_id} | Update a Study.
+*StudyApi* | [**view**](docs/StudyApi.md#view) | **GET** /study/{study_id} | View a Study.
+*TypeApi* | [**get_attachment**](docs/TypeApi.md#get_attachment) | **GET** /type/{type_id}/attachment/{attachment_key} | Get the value of an attachment
 *TypeApi* | [**get_tag**](docs/TypeApi.md#get_tag) | **GET** /type/{id}/tag/{key} | Get the value of a tag
-*TypeApi* | [**list_attachments**](docs/TypeApi.md#list_attachments) | **GET** /type/{id}/attachment | Get a list of attachment names
+*TypeApi* | [**list_attachments**](docs/TypeApi.md#list_attachments) | **GET** /type/{type_id}/attachment | Get a list of attachment names
 *TypeApi* | [**list_tags**](docs/TypeApi.md#list_tags) | **GET** /type/{id}/tag | Get a list of tag names
-*TypeApi* | [**parent**](docs/TypeApi.md#parent) | **GET** /type/{id}/parent | Find the Parent of the Object.
-*TypeApi* | [**set_attachment**](docs/TypeApi.md#set_attachment) | **PUT** /type/{id}/attachment/{key}/{target} | Set or delete an attachment
+*TypeApi* | [**parent**](docs/TypeApi.md#parent) | **GET** /type/{type_id}/parent | Find the Parent of the Object.
+*TypeApi* | [**set_attachment**](docs/TypeApi.md#set_attachment) | **PUT** /type/{type_id}/attachment/{attachment_key}/{target} | Set or delete an attachment
 *TypeApi* | [**set_tag**](docs/TypeApi.md#set_tag) | **PUT** /type/{id}/tag/{key}/{target} | Set or delete a tag
 
 
@@ -147,19 +147,7 @@ Class | Method | HTTP request | Description
  - [InlineResponse20010](docs/InlineResponse20010.md)
  - [InlineResponse20011](docs/InlineResponse20011.md)
  - [InlineResponse20012](docs/InlineResponse20012.md)
- - [InlineResponse20013](docs/InlineResponse20013.md)
- - [InlineResponse20014](docs/InlineResponse20014.md)
- - [InlineResponse20015](docs/InlineResponse20015.md)
- - [InlineResponse20016](docs/InlineResponse20016.md)
- - [InlineResponse20017](docs/InlineResponse20017.md)
- - [InlineResponse20018](docs/InlineResponse20018.md)
- - [InlineResponse20019](docs/InlineResponse20019.md)
  - [InlineResponse2002](docs/InlineResponse2002.md)
- - [InlineResponse20020](docs/InlineResponse20020.md)
- - [InlineResponse20021](docs/InlineResponse20021.md)
- - [InlineResponse20022](docs/InlineResponse20022.md)
- - [InlineResponse20023](docs/InlineResponse20023.md)
- - [InlineResponse20024](docs/InlineResponse20024.md)
  - [InlineResponse2003](docs/InlineResponse2003.md)
  - [InlineResponse2004](docs/InlineResponse2004.md)
  - [InlineResponse2005](docs/InlineResponse2005.md)

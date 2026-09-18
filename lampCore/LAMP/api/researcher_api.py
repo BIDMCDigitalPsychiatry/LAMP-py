@@ -26,8 +26,6 @@ from LAMP.model.error import Error
 from LAMP.model.inline_response2002 import InlineResponse2002
 from LAMP.model.inline_response2003 import InlineResponse2003
 from LAMP.model.inline_response2004 import InlineResponse2004
-from LAMP.model.inline_response2005 import InlineResponse2005
-from LAMP.model.researcher import Researcher
 
 
 class ResearcherApi(object):
@@ -107,10 +105,10 @@ class ResearcherApi(object):
             },
             params_map={
                 'all': [
-                    'researcher',
+                    'request_body',
                 ],
                 'required': [
-                    'researcher',
+                    'request_body',
                 ],
                 'nullable': [
                 ],
@@ -125,13 +123,13 @@ class ResearcherApi(object):
                 'allowed_values': {
                 },
                 'openapi_types': {
-                    'researcher':
-                        (Researcher,),
+                    'request_body':
+                        ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 },
                 'attribute_map': {
                 },
                 'location_map': {
-                    'researcher': 'body',
+                    'request_body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -215,11 +213,11 @@ class ResearcherApi(object):
             params_map={
                 'all': [
                     'id',
-                    'researcher',
+                    'request_body',
                 ],
                 'required': [
                     'id',
-                    'researcher',
+                    'request_body',
                 ],
                 'nullable': [
                 ],
@@ -236,15 +234,15 @@ class ResearcherApi(object):
                 'openapi_types': {
                     'id':
                         (str,),
-                    'researcher':
-                        (Researcher,),
+                    'request_body':
+                        ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
                 },
                 'attribute_map': {
                     'id': 'id',
                 },
                 'location_map': {
                     'id': 'path',
-                    'researcher': 'body',
+                    'request_body': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -261,7 +259,7 @@ class ResearcherApi(object):
         )
         self.view_endpoint = _Endpoint(
             settings={
-                'response_type': (InlineResponse2005,),
+                'response_type': (InlineResponse2003,),
                 'auth': [
                     'ApiKeyAuth',
                     'OldServer',
@@ -349,6 +347,10 @@ class ResearcherApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -380,6 +382,9 @@ class ResearcherApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
@@ -387,7 +392,7 @@ class ResearcherApi(object):
 
     def create(
         self,
-        researcher,
+        request_body,
         **kwargs
     ):
         """Create a Researcher.  # noqa: E501
@@ -396,11 +401,11 @@ class ResearcherApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create(researcher, async_req=True)
+        >>> thread = api.create(request_body, async_req=True)
         >>> result = thread.get()
 
         Args:
-            researcher (Researcher):
+            request_body ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -418,6 +423,10 @@ class ResearcherApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -449,11 +458,14 @@ class ResearcherApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
-        kwargs['researcher'] = \
-            researcher
+        kwargs['request_body'] = \
+            request_body
         return self.create_endpoint.call_with_http_info(**kwargs)
 
     def delete(
@@ -489,6 +501,10 @@ class ResearcherApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -520,6 +536,9 @@ class ResearcherApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
@@ -530,7 +549,7 @@ class ResearcherApi(object):
     def update(
         self,
         id,
-        researcher,
+        request_body,
         **kwargs
     ):
         """Update a Researcher.  # noqa: E501
@@ -539,12 +558,12 @@ class ResearcherApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update(id, researcher, async_req=True)
+        >>> thread = api.update(id, request_body, async_req=True)
         >>> result = thread.get()
 
         Args:
             id (str): Researcher Id
-            researcher (Researcher):
+            request_body ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}):
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -562,6 +581,10 @@ class ResearcherApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -593,13 +616,16 @@ class ResearcherApi(object):
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
         )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
         kwargs['id'] = \
             id
-        kwargs['researcher'] = \
-            researcher
+        kwargs['request_body'] = \
+            request_body
         return self.update_endpoint.call_with_http_info(**kwargs)
 
     def view(
@@ -636,6 +662,10 @@ class ResearcherApi(object):
             _check_return_type (bool): specifies if type checking
                 should be done one the data received from the server.
                 Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
             _content_type (str/None): force body content-type.
                 Default is None and content-type will be predicted by allowed
                 content-types and body.
@@ -645,7 +675,7 @@ class ResearcherApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            InlineResponse2005
+            InlineResponse2003
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -666,6 +696,9 @@ class ResearcherApi(object):
         )
         kwargs['_check_return_type'] = kwargs.get(
             '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
         )
         kwargs['_content_type'] = kwargs.get(
             '_content_type')

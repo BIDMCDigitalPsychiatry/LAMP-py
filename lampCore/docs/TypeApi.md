@@ -4,17 +4,17 @@ All URIs are relative to *https://api.lamp.digital*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_attachment**](TypeApi.md#get_attachment) | **GET** /type/{id}/attachment/{key} | Get the value of an attachment
+[**get_attachment**](TypeApi.md#get_attachment) | **GET** /type/{type_id}/attachment/{attachment_key} | Get the value of an attachment
 [**get_tag**](TypeApi.md#get_tag) | **GET** /type/{id}/tag/{key} | Get the value of a tag
-[**list_attachments**](TypeApi.md#list_attachments) | **GET** /type/{id}/attachment | Get a list of attachment names
+[**list_attachments**](TypeApi.md#list_attachments) | **GET** /type/{type_id}/attachment | Get a list of attachment names
 [**list_tags**](TypeApi.md#list_tags) | **GET** /type/{id}/tag | Get a list of tag names
-[**parent**](TypeApi.md#parent) | **GET** /type/{id}/parent | Find the Parent of the Object.
-[**set_attachment**](TypeApi.md#set_attachment) | **PUT** /type/{id}/attachment/{key}/{target} | Set or delete an attachment
+[**parent**](TypeApi.md#parent) | **GET** /type/{type_id}/parent | Find the Parent of the Object.
+[**set_attachment**](TypeApi.md#set_attachment) | **PUT** /type/{type_id}/attachment/{attachment_key}/{target} | Set or delete an attachment
 [**set_tag**](TypeApi.md#set_tag) | **PUT** /type/{id}/tag/{key}/{target} | Set or delete a tag
 
 
 # **get_attachment**
-> InlineResponse20022 get_attachment(id, key)
+> InlineResponse20012 get_attachment(type_id, attachment_key)
 
 Get the value of an attachment
 
@@ -34,13 +34,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
 
-id = "id_example" # str | 
-key = "key_example" # str | 
+type_id = "type_id_example" # str | 
+attachment_key = "attachment_key_example" # str | 
 
 # example passing only required values which don't have defaults set
 try:
     # Get the value of an attachment
-    api_response = api_client.get_attachment(id, key)
+    api_response = api_client.get_attachment(type_id, attachment_key)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling TypeApi->get_attachment: %s\n" % e)
@@ -51,12 +51,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
- **key** | **str**|  |
+ **type_id** | **str**|  |
+ **attachment_key** | **str**|  |
 
 ### Return type
 
-[**InlineResponse20022**](InlineResponse20022.md)
+[**InlineResponse20012**](InlineResponse20012.md)
 
 ### Authorization
 
@@ -78,7 +78,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_tag**
-> InlineResponse20022 get_tag(id, key)
+> InlineResponse20012 get_tag(id, key)
 
 Get the value of a tag
 
@@ -120,7 +120,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20022**](InlineResponse20022.md)
+[**InlineResponse20012**](InlineResponse20012.md)
 
 ### Authorization
 
@@ -142,7 +142,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_attachments**
-> InlineResponse20023 list_attachments(id)
+> InlineResponse20011 list_attachments(type_id)
 
 Get a list of attachment names
 
@@ -164,12 +164,12 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
 
-id = "id_example" # str | 
+type_id = "type_id_example" # str | 
 
 # example passing only required values which don't have defaults set
 try:
     # Get a list of attachment names
-    api_response = api_client.list_attachments(id)
+    api_response = api_client.list_attachments(type_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling TypeApi->list_attachments: %s\n" % e)
@@ -180,11 +180,11 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **type_id** | **str**|  |
 
 ### Return type
 
-[**InlineResponse20023**](InlineResponse20023.md)
+[**InlineResponse20011**](InlineResponse20011.md)
 
 ### Authorization
 
@@ -206,7 +206,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_tags**
-> InlineResponse20023 list_tags(id)
+> InlineResponse20011 list_tags(id)
 
 Get a list of tag names
 
@@ -248,7 +248,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20023**](InlineResponse20023.md)
+[**InlineResponse20011**](InlineResponse20011.md)
 
 ### Authorization
 
@@ -270,7 +270,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **parent**
-> InlineResponse20022 parent(id)
+> InlineResponse2001 parent(type_id)
 
 Find the Parent of the Object.
 
@@ -292,13 +292,13 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
 
-id = "id_example" # str | 
+type_id = "type_id_example" # str | 
 transform = "transform_example" # str |  (optional)
 
 # example passing only required values which don't have defaults set
 try:
     # Find the Parent of the Object.
-    api_response = api_client.parent(id)
+    api_response = api_client.parent(type_id)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling TypeApi->parent: %s\n" % e)
@@ -307,7 +307,7 @@ except LAMP.ApiException as e:
 # and optional values
 try:
     # Find the Parent of the Object.
-    api_response = api_client.parent(id, transform=transform)
+    api_response = api_client.parent(type_id, transform=transform)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling TypeApi->parent: %s\n" % e)
@@ -318,12 +318,12 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
+ **type_id** | **str**|  |
  **transform** | **str**|  | [optional]
 
 ### Return type
 
-[**InlineResponse20022**](InlineResponse20022.md)
+[**InlineResponse2001**](InlineResponse2001.md)
 
 ### Authorization
 
@@ -345,7 +345,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **set_attachment**
-> InlineResponse20022 set_attachment(id, key, target)
+> InlineResponse2001 set_attachment(type_id, target, attachment_key, body)
 
 Set or delete an attachment
 
@@ -365,14 +365,15 @@ LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
 # Enter a context with an instance of the API client
 api_client = LAMP.Type
 
-id = "id_example" # str | 
-key = "key_example" # str | 
+type_id = "type_id_example" # str | 
 target = "target_example" # str | 
+attachment_key = "attachment_key_example" # str | 
+body = None # bool, date, datetime, dict, float, int, list, str, none_type | 
 
 # example passing only required values which don't have defaults set
 try:
     # Set or delete an attachment
-    api_response = api_client.set_attachment(id, key, target)
+    api_response = api_client.set_attachment(type_id, target, attachment_key, body)
     print(api_response)
 except LAMP.ApiException as e:
     print("Exception when calling TypeApi->set_attachment: %s\n" % e)
@@ -383,13 +384,14 @@ except LAMP.ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**|  |
- **key** | **str**|  |
+ **type_id** | **str**|  |
  **target** | **str**|  |
+ **attachment_key** | **str**|  |
+ **body** | **bool, date, datetime, dict, float, int, list, str, none_type**|  |
 
 ### Return type
 
-[**InlineResponse20022**](InlineResponse20022.md)
+[**InlineResponse2001**](InlineResponse2001.md)
 
 ### Authorization
 
@@ -397,7 +399,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 
@@ -411,7 +413,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **set_tag**
-> InlineResponse20022 set_tag(id, key, target)
+> InlineResponse2001 set_tag(id, key, target)
 
 Set or delete a tag
 
@@ -455,7 +457,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InlineResponse20022**](InlineResponse20022.md)
+[**InlineResponse2001**](InlineResponse2001.md)
 
 ### Authorization
 
