@@ -1,0 +1,16 @@
+{
+  "name": "lamppy",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "generate": "npx @openapitools/openapi-generator-cli generate",
+    "process_spec": "node process_spec"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.31.0"
+  }
+}

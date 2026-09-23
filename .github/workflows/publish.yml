@@ -18,6 +18,7 @@ jobs:
       env:
         POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_AUTH_TOKEN }}
       run: |
+        cd lampCore
         # from refs/tags/v1.2.3 get 1.2.3
         VERSION=$(echo $GITHUB_REF | sed 's#.*/##')
         echo $VERSION

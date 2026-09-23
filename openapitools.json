@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "5.4.0",
+    "generators": {
+      "v1": {
+        "generatorName": "python",
+        "packageName": "LAMP",
+        "inputSpec": "processed_spec.json",
+        "output": "./lampCore",
+        "skipValidateSpec": true,
+        "config": "./config.yaml"
+      }
+    }
+  }
+}

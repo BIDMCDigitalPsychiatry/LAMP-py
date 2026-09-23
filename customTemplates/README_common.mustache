@@ -1,0 +1,36 @@
+```python
+import LAMP
+
+# To connect to servers that support api keys
+LAMP.connect(server_address="https://api.lamp.digital", api_key="apiKeyValue")
+
+print(LAMP.Authentication.session_info())
+
+```
+
+```python
+# You may also connect to legacy lamp servers that use basic auth using one of the following calls:
+
+LAMP.connect(access_key="accessKeyValue", secret_key="secreteKeyValue", server_address="https://api.lamp.digital")
+LAMP.connect("accessKeyValue", "secreteKeyValue", "https://api.lamp.digital")
+
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *{{basePath}}*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{classname}}* | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationIdLowerCase}}) | **{{httpMethod}}** {{path}} | {{summary}}
+{{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+
+## Documentation For Models
+
+{{#models}}{{#model}} - [{{{classname}}}]({{modelDocPath}}{{{classname}}}.md)
+{{/model}}{{/models}}
+
+## Author
+
+{{#apiInfo}}{{#apis}}{{#-last}}{{infoEmail}}
+{{/-last}}{{/apis}}{{/apiInfo}}

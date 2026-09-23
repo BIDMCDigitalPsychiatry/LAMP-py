@@ -67,3 +67,8 @@ target/
 
 # macOS
 .DS_Store
+
+
+# Generation artifacts
+node_modules
+processed_spec.json

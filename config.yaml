@@ -1,0 +1,7 @@
+templateDir: customTemplates
+additionalProperties:
+  projectName: LAMP-core
+files:
+  pyproject.mustache:
+    templateType: SupportingFiles
+    destinationFilename: pyproject.toml

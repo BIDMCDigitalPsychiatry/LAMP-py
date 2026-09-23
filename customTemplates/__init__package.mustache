@@ -1,0 +1,58 @@
+# flake8: noqa
+
+{{>partial_header}}
+
+__version__ = "{{packageVersion}}"
+
+import os
+
+# import ApiClient
+from {{packageName}}.api_client import ApiClient
+
+# import Configuration
+from {{packageName}}.configuration import Configuration
+{{#hasHttpSignatureMethods}}
+from {{packageName}}.signing import HttpSigningConfiguration
+{{/hasHttpSignatureMethods}}
+
+# import exceptions
+from {{packageName}}.exceptions import OpenApiException
+from {{packageName}}.exceptions import ApiAttributeError
+from {{packageName}}.exceptions import ApiTypeError
+from {{packageName}}.exceptions import ApiValueError
+from {{packageName}}.exceptions import ApiKeyError
+from {{packageName}}.exceptions import ApiException
+{{#recursionLimit}}
+
+__import__('sys').setrecursionlimit({{{.}}})
+{{/recursionLimit}}
+
+
+{{#apiInfo}}
+{{#apis}}from {{apiPackage}}.{{classVarName}} import {{classname}} as __{{classname}} #{{baseName}}
+{{/apis}}
+{{/apiInfo}}
+
+{{#apiInfo}}{{#apis}}{{baseName}} = __{{classname}}()
+{{/apis}}{{/apiInfo}}
+
+
+def connect(access_key=None, secret_key=None, server_address=None, api_key=None):
+    server_address = server_address or os.getenv('LAMP_SERVER_ADDRESS', 'https://api.lamp.digital')
+    if not server_address.startswith("https://") and not server_address.startswith("http://"):
+        server_address = f"https://{server_address}"
+
+    access_key = access_key or os.getenv('LAMP_ACCESS_KEY')
+    secret_key = secret_key or os.getenv('LAMP_SECRET_KEY')
+    api_key = api_key or os.getenv('LAMP_API_KEY')
+    
+    if api_key:
+        client = ApiClient(Configuration(host=server_address, api_key={"ApiKeyAuth": api_key}))
+    else:
+        client = ApiClient(Configuration(host=server_address, username=access_key, password=secret_key))
+
+    {{#apiInfo}}{{#apis}}global {{baseName}}
+    {{/apis}}{{/apiInfo}}
+
+    {{#apiInfo}}{{#apis}}{{baseName}} = __{{classname}}(client)
+    {{/apis}}{{/apiInfo}}
